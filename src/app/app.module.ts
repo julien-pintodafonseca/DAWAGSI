@@ -12,6 +12,7 @@ import { UserComponent } from './components/user/user.component';
 import { LibraryComponent } from './components/library/library.component';
 import { UploadImageComponent } from './components/upload-image/upload-image.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { GalleryComponent } from './components/gallery/gallery.component';
 
 @NgModule({
   /* composants */
@@ -20,7 +21,8 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     UserComponent,
     LibraryComponent,
     PageNotFoundComponent,
-    UploadImageComponent
+    UploadImageComponent,
+    GalleryComponent
   ],
   /* modules */
   imports: [
