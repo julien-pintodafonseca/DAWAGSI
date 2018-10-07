@@ -1,16 +1,109 @@
 <!-- Library -->
 <div id="library-component">
-  <h1 style="text-align:center">Bibliothèque</h1>
+  <br />
+  <h1 style="margin-left:290px">Bibliothèque</h1>
 
   <br />
   <br />
   <br />
-  <button (click)="ngxSmartModalService.getModal('modUpload').open()">Upload</button>
 
-  <ngx-smart-modal #modUpload identifier="modUpload" [closable]=true [escapable]=false [dismissable]=false>
-    <app-upload-image></app-upload-image>
+  <!-- Espace 1 -->
+  <div style="position:absolute; margin-top:-3px; margin-left:120px; width:925px; height:381px; background-color:rgba(255,0,0,0.2)">
 
-    <!--<button (click)="modUpload.close()">Close</button>-->
-  </ngx-smart-modal>
+    <!-- Espace 1A -->
+    <div style="float:left; margin-left:80px; width:610px; background-color:rgba(0,255,0,0.2)">
+      <br />
+      <!-- Gallery -->
+      <app-gallery></app-gallery>
+      <!-- /Gallery -->
+
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+
+      <!-- Buttons -->
+      <div>
+        <button (click)="ngxSmartModalService.getModal('modUpload').open()" style="margin-left:20px;">Upload</button>
+        <button (click)="ngxSmartModalService.getModal('modSelect').open()" style="margin-left:420px ">Selectionner</button>
+      </div>
+      <!-- /Buttons -->
+
+      <br />
+
+    </div>
+    <!-- /Espace 1A -->
+
+    <!-- Espace 1B -->
+    <div style="float:right; margin-right:3px; width:122px; height:381px; background-color:rgba(0,0,255,0.2)">
+
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+
+    </div>
+    <!-- /Espace 1B -->
+
+  </div>
+  <!-- /Espace 1 -->
+
+
+  <!-- Modals -->
+  <span>
+    
+    <!-- Modal "modUpload" -->
+    <ngx-smart-modal #modUpload customClass="modUpload"  identifier="modUpload" [closable]=true [escapable]=false [dismissable]=false >
+      <div style="height:75vh; text-align:center">
+        <h2>[Upload]</h2>
+        <br />
+        <br />   
+        <br />
+        <br />
+        <h2>[Informations]</h2>
+        <div style="width:80%; margin-left:10%; margin-top:400px">
+          <app-upload-image></app-upload-image>
+        </div>
+      </div>
+    </ngx-smart-modal>
+
+    <!-- Modal "modSelect" -->
+    <ngx-smart-modal #modUpload customClass="modSelect"  identifier="modSelect" [closable]=true [escapable]=false [dismissable]=false >
+      <div style="height:75vh; text-align:center">
+        <h2>[Selectionner une liste]</h2>
+        <br />
+        <br />   
+        <br />
+        <br />
+        <h2>[Informations]</h2>
+      </div>
+    </ngx-smart-modal>
+
+  </span>
+  <!-- /Modals -->
 
 </div>
+<!-- /Library -->
