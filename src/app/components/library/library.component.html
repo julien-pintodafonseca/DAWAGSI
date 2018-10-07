@@ -1,26 +1,16 @@
 <!-- Library -->
+<div id="library-component">
+  <h1 style="text-align:center">Bibliothèque</h1>
 
-<h1 style="text-align:center">Bibliothèque</h1>
+  <br />
+  <br />
+  <br />
+  <button (click)="ngxSmartModalService.getModal('modUpload').open()">Upload</button>
 
-<h3 style="text-align:center">[component-haut]</h3>
+  <ngx-smart-modal #modUpload identifier="modUpload" [closable]=true [escapable]=false [dismissable]=false>
+    <app-upload-image></app-upload-image>
 
-<br />
-<br />
-<br />
+    <!--<button (click)="modUpload.close()">Close</button>-->
+  </ngx-smart-modal>
 
-<table style="width:100%">
-  <tr>
-    <td width=50% style="text-align:center;padding-bottom:300px;background-color:lightgreen ">
-      [component-gauche]
-    </td>
-    <td width=50% style="text-align:center;padding-bottom:300px;background-color:lightblue ">
-      [component-droit]
-    </td>
-  </tr>
-</table>
-
-<br />
-<br />
-<br />
-
-<app-upload-image></app-upload-image>
+</div>

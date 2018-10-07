@@ -7,7 +7,6 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class UploadImageComponent implements OnInit {
-
   customStyle: any;
 
   constructor() {
