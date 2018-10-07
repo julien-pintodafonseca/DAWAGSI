@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgxSmartModalService } from 'ngx-smart-modal';
 
 @Component({
   selector: 'app-library',
@@ -8,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 
 export class LibraryComponent implements OnInit {
 
-  constructor() {
+  constructor(public ngxSmartModalService: NgxSmartModalService) {
 
   }
 
