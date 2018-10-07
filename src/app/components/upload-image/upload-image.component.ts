@@ -31,5 +31,10 @@ export class UploadImageComponent implements OnInit {
 
   }
 
+  onUploadFinished(event) {
+    console.log(event);
+    //check if response msg contain extension then show alert('extension not allowed')
+  }
+
 }
 
