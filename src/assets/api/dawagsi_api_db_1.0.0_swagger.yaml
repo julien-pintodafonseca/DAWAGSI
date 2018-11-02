@@ -260,6 +260,12 @@ paths:
       parameters:
       - in: query
         type: string
+        name: path
+        description: chemin de l'image
+        required: true
+        x-example: "images/vMovie_af541x_001_tmp.jpg"
+      - in: query
+        type: string
         name: name
         description: nom de l'image
         required: true
@@ -332,6 +338,12 @@ paths:
         name: id
         description: id de l'image
         required: true
+      - in: query
+        type: string
+        name: path
+        description: chemin de l'image
+        required: false
+        x-example: "images/vMovie_af541x_001_tmp.jpg"
       - in: query
         type: string
         name: name
@@ -465,12 +477,16 @@ definitions:
     type: object
     required:
     - id
+    - path
     - name
     properties:
       id:
         type: integer
         format: int64
         description: ID de l'image
+      path:
+        type: string
+        description: Chemin de l'image
       name:
         type: string
         description: Nom de l'image
