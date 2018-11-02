@@ -7,8 +7,8 @@ function connect() {
 	$port = 3306;
 	
 	try {
-		$bdd = new PDO('mysql:host='.$server.':'.$port.';dbname='.$name.'',''.$user.'',''.$password.'');
-		return $bdd;
+		$db = new PDO('mysql:host='.$server.':'.$port.';dbname='.$name.'',''.$user.'',''.$password.'');
+		return $db;
 	}
 	catch (Exception $e) {
 		die('Erreur : ' . $e->getMessage());
@@ -16,9 +16,9 @@ function connect() {
 	}
 }
 
-$bdd = connect();
+$db = connect();
 
-$req = $bdd->prepare('
+$req = $db->prepare('
 CREATE IS NOT EXISTS TABLE `Annotation` (
   `idAnnotation` int(11) NOT NULL,
   `tag` varchar(255) NOT NULL,
@@ -28,7 +28,7 @@ CREATE IS NOT EXISTS TABLE `Annotation` (
 $req->execute();
 
 $select = 'SELECT * FROM Personne;';
-$result = $bdd->query($select);
+$result = $db->query($select);
 
 while ($data = $result->fetch())
 {
