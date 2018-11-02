@@ -17,7 +17,10 @@ tags:
   description: Base de données
 - name: list
   description: Liste d'images
+- name: image
+  description: Image
 
+# endpoints
 paths:
   /database:
     get:
@@ -55,14 +58,7 @@ paths:
           schema:
             type: array
             items:
-              type: object
-              required:
-              - status
-              properties:
-                status:
-                  type: string
-                  enum: ["Ok", "Unreachable"]
-                  example: "Ok"
+              $ref: '#/definitions/CheckStatus'
         default:
           description: an error has occurred
           schema:
@@ -85,31 +81,49 @@ paths:
         name: name
         description: nom de la liste
         required: true
+        x-example: "Livre EA8"
       - in: query
         type: string
         name: description
         description: description de la liste
-        required: true
+        required: false
+        x-example: "Images obtenus depuis le livre EA8, Section L."
       responses:
         200:
           description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/List'
+            example:
+              id: 3
+              name: "Livre EA8"
+              description: "Images obtenus depuis le livre EA8, Section L."
         default:
           description: an error has occurred
           schema:
             type: array
             items:
-              $ref: '#/definitions/DefaultResponse'
+              type: array
+              items:
+                $ref: '#/definitions/DefaultResponse'
   /list/selectAll:
     get:
       tags:
         - list
-      summary: Affiche toutes les listes
+      summary: Sélectionne toutes les listes
       operationId: selectLists
       produces:
       - application/json
       responses:
         200:
           description: successful operation
+          schema:
+            type: array
+            items:
+              type: array
+              items:
+                $ref: '#/definitions/Lists'
         default:
           description: an error has occurred
           schema:
@@ -120,7 +134,7 @@ paths:
     get:
       tags:
         - list
-      summary: Affiche une liste
+      summary: Sélectionne une liste
       operationId: selectList
       produces:
       - application/json
@@ -163,11 +177,13 @@ paths:
         name: name
         description: nom de la liste
         required: false
+        x-example: "Vidéo AF541X"
       - in: query
         type: string
         name: description
         description: description de la liste
         required: false
+        x-example: "Images obtenus depuis la séquence vidéo AF541X du 28/10/2018."
       - in: query
         type: array
         name: images
@@ -176,6 +192,7 @@ paths:
           format: int64
         description: ID des images appartenant à la liste
         required: false
+        #x-example: [16,17,18,19,22,23,24] #could be errored
       responses:
         200:
           description: successful operation
@@ -208,6 +225,176 @@ paths:
             type: array
             items:
               $ref: '#/definitions/DefaultResponse'
+              
+  /image:
+    get:
+      tags:
+        - image
+      summary: Vérifie si la table est opérationnelle
+      operationId: checkImage
+      produces:
+      - application/json
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CheckStatus'
+        default:
+          description: an error has occurred
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DefaultResponse'
+  /image/create:
+    post:
+      tags:
+        - image
+      summary: Crée une nouvelle image
+      operationId: createImage
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        type: string
+        name: name
+        description: nom de l'image
+        required: true
+        x-example: "Video_AF541X_Img_001"
+      - in: query
+        type: integer
+        format: int64
+        name: editeur
+        description: ID de l'éditeur lié à l'image
+        required: false
+        x-example: 4
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Image'
+            example:
+              id: 2
+              name: "Video_AF541X_Img_001"
+              editeur: 4
+        default:
+          description: an error has occurred
+          schema:
+            type: array
+            items:
+              type: array
+              items:
+                $ref: '#/definitions/DefaultResponse'
+  /image/{id}:
+    get:
+      tags:
+        - image
+      summary: Sélectionne une image
+      operationId: selectImage
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de l'image
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Image'
+        default:
+          description: an error has occurred
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DefaultResponse'
+    put:
+      tags:
+        - image
+      summary: Met à jour une image
+      operationId: updateImage
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de l'image
+        required: true
+      - in: query
+        type: string
+        name: name
+        description: nom de l'image
+        required: false
+        x-example: "Video_AF541X_Img_001"
+      - in: query
+        type: integer
+        format: int64
+        name: editeur
+        description: ID de l'éditeur lié à l'image
+        required: false
+        x-example: 9
+      - in: query
+        type: array
+        items:
+          type: integer
+          format: int64
+        name: annotations
+        description: ID des annotations liées à l'image
+        required: false
+        #x-example: [0,1,2,3,4] #could be errored
+      - in: query
+        type: array
+        items:
+          type: integer
+          format: int64
+        name: relations
+        description: ID des relations liées à l'image
+        required: false
+        #x-example: [0,2] #could be errored
+      responses:
+        200:
+          description: successful operation
+        default:
+          description: an error has occurred
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DefaultResponse'
+    delete:
+      tags:
+        - image
+      summary: Supprime une image
+      operationId: deleteImage
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de l'image
+        required: true
+      responses:
+        200:
+          description: successful operation
+        default:
+          description: an error has occurred
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DefaultResponse'
     
 
 # Definitions of common objects
@@ -220,7 +407,9 @@ definitions:
       status:
         type: string
         enum: ["Ok", "Unreachable"]
-        example: "Ok"
+    example:
+      status: "Ok"
+      
   List:
     type: object
     required:
@@ -233,22 +422,92 @@ definitions:
         type: integer
         format: int64
         description: ID de la liste
-        example: 0
       name:
         type: string
         description: Nom de la liste
-        example: "Vidéo AF541X"
       description:
         type: string
         description: Description de la liste
-        example: "Images obtenus depuis la séquence vidéo AF541X du 28/10/2018."
       images:
         type: array
         items:
           type: integer
           format: int64
         description: ID des images appartenant à la liste
-        example: [16,17,18,19,22,23,24]
+    example:
+      id: 0
+      name: "Vidéo AF541X"
+      description: "Images obtenus depuis la séquence vidéo AF541X du 28/10/2018."
+      images: [16,17,18,19,22,23,24]
+  Lists:
+    type: array
+    items:
+      $ref: '#/definitions/List'
+    example:
+      - id: 0
+        name: "Vidéo AF541X"
+        description: "Images obtenus depuis la séquence vidéo AF541X du 28/10/2018."
+        images: [16,17,18,19,22,23,24]
+      - id: 1
+        name: "Livre UH3"
+        description: "Images du livre UH3, Section F."
+        images: [25,26,27,28,29,30,31,33,40,41]
+      - id: 2
+        name: "Livre JD4"
+        description: "Images du livre JD4, Section H."
+        images: [34,35,36,37,38,39]
+      - id: 3
+        name: "Livre EA8"
+        description: "Images obtenus depuis le livre EA8, Section L."
+        images: []
+        
+  Image:
+    type: object
+    required:
+    - id
+    - name
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: ID de l'image
+      name:
+        type: string
+        description: Nom de l'image
+      editeur:
+        type: integer
+        format: int64
+        description: ID de l'éditeur lié à l'image
+      annotations:
+        type: array
+        items:
+          type: integer
+          format: int64
+        description: ID des annotations liées à l'image
+      relations:
+        type: array
+        items:
+          type: integer
+          format: int64
+        description: ID des relations liées à l'image
+    example:
+      id: 0
+      name: "Video_AF541X_Img_001"
+      editeur: 9
+      annotations: [0,1,2,3,4]
+      relations: [0,2]
+      
+  CheckStatus:
+    type: object
+    required:
+    - status
+    properties:
+      status:
+        type: string
+        enum: ["Ok", "Unreachable"]
+    example:
+      status: "Ok"
+        
   DefaultResponse:
     type: object
     required:
@@ -257,10 +516,11 @@ definitions:
     properties:
       code:
         type: string
-        example: "509"
       message:
         type: string
-        example: "unexpected error"
+    example:
+      code: "509"
+      message: "unexpected error"
 
 # Added by API Auto Mocking Plugin
 host: virtserver.swaggerhub.com
