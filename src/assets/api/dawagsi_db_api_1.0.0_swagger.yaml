@@ -273,7 +273,7 @@ paths:
       - in: query
         type: integer
         format: int64
-        name: editeur
+        name: editor
         description: ID de l'éditeur lié à l'image
         required: false
         x-example: 4
@@ -287,7 +287,7 @@ paths:
             example:
               id: 2
               name: "Video_AF541X_Img_001"
-              editeur: 4
+              editor: 4
         default:
           description: an error has occurred
           schema:
@@ -353,7 +353,7 @@ paths:
       - in: query
         type: integer
         format: int64
-        name: editeur
+        name: editor
         description: ID de l'éditeur lié à l'image
         required: false
         x-example: 9
@@ -427,8 +427,6 @@ definitions:
     required:
     - id
     - name
-    - description
-    - images
     properties:
       id:
         type: integer
@@ -490,7 +488,7 @@ definitions:
       name:
         type: string
         description: Nom de l'image
-      editeur:
+      editor:
         type: integer
         format: int64
         description: ID de l'éditeur lié à l'image
@@ -509,7 +507,7 @@ definitions:
     example:
       id: 0
       name: "Video_AF541X_Img_001"
-      editeur: 9
+      editor: 9
       annotations: [0,1,2,3,4]
       relations: [0,2]
       
@@ -540,6 +538,6 @@ definitions:
 
 # Added by API Auto Mocking Plugin
 host: virtserver.swaggerhub.com
-basePath: /skyde/dawagsi_api_db/1.0.0
+basePath: /skyde/dawagsi_db_api/1.0.0
 schemes:
  - https
