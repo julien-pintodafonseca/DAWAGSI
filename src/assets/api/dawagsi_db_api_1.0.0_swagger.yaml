@@ -19,6 +19,12 @@ tags:
   description: Liste d'images
 - name: image
   description: Image
+- name: editor
+  description: Editeur
+- name: annotation
+  description: Annotation
+- name: relation
+  description: Relation
 
 # endpoints
 paths:
@@ -43,7 +49,7 @@ paths:
             type: array
             items:
               $ref: '#/definitions/DefaultResponse'
-
+              
   /list:
     get:
       tags:
@@ -407,6 +413,483 @@ paths:
             type: array
             items:
               $ref: '#/definitions/DefaultResponse'
+              
+  /editor:
+    get:
+      tags:
+        - editor
+      summary: Vérifie si la table est opérationnelle
+      operationId: checkEditor
+      produces:
+      - application/json
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CheckStatus'
+        default:
+          description: an error has occurred
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DefaultResponse'
+  /editor/create:
+    post:
+      tags:
+        - editor
+      summary: Crée un nouvel éditeur
+      operationId: createEditor
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        type: string
+        name: name
+        description: nom de l'éditeur
+        required: true
+        x-example: "John Doe"
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Editor'
+            example:
+              id: 0
+              name: "John Doe"
+        default:
+          description: an error has occurred
+          schema:
+            type: array
+            items:
+              type: array
+              items:
+                $ref: '#/definitions/DefaultResponse'
+  /editor/selectAll:
+    get:
+      tags:
+        - editor
+      summary: Sélectionne tous les éditeurs
+      operationId: selectEditors
+      produces:
+      - application/json
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              type: array
+              items:
+                $ref: '#/definitions/Editors'
+        default:
+          description: an error has occurred
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DefaultResponse'
+  /editor/{id}:
+    get:
+      tags:
+        - editor
+      summary: Sélectionne un éditeur
+      operationId: selectEditor
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de l'éditeur
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Editor'
+        default:
+          description: an error has occurred
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DefaultResponse'
+    put:
+      tags:
+        - editor
+      summary: Met à jour un éditeur
+      operationId: updateEditor
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de l'éditeur
+        required: true
+      - in: query
+        type: string
+        name: name
+        description: nom de l'éditeur
+        required: false
+        x-example: "John Doe"
+      responses:
+        200:
+          description: successful operation
+        default:
+          description: an error has occurred
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DefaultResponse'
+    delete:
+      tags:
+        - editor
+      summary: Supprime un éditeur
+      operationId: deleteEditor
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de l'éditeur
+        required: true
+      responses:
+        200:
+          description: successful operation
+        default:
+          description: an error has occurred
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DefaultResponse'
+              
+  /annotation:
+    get:
+      tags:
+        - annotation
+      summary: Vérifie si la table est opérationnelle
+      operationId: checkAnnotation
+      produces:
+      - application/json
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CheckStatus'
+        default:
+          description: an error has occurred
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DefaultResponse'
+  /annotation/create:
+    post:
+      tags:
+        - annotation
+      summary: Crée une nouvelle annotation
+      operationId: createAnnotation
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        type: string
+        name: tag
+        description: tag de l'annotation
+        required: true
+        x-example: "arbre"
+      - in: query
+        type: string
+        name: position
+        description: données de position de l'annotation
+        required: true
+        x-example: "90,90,120,120"
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Annotation'
+            example:
+              id: 0
+              tag: "arbre"
+              position: "90,90,120,120"
+        default:
+          description: an error has occurred
+          schema:
+            type: array
+            items:
+              type: array
+              items:
+                $ref: '#/definitions/DefaultResponse'
+  /annotation/{id}:
+    get:
+      tags:
+        - annotation
+      summary: Sélectionne une annotation
+      operationId: selectAnnotation
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de l'annotation
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Annotation'
+        default:
+          description: an error has occurred
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DefaultResponse'
+    put:
+      tags:
+        - annotation
+      summary: Met à jour une annotation
+      operationId: updateAnnotation
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de l'annotation
+        required: true
+      - in: query
+        type: string
+        name: tag
+        description: tag de l'annotation
+        required: false
+        x-example: "arbre"
+      - in: query
+        type: string
+        name: position
+        description: données de position de l'annotation
+        required: false
+        x-example: "90,90,120,120"
+      responses:
+        200:
+          description: successful operation
+        default:
+          description: an error has occurred
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DefaultResponse'
+    delete:
+      tags:
+        - annotation
+      summary: Supprime une annotation
+      operationId: deleteAnnotation
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de l'annotation
+        required: true
+      responses:
+        200:
+          description: successful operation
+        default:
+          description: an error has occurred
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DefaultResponse'
+              
+  /relation:
+    get:
+      tags:
+        - relation
+      summary: Vérifie si la table est opérationnelle
+      operationId: checkRelation
+      produces:
+      - application/json
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CheckStatus'
+        default:
+          description: an error has occurred
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DefaultResponse'
+  /relation/create:
+    post:
+      tags:
+        - relation
+      summary: Crée une nouvelle relation
+      operationId: createRelation
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        type: string
+        name: predicate
+        description: prédicat de relation
+        required: true
+        x-example: "porter"
+      - in: query
+        type: integer
+        format: int64
+        name: annotation1
+        description: ID de la première annotation de la relation
+        required: true
+        x-example: 1
+      - in: query
+        type: integer
+        format: int64
+        name: annotation2
+        description: ID de la seconde annotation de la relation
+        required: true
+        x-example: 3
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Relation'
+            example:
+              id: 0
+              predicate: "porter"
+              annotation1: 1
+              annotation2: 3
+        default:
+          description: an error has occurred
+          schema:
+            type: array
+            items:
+              type: array
+              items:
+                $ref: '#/definitions/DefaultResponse'
+  /relation/{id}:
+    get:
+      tags:
+        - relation
+      summary: Sélectionne une relation
+      operationId: selectRelation
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de la relation
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Relation'
+        default:
+          description: an error has occurred
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DefaultResponse'
+    put:
+      tags:
+        - relation
+      summary: Met à jour une relation
+      operationId: updateRelation
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de la relation
+        required: true
+      - in: query
+        type: string
+        name: predicate
+        description: prédicat de relation
+        required: false
+        x-example: "porter"
+      - in: query
+        type: integer
+        format: int64
+        name: annotation1
+        description: ID de la première annotation de la relation
+        required: false
+        x-example: 1
+      - in: query
+        type: integer
+        format: int64
+        name: annotation2
+        description: ID de la seconde annotation de la relation
+        required: false
+        x-example: 3
+      responses:
+        200:
+          description: successful operation
+        default:
+          description: an error has occurred
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DefaultResponse'
+    delete:
+      tags:
+        - relation
+      summary: Supprime une relation
+      operationId: deleteRelation
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de la relation
+        required: true
+      responses:
+        200:
+          description: successful operation
+        default:
+          description: an error has occurred
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DefaultResponse'
     
 
 # Definitions of common objects
@@ -510,6 +993,91 @@ definitions:
       editor: 9
       annotations: [0,1,2,3,4]
       relations: [0,2]
+        
+  Editor:
+    type: array
+    items:
+      $ref: '#/definitions/Editor'
+    example:
+      id: 0
+      name: "John Doe"
+  Editors:
+    type: object
+    required:
+    - id
+    - name
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: ID de l'éditeur
+      name:
+        type: string
+        description: Nom de l'éditeur
+    example:
+      - id: 0
+        name: "John Doe"
+      - id: 1
+        name: "Henry Poirier"
+      - id: 2
+        name: "Katie Hoods"
+      - id: 3
+        name: "Emma Rogers"
+      - id: 4
+        name: "Diane Faubert"
+      - id: 5
+        name: "Kiera Porter"
+        
+  Annotation:
+    type: object
+    required:
+    - id
+    - tag
+    - position
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: ID de l'annotation
+      tag:
+        type: string
+        description: Tag de l'annotation
+      position:
+        type: string
+        description: Données de position de l'annotation
+    example:
+      id: 0
+      tag: "arbre"
+      position: "90,90,120,120"
+        
+  Relation:
+    type: object
+    required:
+    - id
+    - predicate
+    - annotation1
+    - annotation2
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: ID de la relation
+      predicate:
+        type: string
+        description: Prédicat de relation
+      annotation1:
+        type: integer
+        format: int64
+        description: ID de la première annotation de la relation
+      annotation2:
+        type: integer
+        format: int64
+        description: ID de la seconde annotation de la relation
+    example:
+      id: 0
+      predicate: "porter"
+      annotation1: 1
+      annotation2: 3
       
   CheckStatus:
     type: object
