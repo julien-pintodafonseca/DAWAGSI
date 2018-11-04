@@ -8,6 +8,52 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $app = new Slim\App();
 
+/* REPAIR DATABASE */
+function repair($DB) {
+	$DB->exec("SET CHARACTER SET utf8");
+	$req = $DB->prepare('
+		CREATE TABLE IF NOT EXISTS `List` (
+		  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT \'ID de la liste\',
+		  `name` varchar(100) NOT NULL COMMENT \'Nom de la liste\',
+		  `description` varchar(255) NOT NULL COMMENT \'Description de la liste\',
+		  `images` text NOT NULL COMMENT \'ID des images appartenant à la liste\',
+		  PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+		
+		CREATE TABLE IF NOT EXISTS `Image` (
+		  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT \'ID de l\'\'image\',
+		  `path` varchar(255) NOT NULL COMMENT \'Chemin de l\'\'image\',
+		  `name` varchar(100) NOT NULL COMMENT \'Nom de l\'\'image\',
+		  `editeur` int(11) NOT NULL COMMENT \'ID de l\'\'éditeur lié à l\'\'image\',
+		  `annotations` text NOT NULL COMMENT \'ID des annotations liées à l\'\'image\',
+		  `relations` text NOT NULL COMMENT \'ID des relations liées à l\'\'image\',
+		  PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+		
+		CREATE TABLE IF NOT EXISTS `Editor` (
+		  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT \'ID de l\'\'éditeur\',
+		  `name` varchar(100) NOT NULL COMMENT \'Nom de l\'\'éditeur\',
+		  PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+		
+		CREATE TABLE IF NOT EXISTS `Annotation` (
+		  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT \'ID de l\'\'annotation\',
+		  `tag` varchar(100) NOT NULL COMMENT \'Tag de l\'\'annotation\',
+		  `position` text NOT NULL COMMENT \'Données de position de l\'\'annotation\',
+		  PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+		
+		CREATE TABLE IF NOT EXISTS `Relation` (
+		  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT \'ID de la relation\',
+		  `predicate` varchar(100) NOT NULL COMMENT \'Prédicat de relation\',
+		  `annotation1` int(11) NOT NULL COMMENT \'ID de la première annotation de la relation\',
+		  `annotation2` int(11) NOT NULL COMMENT \'ID de la seconde annotation de la relation\',
+		  PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+	');
+	$req->execute();
+}
+
 /* $DB PDO INSTANCE */
 function connect() {
 	$password = '6,T3PKiaWsvB';
@@ -18,6 +64,7 @@ function connect() {
 	
 	try {
 		$DB = new PDO('mysql:host='.$server.':'.$port.';dbname='.$name.'',''.$user.'',''.$password.'');
+		repair($DB);
 		return $DB;
 	}
 	catch (Exception $e) {
