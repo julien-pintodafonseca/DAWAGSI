@@ -82,14 +82,14 @@ $app->GET('/list', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->POST('/list/create', function($request, $response, $args) {
-            
-            $queryParams = $request->getQueryParams();
-            $name = $queryParams['name'];    $description = $queryParams['description'];    
-            
-            
-            $response->write('How about implementing createList as a POST method ?');
-            return $response;
-            });
+
+	$queryParams = $request->getQueryParams();
+	$name = $queryParams['name'];    $description = $queryParams['description'];    
+
+
+	$response->write('How about implementing createList as a POST method ?');
+	return $response;
+});
 
 
 /**
@@ -99,13 +99,13 @@ $app->POST('/list/create', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/list/selectAll', function($request, $response, $args) {
-            
-            
-            
-            
-            $response->write('How about implementing selectLists as a GET method ?');
-            return $response;
-            });
+
+
+
+
+	$response->write('How about implementing selectLists as a GET method ?');
+	return $response;
+});
 
 
 /**
@@ -115,13 +115,13 @@ $app->GET('/list/selectAll', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/list/{id}', function($request, $response, $args) {
-            
-            
-            
-            
-            $response->write('How about implementing selectList as a GET method ?');
-            return $response;
-            });
+
+
+
+
+	$response->write('How about implementing selectList as a GET method ?');
+	return $response;
+});
 
 
 /**
@@ -131,14 +131,14 @@ $app->GET('/list/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->PUT('/list/{id}', function($request, $response, $args) {
-            
-            $queryParams = $request->getQueryParams();
-            $name = $queryParams['name'];    $description = $queryParams['description'];    $images = $queryParams['images'];    
-            
-            
-            $response->write('How about implementing updateList as a PUT method ?');
-            return $response;
-            });
+
+	$queryParams = $request->getQueryParams();
+	$name = $queryParams['name'];    $description = $queryParams['description'];    $images = $queryParams['images'];    
+
+
+	$response->write('How about implementing updateList as a PUT method ?');
+	return $response;
+});
 
 
 /**
@@ -148,13 +148,13 @@ $app->PUT('/list/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->DELETE('/list/{id}', function($request, $response, $args) {
-            
-            
-            
-            
-            $response->write('How about implementing deleteList as a DELETE method ?');
-            return $response;
-            });
+
+
+
+
+	$response->write('How about implementing deleteList as a DELETE method ?');
+	return $response;
+});
 
 
 /**
@@ -191,14 +191,14 @@ $app->GET('/image', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->POST('/image/create', function($request, $response, $args) {
-            
-            $queryParams = $request->getQueryParams();
-            $path = $queryParams['path'];    $name = $queryParams['name'];    $editor = $queryParams['editor'];    
-            
-            
-            $response->write('How about implementing createImage as a POST method ?');
-            return $response;
-            });
+
+	$queryParams = $request->getQueryParams();
+	$path = $queryParams['path'];    $name = $queryParams['name'];    $editor = $queryParams['editor'];    
+
+
+	$response->write('How about implementing createImage as a POST method ?');
+	return $response;
+});
 
 
 /**
@@ -208,13 +208,13 @@ $app->POST('/image/create', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/image/{id}', function($request, $response, $args) {
-            
-            
-            
-            
-            $response->write('How about implementing selectImage as a GET method ?');
-            return $response;
-            });
+
+
+
+
+	$response->write('How about implementing selectImage as a GET method ?');
+	return $response;
+});
 
 
 /**
@@ -224,14 +224,14 @@ $app->GET('/image/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->PUT('/image/{id}', function($request, $response, $args) {
-            
-            $queryParams = $request->getQueryParams();
-            $path = $queryParams['path'];    $name = $queryParams['name'];    $editor = $queryParams['editor'];    $annotations = $queryParams['annotations'];    $relations = $queryParams['relations'];    
-            
-            
-            $response->write('How about implementing updateImage as a PUT method ?');
-            return $response;
-            });
+
+	$queryParams = $request->getQueryParams();
+	$path = $queryParams['path'];    $name = $queryParams['name'];    $editor = $queryParams['editor'];    $annotations = $queryParams['annotations'];    $relations = $queryParams['relations'];    
+
+
+	$response->write('How about implementing updateImage as a PUT method ?');
+	return $response;
+});
 
 
 /**
@@ -241,13 +241,13 @@ $app->PUT('/image/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->DELETE('/image/{id}', function($request, $response, $args) {
-            
-            
-            
-            
-            $response->write('How about implementing deleteImage as a DELETE method ?');
-            return $response;
-            });
+
+
+
+
+	$response->write('How about implementing deleteImage as a DELETE method ?');
+	return $response;
+});
 
 
 /**
@@ -284,14 +284,14 @@ $app->GET('/editor', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->POST('/editor/create', function($request, $response, $args) {
-            
-            $queryParams = $request->getQueryParams();
-            $name = $queryParams['name'];    
-            
-            
-            $response->write('How about implementing createEditor as a POST method ?');
-            return $response;
-            });
+
+	$queryParams = $request->getQueryParams();
+	$name = $queryParams['name'];    
+
+
+	$response->write('How about implementing createEditor as a POST method ?');
+	return $response;
+});
 
 
 /**
@@ -301,13 +301,13 @@ $app->POST('/editor/create', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/editor/selectAll', function($request, $response, $args) {
-            
-            
-            
-            
-            $response->write('How about implementing selectEditors as a GET method ?');
-            return $response;
-            });
+
+
+
+
+	$response->write('How about implementing selectEditors as a GET method ?');
+	return $response;
+});
 
 
 /**
@@ -317,13 +317,13 @@ $app->GET('/editor/selectAll', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/editor/{id}', function($request, $response, $args) {
-            
-            
-            
-            
-            $response->write('How about implementing selectEditor as a GET method ?');
-            return $response;
-            });
+
+
+
+
+	$response->write('How about implementing selectEditor as a GET method ?');
+	return $response;
+});
 
 
 /**
@@ -333,14 +333,14 @@ $app->GET('/editor/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->PUT('/editor/{id}', function($request, $response, $args) {
-            
-            $queryParams = $request->getQueryParams();
-            $name = $queryParams['name'];    
-            
-            
-            $response->write('How about implementing updateEditor as a PUT method ?');
-            return $response;
-            });
+
+	$queryParams = $request->getQueryParams();
+	$name = $queryParams['name'];    
+
+
+	$response->write('How about implementing updateEditor as a PUT method ?');
+	return $response;
+});
 
 
 /**
@@ -350,13 +350,13 @@ $app->PUT('/editor/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->DELETE('/editor/{id}', function($request, $response, $args) {
-            
-            
-            
-            
-            $response->write('How about implementing deleteEditor as a DELETE method ?');
-            return $response;
-            });
+
+
+
+
+	$response->write('How about implementing deleteEditor as a DELETE method ?');
+	return $response;
+});
 
 
 /**
@@ -393,14 +393,14 @@ $app->GET('/annotation', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->POST('/annotation/create', function($request, $response, $args) {
-            
-            $queryParams = $request->getQueryParams();
-            $tag = $queryParams['tag'];    $position = $queryParams['position'];    
-            
-            
-            $response->write('How about implementing createAnnotation as a POST method ?');
-            return $response;
-            });
+
+	$queryParams = $request->getQueryParams();
+	$tag = $queryParams['tag'];    $position = $queryParams['position'];    
+
+
+	$response->write('How about implementing createAnnotation as a POST method ?');
+	return $response;
+});
 
 
 /**
@@ -410,13 +410,13 @@ $app->POST('/annotation/create', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/annotation/{id}', function($request, $response, $args) {
-            
-            
-            
-            
-            $response->write('How about implementing selectAnnotation as a GET method ?');
-            return $response;
-            });
+
+
+
+
+	$response->write('How about implementing selectAnnotation as a GET method ?');
+	return $response;
+});
 
 
 /**
@@ -426,14 +426,14 @@ $app->GET('/annotation/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->PUT('/annotation/{id}', function($request, $response, $args) {
-            
-            $queryParams = $request->getQueryParams();
-            $tag = $queryParams['tag'];    $position = $queryParams['position'];    
-            
-            
-            $response->write('How about implementing updateAnnotation as a PUT method ?');
-            return $response;
-            });
+
+	$queryParams = $request->getQueryParams();
+	$tag = $queryParams['tag'];    $position = $queryParams['position'];    
+
+
+	$response->write('How about implementing updateAnnotation as a PUT method ?');
+	return $response;
+});
 
 
 /**
@@ -443,13 +443,13 @@ $app->PUT('/annotation/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->DELETE('/annotation/{id}', function($request, $response, $args) {
-            
-            
-            
-            
-            $response->write('How about implementing deleteAnnotation as a DELETE method ?');
-            return $response;
-            });
+
+
+
+
+	$response->write('How about implementing deleteAnnotation as a DELETE method ?');
+	return $response;
+});
 
 
 /**
@@ -486,14 +486,14 @@ $app->GET('/relation', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->POST('/relation/create', function($request, $response, $args) {
-            
-            $queryParams = $request->getQueryParams();
-            $predicate = $queryParams['predicate'];    $annotation1 = $queryParams['annotation1'];    $annotation2 = $queryParams['annotation2'];    
-            
-            
-            $response->write('How about implementing createRelation as a POST method ?');
-            return $response;
-            });
+
+	$queryParams = $request->getQueryParams();
+	$predicate = $queryParams['predicate'];    $annotation1 = $queryParams['annotation1'];    $annotation2 = $queryParams['annotation2'];    
+
+
+	$response->write('How about implementing createRelation as a POST method ?');
+	return $response;
+});
 
 
 /**
@@ -503,13 +503,13 @@ $app->POST('/relation/create', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/relation/{id}', function($request, $response, $args) {
-            
-            
-            
-            
-            $response->write('How about implementing selectRelation as a GET method ?');
-            return $response;
-            });
+
+
+
+
+	$response->write('How about implementing selectRelation as a GET method ?');
+	return $response;
+});
 
 
 /**
@@ -519,14 +519,14 @@ $app->GET('/relation/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->PUT('/relation/{id}', function($request, $response, $args) {
-            
-            $queryParams = $request->getQueryParams();
-            $predicate = $queryParams['predicate'];    $annotation1 = $queryParams['annotation1'];    $annotation2 = $queryParams['annotation2'];    
-            
-            
-            $response->write('How about implementing updateRelation as a PUT method ?');
-            return $response;
-            });
+
+	$queryParams = $request->getQueryParams();
+	$predicate = $queryParams['predicate'];    $annotation1 = $queryParams['annotation1'];    $annotation2 = $queryParams['annotation2'];    
+
+
+	$response->write('How about implementing updateRelation as a PUT method ?');
+	return $response;
+});
 
 
 /**
@@ -536,14 +536,14 @@ $app->PUT('/relation/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->DELETE('/relation/{id}', function($request, $response, $args) {
-            
-            
-            
-            
-            $response->write('How about implementing deleteRelation as a DELETE method ?');
-            return $response;
-            });
 
 
-//run app
+
+
+	$response->write('How about implementing deleteRelation as a DELETE method ?');
+	return $response;
+});
+
+
+/* RUN APP */
 $app->run();
