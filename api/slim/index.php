@@ -8,6 +8,45 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $app = new Slim\App();
 
+/* $DB PDO INSTANCE */
+function connect() {
+	$password = '6,T3PKiaWsvB';
+	$user = 'skydefrc_ptut';
+	$name = 'skydefrc_dawagsi';
+	$server = 'localhost';
+	$port = 3306;
+	
+	try {
+		$DB = new PDO('mysql:host='.$server.':'.$port.';dbname='.$name.'',''.$user.'',''.$password.'');
+		return $DB;
+	}
+	catch (Exception $e) {
+		//print_r('Erreur : ' . $e->getMessage());
+		return null;
+	}
+}
+
+
+/**
+ * GET connectDB
+ * Summary: Vérifie la connexion à la base de données
+ * Notes: 
+ * Output-Formats: [application/json]
+ */
+$app->GET('/database', function($request, $response, $args) {
+	$DB = connect();
+	
+	if ($DB) {
+		$data['status'] = "Ok";
+	} else {
+		$data['status'] = "Unreachable";		
+	}
+	
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
+});
+
 
 /**
  * GET checkAnnotation
@@ -87,22 +126,6 @@ $app->DELETE('/annotation/{id}', function($request, $response, $args) {
             
             
             $response->write('How about implementing deleteAnnotation as a DELETE method ?');
-            return $response;
-            });
-
-
-/**
- * GET connectDB
- * Summary: Vérifie la connexion à la base de données
- * Notes: 
- * Output-Formats: [application/json]
- */
-$app->GET('/database', function($request, $response, $args) {
-            
-            
-            
-            
-            $response->write('How about implementing connectDB as a GET method ?');
             return $response;
             });
 
