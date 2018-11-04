@@ -39,7 +39,7 @@ $app->GET('/database', function($request, $response, $args) {
 	if ($DB) {
 		$data['status'] = "Ok";
 	} else {
-		$data['status'] = "Unreachable";		
+		$data['status'] = "Unreachable";
 	}
 	
 	return $response->withStatus(200)
@@ -55,6 +55,19 @@ $app->GET('/database', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/list', function($request, $response, $args) {
+	$DB = connect();
+	
+	$req = "
+		SHOW TABLES LIKE 'List';
+	";
+	
+	$result = $DB->query($req)->rowCount();
+	
+	if ($result == 1) {
+		$data['status'] = "Ok";	
+	} else {
+		$data['status'] = "Unreachable";
+	}
 	
 	return $response->withStatus(200)
 	->withHeader('Content-Type', 'application/json')
@@ -151,13 +164,24 @@ $app->DELETE('/list/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/image', function($request, $response, $args) {
-            
-            
-            
-            
-            $response->write('How about implementing checkImage as a GET method ?');
-            return $response;
-            });
+	$DB = connect();
+	
+	$req = "
+		SHOW TABLES LIKE 'Image';
+	";
+	
+	$result = $DB->query($req)->rowCount();
+	
+	if ($result == 1) {
+		$data['status'] = "Ok";	
+	} else {
+		$data['status'] = "Unreachable";
+	}
+	
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
+});
 
 
 /**
@@ -233,13 +257,24 @@ $app->DELETE('/image/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/editor', function($request, $response, $args) {
-            
-            
-            
-            
-            $response->write('How about implementing checkEditor as a GET method ?');
-            return $response;
-            });
+	$DB = connect();
+	
+	$req = "
+		SHOW TABLES LIKE 'Editor';
+	";
+	
+	$result = $DB->query($req)->rowCount();
+	
+	if ($result == 1) {
+		$data['status'] = "Ok";	
+	} else {
+		$data['status'] = "Unreachable";
+	}
+	
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
+});
 
 
 /**
@@ -331,13 +366,24 @@ $app->DELETE('/editor/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/annotation', function($request, $response, $args) {
-            
-            
-            
-            
-            $response->write('How about implementing checkAnnotation as a GET method ?');
-            return $response;
-            });
+	$DB = connect();
+	
+	$req = "
+		SHOW TABLES LIKE 'Annotation';
+	";
+	
+	$result = $DB->query($req)->rowCount();
+	
+	if ($result == 1) {
+		$data['status'] = "Ok";	
+	} else {
+		$data['status'] = "Unreachable";
+	}
+	
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
+});
 
 
 /**
@@ -413,13 +459,24 @@ $app->DELETE('/annotation/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/relation', function($request, $response, $args) {
-            
-            
-            
-            
-            $response->write('How about implementing checkRelation as a GET method ?');
-            return $response;
-            });
+	$DB = connect();
+	
+	$req = "
+		SHOW TABLES LIKE 'Relation';
+	";
+	
+	$result = $DB->query($req)->rowCount();
+	
+	if ($result == 1) {
+		$data['status'] = "Ok";	
+	} else {
+		$data['status'] = "Unreachable";
+	}
+	
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
+});
 
 
 /**
