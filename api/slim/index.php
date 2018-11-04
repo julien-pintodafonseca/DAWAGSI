@@ -21,7 +21,7 @@ function connect() {
 		return $DB;
 	}
 	catch (Exception $e) {
-		//print_r('Erreur : ' . $e->getMessage());
+		//print_r('Exception : ' . $e->getMessage());
 		return null;
 	}
 }
@@ -49,83 +49,179 @@ $app->GET('/database', function($request, $response, $args) {
 
 
 /**
- * GET checkAnnotation
+ * GET checkList
  * Summary: Vérifie si la table est opérationnelle
  * Notes: 
  * Output-Formats: [application/json]
  */
-$app->GET('/annotation', function($request, $response, $args) {
-            
-            
-            
-            
-            $response->write('How about implementing checkAnnotation as a GET method ?');
-            return $response;
-            });
+$app->GET('/list', function($request, $response, $args) {
+	
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
+});
 
 
 /**
- * POST createAnnotation
- * Summary: Crée une nouvelle annotation
+ * POST createList
+ * Summary: Crée une nouvelle liste
  * Notes: 
  * Output-Formats: [application/json]
  */
-$app->POST('/annotation/create', function($request, $response, $args) {
+$app->POST('/list/create', function($request, $response, $args) {
             
             $queryParams = $request->getQueryParams();
-            $tag = $queryParams['tag'];    $position = $queryParams['position'];    
+            $name = $queryParams['name'];    $description = $queryParams['description'];    
             
             
-            $response->write('How about implementing createAnnotation as a POST method ?');
+            $response->write('How about implementing createList as a POST method ?');
             return $response;
             });
 
 
 /**
- * GET selectAnnotation
- * Summary: Sélectionne une annotation
+ * GET selectLists
+ * Summary: Sélectionne toutes les listes
  * Notes: 
  * Output-Formats: [application/json]
  */
-$app->GET('/annotation/{id}', function($request, $response, $args) {
+$app->GET('/list/selectAll', function($request, $response, $args) {
             
             
             
             
-            $response->write('How about implementing selectAnnotation as a GET method ?');
+            $response->write('How about implementing selectLists as a GET method ?');
             return $response;
             });
 
 
 /**
- * PUT updateAnnotation
- * Summary: Met à jour une annotation
+ * GET selectList
+ * Summary: Sélectionne une liste
  * Notes: 
  * Output-Formats: [application/json]
  */
-$app->PUT('/annotation/{id}', function($request, $response, $args) {
+$app->GET('/list/{id}', function($request, $response, $args) {
+            
+            
+            
+            
+            $response->write('How about implementing selectList as a GET method ?');
+            return $response;
+            });
+
+
+/**
+ * PUT updateList
+ * Summary: Met à jour une liste
+ * Notes: 
+ * Output-Formats: [application/json]
+ */
+$app->PUT('/list/{id}', function($request, $response, $args) {
             
             $queryParams = $request->getQueryParams();
-            $tag = $queryParams['tag'];    $position = $queryParams['position'];    
+            $name = $queryParams['name'];    $description = $queryParams['description'];    $images = $queryParams['images'];    
             
             
-            $response->write('How about implementing updateAnnotation as a PUT method ?');
+            $response->write('How about implementing updateList as a PUT method ?');
             return $response;
             });
 
 
 /**
- * DELETE deleteAnnotation
- * Summary: Supprime une annotation
+ * DELETE deleteList
+ * Summary: Supprime une liste
  * Notes: 
  * Output-Formats: [application/json]
  */
-$app->DELETE('/annotation/{id}', function($request, $response, $args) {
+$app->DELETE('/list/{id}', function($request, $response, $args) {
             
             
             
             
-            $response->write('How about implementing deleteAnnotation as a DELETE method ?');
+            $response->write('How about implementing deleteList as a DELETE method ?');
+            return $response;
+            });
+
+
+/**
+ * GET checkImage
+ * Summary: Vérifie si la table est opérationnelle
+ * Notes: 
+ * Output-Formats: [application/json]
+ */
+$app->GET('/image', function($request, $response, $args) {
+            
+            
+            
+            
+            $response->write('How about implementing checkImage as a GET method ?');
+            return $response;
+            });
+
+
+/**
+ * POST createImage
+ * Summary: Crée une nouvelle image
+ * Notes: 
+ * Output-Formats: [application/json]
+ */
+$app->POST('/image/create', function($request, $response, $args) {
+            
+            $queryParams = $request->getQueryParams();
+            $path = $queryParams['path'];    $name = $queryParams['name'];    $editor = $queryParams['editor'];    
+            
+            
+            $response->write('How about implementing createImage as a POST method ?');
+            return $response;
+            });
+
+
+/**
+ * GET selectImage
+ * Summary: Sélectionne une image
+ * Notes: 
+ * Output-Formats: [application/json]
+ */
+$app->GET('/image/{id}', function($request, $response, $args) {
+            
+            
+            
+            
+            $response->write('How about implementing selectImage as a GET method ?');
+            return $response;
+            });
+
+
+/**
+ * PUT updateImage
+ * Summary: Met à jour une image
+ * Notes: 
+ * Output-Formats: [application/json]
+ */
+$app->PUT('/image/{id}', function($request, $response, $args) {
+            
+            $queryParams = $request->getQueryParams();
+            $path = $queryParams['path'];    $name = $queryParams['name'];    $editor = $queryParams['editor'];    $annotations = $queryParams['annotations'];    $relations = $queryParams['relations'];    
+            
+            
+            $response->write('How about implementing updateImage as a PUT method ?');
+            return $response;
+            });
+
+
+/**
+ * DELETE deleteImage
+ * Summary: Supprime une image
+ * Notes: 
+ * Output-Formats: [application/json]
+ */
+$app->DELETE('/image/{id}', function($request, $response, $args) {
+            
+            
+            
+            
+            $response->write('How about implementing deleteImage as a DELETE method ?');
             return $response;
             });
 
@@ -229,181 +325,83 @@ $app->DELETE('/editor/{id}', function($request, $response, $args) {
 
 
 /**
- * GET checkImage
+ * GET checkAnnotation
  * Summary: Vérifie si la table est opérationnelle
  * Notes: 
  * Output-Formats: [application/json]
  */
-$app->GET('/image', function($request, $response, $args) {
+$app->GET('/annotation', function($request, $response, $args) {
             
             
             
             
-            $response->write('How about implementing checkImage as a GET method ?');
+            $response->write('How about implementing checkAnnotation as a GET method ?');
             return $response;
             });
 
 
 /**
- * POST createImage
- * Summary: Crée une nouvelle image
+ * POST createAnnotation
+ * Summary: Crée une nouvelle annotation
  * Notes: 
  * Output-Formats: [application/json]
  */
-$app->POST('/image/create', function($request, $response, $args) {
+$app->POST('/annotation/create', function($request, $response, $args) {
             
             $queryParams = $request->getQueryParams();
-            $path = $queryParams['path'];    $name = $queryParams['name'];    $editor = $queryParams['editor'];    
+            $tag = $queryParams['tag'];    $position = $queryParams['position'];    
             
             
-            $response->write('How about implementing createImage as a POST method ?');
+            $response->write('How about implementing createAnnotation as a POST method ?');
             return $response;
             });
 
 
 /**
- * GET selectImage
- * Summary: Sélectionne une image
+ * GET selectAnnotation
+ * Summary: Sélectionne une annotation
  * Notes: 
  * Output-Formats: [application/json]
  */
-$app->GET('/image/{id}', function($request, $response, $args) {
+$app->GET('/annotation/{id}', function($request, $response, $args) {
             
             
             
             
-            $response->write('How about implementing selectImage as a GET method ?');
+            $response->write('How about implementing selectAnnotation as a GET method ?');
             return $response;
             });
 
 
 /**
- * PUT updateImage
- * Summary: Met à jour une image
+ * PUT updateAnnotation
+ * Summary: Met à jour une annotation
  * Notes: 
  * Output-Formats: [application/json]
  */
-$app->PUT('/image/{id}', function($request, $response, $args) {
+$app->PUT('/annotation/{id}', function($request, $response, $args) {
             
             $queryParams = $request->getQueryParams();
-            $path = $queryParams['path'];    $name = $queryParams['name'];    $editor = $queryParams['editor'];    $annotations = $queryParams['annotations'];    $relations = $queryParams['relations'];    
+            $tag = $queryParams['tag'];    $position = $queryParams['position'];    
             
             
-            $response->write('How about implementing updateImage as a PUT method ?');
+            $response->write('How about implementing updateAnnotation as a PUT method ?');
             return $response;
             });
 
 
 /**
- * DELETE deleteImage
- * Summary: Supprime une image
+ * DELETE deleteAnnotation
+ * Summary: Supprime une annotation
  * Notes: 
  * Output-Formats: [application/json]
  */
-$app->DELETE('/image/{id}', function($request, $response, $args) {
+$app->DELETE('/annotation/{id}', function($request, $response, $args) {
             
             
             
             
-            $response->write('How about implementing deleteImage as a DELETE method ?');
-            return $response;
-            });
-
-
-/**
- * GET checkList
- * Summary: Vérifie si la table est opérationnelle
- * Notes: 
- * Output-Formats: [application/json]
- */
-$app->GET('/list', function($request, $response, $args) {
-            
-            
-            
-            
-            $response->write('How about implementing checkList as a GET method ?');
-            return $response;
-            });
-
-
-/**
- * POST createList
- * Summary: Crée une nouvelle liste
- * Notes: 
- * Output-Formats: [application/json]
- */
-$app->POST('/list/create', function($request, $response, $args) {
-            
-            $queryParams = $request->getQueryParams();
-            $name = $queryParams['name'];    $description = $queryParams['description'];    
-            
-            
-            $response->write('How about implementing createList as a POST method ?');
-            return $response;
-            });
-
-
-/**
- * GET selectLists
- * Summary: Sélectionne toutes les listes
- * Notes: 
- * Output-Formats: [application/json]
- */
-$app->GET('/list/selectAll', function($request, $response, $args) {
-            
-            
-            
-            
-            $response->write('How about implementing selectLists as a GET method ?');
-            return $response;
-            });
-
-
-/**
- * GET selectList
- * Summary: Sélectionne une liste
- * Notes: 
- * Output-Formats: [application/json]
- */
-$app->GET('/list/{id}', function($request, $response, $args) {
-            
-            
-            
-            
-            $response->write('How about implementing selectList as a GET method ?');
-            return $response;
-            });
-
-
-/**
- * PUT updateList
- * Summary: Met à jour une liste
- * Notes: 
- * Output-Formats: [application/json]
- */
-$app->PUT('/list/{id}', function($request, $response, $args) {
-            
-            $queryParams = $request->getQueryParams();
-            $name = $queryParams['name'];    $description = $queryParams['description'];    $images = $queryParams['images'];    
-            
-            
-            $response->write('How about implementing updateList as a PUT method ?');
-            return $response;
-            });
-
-
-/**
- * DELETE deleteList
- * Summary: Supprime une liste
- * Notes: 
- * Output-Formats: [application/json]
- */
-$app->DELETE('/list/{id}', function($request, $response, $args) {
-            
-            
-            
-            
-            $response->write('How about implementing deleteList as a DELETE method ?');
+            $response->write('How about implementing deleteAnnotation as a DELETE method ?');
             return $response;
             });
 
