@@ -132,10 +132,17 @@ $app->POST('/list/create', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
 	$name = $queryParams['name'];    $description = $queryParams['description'];    
-
-
-	$response->write('How about implementing createList as a POST method ?');
-	return $response;
+	$req = "INSERT INTO `List` (name, description) VALUES (".$name.", ".$description.")";
+	
+	try {
+		$DB = connect();
+		$DB->exec($req);
+		$response = "successful operation";
+	}catch(Exception $e){
+		$response = 'Erreur : ' . $e->getMessage();
+	}
+	/*$response->write('How about implementing createList as a POST method ?');*/
+	return (json_encode($response));
 });
 
 
@@ -146,12 +153,17 @@ $app->POST('/list/create', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/list/selectAll', function($request, $response, $args) {
+	$req = 'SELECT * FROM `List`';
+	try {
+		$DB = connect();
+		$result = $DB->query($req);
+		$response = $result->fetchAll();
+	}catch(Exception $e){
+		$response = 'Erreur : '.$e->getMessage();
+	}
 
-
-
-
-	$response->write('How about implementing selectLists as a GET method ?');
-	return $response;
+	/*$response->write('How about implementing selectLists as a GET method ?');*/
+	return (json_encode($response));
 });
 
 
@@ -163,7 +175,7 @@ $app->GET('/list/selectAll', function($request, $response, $args) {
  */
 $app->GET('/list/{id}', function($request, $response, $args) {
 
-
+	/*Il manque l'id en paramètre d'entrée */
 
 
 	$response->write('How about implementing selectList as a GET method ?');
@@ -182,7 +194,7 @@ $app->PUT('/list/{id}', function($request, $response, $args) {
 	$queryParams = $request->getQueryParams();
 	$name = $queryParams['name'];    $description = $queryParams['description'];    $images = $queryParams['images'];    
 
-
+	/* Il manque l'id de la liste à modifier en paramètre d'entrée*/ 
 	$response->write('How about implementing updateList as a PUT method ?');
 	return $response;
 });
@@ -196,7 +208,7 @@ $app->PUT('/list/{id}', function($request, $response, $args) {
  */
 $app->DELETE('/list/{id}', function($request, $response, $args) {
 
-
+	/*Il manque l'id de la liste à supprimer en paramètre d'entrée*/
 
 
 	$response->write('How about implementing deleteList as a DELETE method ?');
@@ -241,10 +253,18 @@ $app->POST('/image/create', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
 	$path = $queryParams['path'];    $name = $queryParams['name'];    $editor = $queryParams['editor'];    
+	$req = "INSERT INTO `Image` (path, name, editor) VALUES (".$path.", ".$name.", ".$editor.")";
+	
+	try {
+		$DB = connect();
+		$DB->exec($req);
+		$response = "successful operation";
+	}catch(Exception $e){
+		$response = 'Erreur : ' . $e->getMessage();
+	}
 
-
-	$response->write('How about implementing createImage as a POST method ?');
-	return $response;
+	/*$response->write('How about implementing createImage as a POST method ?');*/
+	return (json_encode($response));
 });
 
 
@@ -275,8 +295,7 @@ $app->PUT('/image/{id}', function($request, $response, $args) {
 	$queryParams = $request->getQueryParams();
 	$path = $queryParams['path'];    $name = $queryParams['name'];    $editor = $queryParams['editor'];    $annotations = $queryParams['annotations'];    $relations = $queryParams['relations'];    
 
-
-	$response->write('How about implementing updateImage as a PUT method ?');
+	/*$response->write('How about implementing updateImage as a PUT method ?');*/
 	return $response;
 });
 
@@ -334,10 +353,17 @@ $app->POST('/editor/create', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
 	$name = $queryParams['name'];    
-
-
-	$response->write('How about implementing createEditor as a POST method ?');
-	return $response;
+	$req = "INSERT INTO `Editor` (name) VALUES (".$name.")";
+	
+	try {
+		$DB = connect();
+		$DB->exec($req);
+		$response = "successful operation";
+	}catch(Exception $e){
+		$response = 'Erreur : ' . $e->getMessage();
+	}
+	/*$response->write('How about implementing createEditor as a POST method ?');*/
+	return (json_encode($response));
 });
 
 
@@ -349,11 +375,18 @@ $app->POST('/editor/create', function($request, $response, $args) {
  */
 $app->GET('/editor/selectAll', function($request, $response, $args) {
 
+	$req = "SELECT * FROM `Editor`";	
 
+	try {
+		$DB = connect();
+		$result = $DB->query($req);
+		$response = $result->fetchAll();
+	}catch(Exception $e){
+		$response = 'Erreur : ' . $e->getMessage();
+	}
 
-
-	$response->write('How about implementing selectEditors as a GET method ?');
-	return $response;
+	/*$response->write('How about implementing selectEditors as a GET method ?');*/
+	return (json_encode($response));
 });
 
 
@@ -443,10 +476,18 @@ $app->POST('/annotation/create', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
 	$tag = $queryParams['tag'];    $position = $queryParams['position'];    
+	$req = "INSERT INTO `Annotation` (tag, position) VALUES (".$tag.", ".$position.")";
+	
+	try {
+		$DB = connect();
+		$DB->exec($req);
+		$response = "successful operation";
+	}catch(Exception $e){
+		$response = 'Erreur : ' . $e->getMessage();
+	}
 
-
-	$response->write('How about implementing createAnnotation as a POST method ?');
-	return $response;
+	/*$response->write('How about implementing createAnnotation as a POST method ?');*/
+	return json_encode($response);
 });
 
 
@@ -536,10 +577,18 @@ $app->POST('/relation/create', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
 	$predicate = $queryParams['predicate'];    $annotation1 = $queryParams['annotation1'];    $annotation2 = $queryParams['annotation2'];    
-
+	$req = "INSERT INTO `Relation` (predicate, annotation1, annotation2) VALUES (".$predicate.", ".$annotation1.",".$annotation2.")";
+	
+	try {
+		$DB = connect();
+		$DB->exec($req);
+		$response = "successful operation";
+	}catch(Exception $e){
+		$response = 'Erreur : ' . $e->getMessage();
+	}
 
 	$response->write('How about implementing createRelation as a POST method ?');
-	return $response;
+	return (json_encode($response));
 });
 
 
@@ -594,3 +643,4 @@ $app->DELETE('/relation/{id}', function($request, $response, $args) {
 
 /* RUN APP */
 $app->run();
+
