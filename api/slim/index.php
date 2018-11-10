@@ -132,11 +132,14 @@ $app->POST('/list/create', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
 	$name = $queryParams['name'];    $description = $queryParams['description'];    
-	$req = "INSERT INTO `List` (name, description) VALUES (".$name.", ".$description.")";
-	
+	//$req = "INSERT INTO `List`(name, description) VALUES (".$name.", ".$description.")";
+
+		
 	try {
 		$DB = connect();
-		$DB->exec($req);
+		$req = $DB->prepare('INSERT INTO `List` (name, description) VALUES(:name, :description)');		
+		$req->execute(array( 'name' => $name, 'description' => $description));
+		//$DB->exec($req);
 		$response = "successful operation";
 	}catch(Exception $e){
 		$response = 'Erreur : ' . $e->getMessage();
@@ -175,11 +178,20 @@ $app->GET('/list/selectAll', function($request, $response, $args) {
  */
 $app->GET('/list/{id}', function($request, $response, $args) {
 
-	/*Il manque l'id en paramètre d'entrée */
+	$json = json_encode($args);
+	$json = json_decode($json, true);
+	$id = (int) $json['id'];
 
-
-	$response->write('How about implementing selectList as a GET method ?');
-	return $response;
+	$req = 'SELECT * FROM `List` WHERE id = '.$id;
+	try {
+		$DB = connect();
+		$result = $DB->query($req);
+		$response = $result->fetchAll();
+	}catch(Exception $e){
+		$response = 'Erreur : '.$e->getMessage();
+	}
+	
+	return json_encode($response);
 });
 
 
@@ -192,11 +204,22 @@ $app->GET('/list/{id}', function($request, $response, $args) {
 $app->PUT('/list/{id}', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
-	$name = $queryParams['name'];    $description = $queryParams['description'];    $images = $queryParams['images'];    
+	$name = $queryParams['name'];    $description = $queryParams['description'];    $images = $queryParams['images'];
+	$json = json_encode($args);
+	$json = json_decode($json, true);
+	$id = (int) $json['id'];
+	$req = "UPDATE table `List` SET name =".$name.", description = ".$description.", images = ".$images."WHERE id = ".$id;
 
+	try {
+		$DB = connect();
+		$DB->exec($req);
+		$response = "successful operation";
+	}catch(Exception $e){
+		$response = 'Erreur : ' . $e->getMessage();
+	}
 	/* Il manque l'id de la liste à modifier en paramètre d'entrée*/ 
 	$response->write('How about implementing updateList as a PUT method ?');
-	return $response;
+	return json_encode($response);
 });
 
 
@@ -208,11 +231,21 @@ $app->PUT('/list/{id}', function($request, $response, $args) {
  */
 $app->DELETE('/list/{id}', function($request, $response, $args) {
 
-	/*Il manque l'id de la liste à supprimer en paramètre d'entrée*/
+	$json = json_encode($args);
+	$json = json_decode($json, true);
+	$id = (int) $json['id'];
+	$req = "DELETE FROM `List` WHERE id=".$id;
+	
+	try {
+		$DB = connect();
+		$DB->exec($req);
+		$response = "successful operation";
+	}catch(Exception $e){
+		$response = 'Erreur : ' . $e->getMessage();
+	}
 
-
-	$response->write('How about implementing deleteList as a DELETE method ?');
-	return $response;
+	//$response->write('How about implementing deleteList as a DELETE method ?');
+	return (json_encode($response));
 });
 
 
@@ -275,12 +308,22 @@ $app->POST('/image/create', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/image/{id}', function($request, $response, $args) {
+	$json = json_encode($args);
+	$json = json_decode($json, true);
+	$id = (int) $json['id'];
 
+	$req = 'SELECT * FROM `Image` WHERE id = '.$id;
+	try {
+		$DB = connect();
+		$result = $DB->query($req);
+		$response = $result->fetchAll();
+	}catch(Exception $e){
+		$response = 'Erreur : '.$e->getMessage();
+	}
 
+	return json_encode($response);
 
-
-	$response->write('How about implementing selectImage as a GET method ?');
-	return $response;
+	//$response->write('How about implementing selectImage as a GET method ?');
 });
 
 
@@ -294,9 +337,20 @@ $app->PUT('/image/{id}', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
 	$path = $queryParams['path'];    $name = $queryParams['name'];    $editor = $queryParams['editor'];    $annotations = $queryParams['annotations'];    $relations = $queryParams['relations'];    
+	$json = json_encode($args);
+	$json = json_decode($json, true);
+	$id = (int) $json['id'];
+	$req = "UPDATE table `Image` SET path =".$path.", name = ".$name.", editor = ".$editor.", annotations = ".$annotations.", relations = ".$relations." WHERE id = ".$id;
 
+	try {
+		$DB = connect();
+		$DB->exec($req);
+		$response = "successful operation";
+	}catch(Exception $e){
+		$response = 'Erreur : ' . $e->getMessage();
+	}
 	/*$response->write('How about implementing updateImage as a PUT method ?');*/
-	return $response;
+	return json_encode($response);
 });
 
 
@@ -307,12 +361,20 @@ $app->PUT('/image/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->DELETE('/image/{id}', function($request, $response, $args) {
-
-
-
-
-	$response->write('How about implementing deleteImage as a DELETE method ?');
-	return $response;
+	$json = json_encode($args);
+	$json = json_decode($json, true);
+	$id = (int) $json['id'];
+	$req = "DELETE FROM `Image` WHERE id=".$id;
+	
+	try {
+		$DB = connect();
+		$DB->exec($req);
+		$response = "successful operation";
+	}catch(Exception $e){
+		$response = 'Erreur : ' . $e->getMessage();
+	}
+	//$response->write('How about implementing deleteImage as a DELETE method ?');
+	return json_encode($response);
 });
 
 
@@ -397,12 +459,21 @@ $app->GET('/editor/selectAll', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/editor/{id}', function($request, $response, $args) {
+	$json = json_encode($args);
+	$json = json_decode($json, true);
+	$id = (int) $json['id'];
 
+	$req = 'SELECT * FROM `Editor` WHERE id = '.$id;
+	try {
+		$DB = connect();
+		$result = $DB->query($req);
+		$response = $result->fetchAll();
+	}catch(Exception $e){
+		$response = 'Erreur : '.$e->getMessage();
+	}
 
-
-
-	$response->write('How about implementing selectEditor as a GET method ?');
-	return $response;
+	return json_encode($response);
+	//$response->write('How about implementing selectEditor as a GET method ?');
 });
 
 
@@ -416,10 +487,21 @@ $app->PUT('/editor/{id}', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
 	$name = $queryParams['name'];    
+	$json = json_encode($args);
+	$json = json_decode($json, true);
+	$id = (int) $json['id'];
+	$req = "UPDATE table `Editor` SET name = ".$name." WHERE id = ".$id;
 
+	try {
+		$DB = connect();
+		$DB->exec($req);
+		$response = "successful operation";
+	}catch(Exception $e){
+		$response = 'Erreur : ' . $e->getMessage();
+	}
 
-	$response->write('How about implementing updateEditor as a PUT method ?');
-	return $response;
+	//$response->write('How about implementing updateEditor as a PUT method ?');
+	return json_encode($response);
 });
 
 
@@ -430,12 +512,20 @@ $app->PUT('/editor/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->DELETE('/editor/{id}', function($request, $response, $args) {
-
-
-
-
-	$response->write('How about implementing deleteEditor as a DELETE method ?');
-	return $response;
+	$json = json_encode($args);
+	$json = json_decode($json, true);
+	$id = (int) $json['id'];
+	$req = "DELETE FROM `Editor` WHERE id=".$id;
+	
+	try {
+		$DB = connect();
+		$DB->exec($req);
+		$response = "successful operation";
+	}catch(Exception $e){
+		$response = 'Erreur : ' . $e->getMessage();
+	}
+	//$response->write('How about implementing deleteEditor as a DELETE method ?');
+	return json_encode($response);
 });
 
 
@@ -486,7 +576,7 @@ $app->POST('/annotation/create', function($request, $response, $args) {
 		$response = 'Erreur : ' . $e->getMessage();
 	}
 
-	/*$response->write('How about implementing createAnnotation as a POST method ?');*/
+	$response->write('How about implementing createAnnotation as a POST method ?');
 	return json_encode($response);
 });
 
@@ -498,12 +588,21 @@ $app->POST('/annotation/create', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/annotation/{id}', function($request, $response, $args) {
+	$json = json_encode($args);
+	$json = json_decode($json, true);
+	$id = (int) $json['id'];
 
+	$req = 'SELECT * FROM `Annotation` WHERE id = '.$id;
+	try {
+		$DB = connect();
+		$result = $DB->query($req);
+		$response = $result->fetchAll();
+	}catch(Exception $e){
+		$response = 'Erreur : '.$e->getMessage();
+	}
 
-
-
-	$response->write('How about implementing selectAnnotation as a GET method ?');
-	return $response;
+	return json_encode($response);
+	//$response->write('How about implementing selectAnnotation as a GET method ?');
 });
 
 
@@ -517,10 +616,21 @@ $app->PUT('/annotation/{id}', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
 	$tag = $queryParams['tag'];    $position = $queryParams['position'];    
+	$json = json_encode($args);
+	$json = json_decode($json, true);
+	$id = (int) $json['id'];
+	$req = "UPDATE table `Annotation` SET tag =".$tag.", position = ".$position." WHERE id = ".$id;
 
+	try {
+		$DB = connect();
+		$DB->exec($req);
+		$response = "successful operation";
+	}catch(Exception $e){
+		$response = 'Erreur : ' . $e->getMessage();
+	}
 
-	$response->write('How about implementing updateAnnotation as a PUT method ?');
-	return $response;
+	//$response->write('How about implementing updateAnnotation as a PUT method ?');
+	return json_encode($response);
 });
 
 
@@ -532,11 +642,20 @@ $app->PUT('/annotation/{id}', function($request, $response, $args) {
  */
 $app->DELETE('/annotation/{id}', function($request, $response, $args) {
 
-
-
-
-	$response->write('How about implementing deleteAnnotation as a DELETE method ?');
-	return $response;
+	$json = json_encode($args);
+	$json = json_decode($json, true);
+	$id = (int) $json['id'];
+	$req = "DELETE FROM `Annotation` WHERE id=".$id;
+	
+	try {
+		$DB = connect();
+		$DB->exec($req);
+		$response = "successful operation";
+	}catch(Exception $e){
+		$response = 'Erreur : ' . $e->getMessage();
+	}
+	//$response->write('How about implementing deleteAnnotation as a DELETE method ?');
+	return json_encode($response);
 });
 
 
@@ -577,18 +696,10 @@ $app->POST('/relation/create', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
 	$predicate = $queryParams['predicate'];    $annotation1 = $queryParams['annotation1'];    $annotation2 = $queryParams['annotation2'];    
-	$req = "INSERT INTO `Relation` (predicate, annotation1, annotation2) VALUES (".$predicate.", ".$annotation1.",".$annotation2.")";
-	
-	try {
-		$DB = connect();
-		$DB->exec($req);
-		$response = "successful operation";
-	}catch(Exception $e){
-		$response = 'Erreur : ' . $e->getMessage();
-	}
+
 
 	$response->write('How about implementing createRelation as a POST method ?');
-	return (json_encode($response));
+	return $response;
 });
 
 
@@ -599,12 +710,26 @@ $app->POST('/relation/create', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/relation/{id}', function($request, $response, $args) {
+	$json = json_encode($args);
+	$json = json_decode($json, true);
+	$id = (int) $json['id'];
+
+	$req = 'SELECT * FROM `Relation` WHERE id = '.$id;
+	try {
+		$DB = connect();
+		$result = $DB->query($req);
+		$response = $result->fetchAll();
+	}catch(Exception $e){
+		$response = 'Erreur : '.$e->getMessage();
+	}
+
+	return json_encode($response);
 
 
 
 
-	$response->write('How about implementing selectRelation as a GET method ?');
-	return $response;
+//$response->write('How about implementing selectRelation as a GET method ?');
+	
 });
 
 
@@ -618,10 +743,21 @@ $app->PUT('/relation/{id}', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
 	$predicate = $queryParams['predicate'];    $annotation1 = $queryParams['annotation1'];    $annotation2 = $queryParams['annotation2'];    
+	$json = json_encode($args);
+	$json = json_decode($json, true);
+	$id = (int) $json['id'];
+	$req = "UPDATE table `Relation` SET predicate =".$predicate.", annotation1 = ".$annotation1.", annotation2 = ".$annotation2." WHERE id = ".$id;
 
+	try {
+		$DB = connect();
+		$DB->exec($req);
+		$response = "successful operation";
+	}catch(Exception $e){
+		$response = 'Erreur : ' . $e->getMessage();
+	}
 
-	$response->write('How about implementing updateRelation as a PUT method ?');
-	return $response;
+	//$response->write('How about implementing updateRelation as a PUT method ?');
+	return json_encode($response);
 });
 
 
@@ -633,14 +769,24 @@ $app->PUT('/relation/{id}', function($request, $response, $args) {
  */
 $app->DELETE('/relation/{id}', function($request, $response, $args) {
 
-
-
-
-	$response->write('How about implementing deleteRelation as a DELETE method ?');
-	return $response;
+	$json = json_encode($args);
+	$json = json_decode($json, true);
+	$id = (int) $json['id'];
+	$req = "DELETE FROM `Relation` WHERE id=".$id;
+	
+	try {
+		$DB = connect();
+		$DB->exec($req);
+		$response = "successful operation";
+	}catch(Exception $e){
+		$response = 'Erreur : ' . $e->getMessage();
+	}
+	//$response->write('How about implementing deleteRelation as a DELETE method ?');
+	return json_encode($response);
 });
 
 
 /* RUN APP */
 $app->run();
+
 
