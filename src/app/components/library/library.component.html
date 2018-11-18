@@ -4,10 +4,10 @@
   <br />
 
   <h2 style="margin-left:1225px">Informations</h2>
-  
+
   <!-- Espace 1 -->
   <div style="position:absolute; margin:50px; margin-top:10px;  width:1700px; height:650px; padding:25px; background-color:rgba(255,0,0,0.2)">
-  
+
     <!-- Espace 1A -->
     <div style="float:left; width:900px; height:550px; padding:25px; background-color:rgba(0,255,0,0.2)">
       <br />
@@ -36,7 +36,7 @@
       <br />
       <br />
       <br />
-      
+
 
       <br />
 
@@ -55,7 +55,7 @@
 
       <br />
       <br />
-      Nom Liste      
+      Nom Liste
       <br />
       Date
       <br />
@@ -70,7 +70,7 @@
       <br />
       <br />
       <br />
-      
+
 
     </div>
     <!-- /Information Liste -->
@@ -81,28 +81,24 @@
 
   <!-- Modals -->
   <span>
-    
+
     <!-- Modal "modUpload" -->
-    <ngx-smart-modal #modUpload customClass="modUpload"  identifier="modUpload" [closable]=true [escapable]=false [dismissable]=false >
-      <div style="height:75vh; text-align:center">
-        <h2>[Upload]</h2>
-        <br />
-        <br />   
-        <br />
-        <br />
-        <h2>[Informations]</h2>
-        <div style="width:80%; margin-left:10%; margin-top:400px">
+    <ngx-smart-modal #modUpload customClass="modUpload" identifier="modUpload" [closable]=true [escapable]=false
+      [dismissable]=false>
+      <div style="height:50vh; text-align:center">
+        <div style="width:80%; margin-left:10%">
           <app-upload-image></app-upload-image>
         </div>
       </div>
     </ngx-smart-modal>
 
     <!-- Modal "modSelect" -->
-    <ngx-smart-modal #modUpload customClass="modSelect"  identifier="modSelect" [closable]=true [escapable]=false [dismissable]=false >
+    <ngx-smart-modal #modUpload customClass="modSelect" identifier="modSelect" [closable]=true [escapable]=false
+      [dismissable]=false>
       <div style="height:75vh; text-align:center">
         <h2>[Nom liste]</h2>
         <br />
-        <br />   
+        <br />
         <br />
         <br />
         <h2>[Images de la liste]</h2>

@@ -1,4 +1,7 @@
 import { Component, OnInit } from "@angular/core";
+import { FileUploader, FileSelectDirective } from 'ng2-file-upload/ng2-file-upload';
+
+const URL = 'http://skydefr.com/vs/ptut/beta/upload-image.php';
 
 @Component({
   selector: "app-upload-image",
@@ -6,30 +9,18 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./upload-image.component.css"]
 })
 export class UploadImageComponent implements OnInit {
-  customStyle: any;
+  info: string = '';
 
-  constructor() {
-    this.customStyle = {
-      selectButton: {
-        color: "white",
-        "background-color": "orange"
-      },
-      clearButton: {
-        display: "none"
-      },
-      layout: {
-        width: "100%"
-      },
-      previewPanel: {
-        "background-color": "#FFF3E8"
-      }
+  constructor() { }
+
+  public uploader: FileUploader = new FileUploader({ url: URL, itemAlias: 'image' });
+
+  ngOnInit() {
+    this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
+    this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      console.log('ImageUpload:', item, status, response);
+      this.info = "File uploaded successfully" + response;
     };
   }
 
-  ngOnInit() {}
-
-  onUploadFinished(event) {
-    console.log(event);
-    //check if response msg contain extension then show alert('extension not allowed')
-  }
 }
