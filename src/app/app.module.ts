@@ -1,9 +1,10 @@
-import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
-import { FormsModule } from "@angular/Forms";
+import { BrowserModule } from "@angular/platform-browser";
+import { FormsModule } from "@angular/forms";
 import { AppRoutingModule } from "./app-routing.module";
 import { NgxSmartModalModule } from "ngx-smart-modal";
-import { ImageUploadModule } from "angular2-image-upload";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule, MatCheckboxModule } from '@angular/material';
 
 import { DataService } from "./services/data.service";
 
@@ -42,11 +43,13 @@ import { AnnotationComponent } from "./components/annotation/annotation.componen
     BrowserModule,
     FormsModule,
     NgxSmartModalModule.forRoot(),
-    ImageUploadModule.forRoot()
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatCheckboxModule
   ],
   /* services */
   providers: [DataService],
   /* autre */
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
