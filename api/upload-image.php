@@ -2,18 +2,22 @@
  
 header("Access-Control-Allow-Origin: *");
  
+//Vérification de la méthode
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
   echo json_encode(array('status' => false));
   exit;
 }
  
+//Options
 $path = 'uploads/'; //Répertoire où les images seront stockées
 $renameToMd5 = true; //Génerer un nom aléatoire (true) ou garder le nom original (false)
 $extAccepted = array('jpg','jpeg','png'); //Extensions autorisées
  
 if (isset($_FILES['image'])) {
+  //Vérification de l'extension
   $originalName = $_FILES['image']['name'];
   $ext = '.'.pathinfo($originalName, PATHINFO_EXTENSION);
+  $ext = strtolower($ext);
   
   $wrongExt = true;
   for ($i=0; $i<sizeof($extAccepted); $i++) { 
@@ -28,13 +32,30 @@ if (isset($_FILES['image'])) {
 	  exit;
   }
   
+  //Vérification de la taille du fichier
+  define('KB', 1024);
+  define('MB', 1048576);
+  define('GB', 1073741824);
+  define('TB', 1099511627776);
+  
+  $size = $_FILES['image']['size'];
+  
+  if ($size > 100*MB) {
+	  echo json_encode(
+		array('status' => false, 'msg' => $size.' : the file is too big.')
+	  );
+	  exit;
+  }
+  
+  //Renommage MD5
   if ($renameToMd5) {
 	  $generatedName = md5($_FILES['image']['tmp_name']).$ext;
   } else {
 	  $generatedName = $originalName;
   }
   $filePath = $path.$generatedName;
- 
+  
+  //Vérifie les droits sur le répertoir de destination
   if (!is_writable($path)) {
     echo json_encode(array(
       'status' => false,
@@ -42,7 +63,8 @@ if (isset($_FILES['image'])) {
     ));
     exit;
   }
- 
+  
+  //Stockage de l'image sur le serveur
   if (move_uploaded_file($_FILES['image']['tmp_name'], $filePath)) {
     echo json_encode(array(
       'status'        => true,
@@ -52,6 +74,7 @@ if (isset($_FILES['image'])) {
   }
 }
 else {
+  //Erreur
   echo json_encode(
     array('status' => false, 'msg' => 'Aborted.')
   );
