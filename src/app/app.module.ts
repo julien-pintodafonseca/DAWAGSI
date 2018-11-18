@@ -8,6 +8,8 @@ import { MatButtonModule, MatCheckboxModule } from '@angular/material';
 
 import { DataService } from "./services/data.service";
 
+import { FileSelectDirective } from 'ng2-file-upload';
+
 import { AppComponent } from "./app.component";
 import { LibraryComponent } from "./components/library/library.component";
 import { UploadImageComponent } from "./components/upload-image/upload-image.component";
@@ -35,7 +37,8 @@ import { AnnotationComponent } from "./components/annotation/annotation.componen
     EditListComponent,
     ShowListComponent,
     GalleryImagesComponent,
-    AnnotationComponent
+    AnnotationComponent,
+    FileSelectDirective
   ],
   /* modules */
   imports: [
