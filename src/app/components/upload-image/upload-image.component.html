@@ -71,13 +71,14 @@
       <button type="button" class="btn btn-warning btn-s" (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
         <span class="glyphicon glyphicon-ban-circle"></span> Pause
       </button>
-      <button type="button" class="btn btn-danger btn-s" (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+      <button type="button" class="btn btn-danger btn-s" (click)="uploader.clearQueue(); resetInfo()" [disabled]="!uploader.queue.length">
         <span class="glyphicon glyphicon-trash"></span> Réinitialiser
       </button>
     </div>
   </div>
 
   <div>
+	<p>Succès : {{succes}} | Échecs : {{echec}} 
     <p>{{info}}</p>
   </div>
 </div>

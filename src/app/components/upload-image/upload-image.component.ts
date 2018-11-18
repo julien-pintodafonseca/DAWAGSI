@@ -10,6 +10,8 @@ const URL = 'http://skydefr.com/vs/ptut/beta/upload-image.php';
 })
 export class UploadImageComponent implements OnInit {
   info: string = '';
+  succes: int = 0;
+  echec: int = 0;
 
   constructor() { }
 
@@ -19,8 +21,20 @@ export class UploadImageComponent implements OnInit {
     this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       console.log('ImageUpload:', item, status, response);
-      this.info = "File uploaded successfully" + response;
+	  if (JSON.parse(response).status) {
+		this.succes++;
+		this.info = JSON.parse(response).originalName + " - Image mise en ligne avec succès !";
+	  } else {
+		this.echec++;
+		this.info = "Type de fichier non autorisé !";
+	  }
     };
+  }
+  
+  resetInfo() {
+	  this.succes = 0;
+	  this.echec = 0;
+	  this.info = "";
   }
 
 }
