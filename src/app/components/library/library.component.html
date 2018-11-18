@@ -1,82 +1,66 @@
 <!-- Library -->
 <div id="library-component">
   <br />
+
+  <h2 style="float:left; margin-left:90px">Listes</h2>
+  <h2 style="float:right; margin-right:500px">Informations</h2>
+  
+  <br />
   <br />
 
-  <h2 style="margin-left:1225px">Informations</h2>
-
-  <!-- Espace 1 -->
+  <!-- Main space -->
   <div style="position:absolute; margin:50px; margin-top:10px;  width:1700px; height:650px; padding:25px; background-color:rgba(255,0,0,0.2)">
 
-    <!-- Espace 1A -->
+    <!-- Gallery lists -->
     <div style="float:left; width:900px; height:550px; padding:25px; background-color:rgba(0,255,0,0.2)">
-      <br />
-      <!-- Gallery -->
+      <!-- Gallery-lists component -->
       <app-gallery-lists></app-gallery-lists>
-      <!-- /Gallery -->
-
+      <!-- /Gallery-lists component -->
       <br />
       <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-
-
-      <br />
-
     </div>
-    <!-- /Espace 1A -->
+    <!-- /Gallery lists -->
+
+    <!-- Information pane -->
+    <div style="float:right; width:500px; height:550px; padding:25px; background-color:rgba(0,0,255,0.2)">
+      <strong>Nom Liste</strong>
+      <br />
+      Info 1
+      <br />
+      Info 2
+      <br />
+      Info 3
+      <br />
+      ...
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
 
     <!-- Buttons -->
     <div style="float:left;">
-      <button (click)="ngxSmartModalService.getModal('modUpload').open()" style="margin-left:20px;">Upload</button>
-      <button (click)="ngxSmartModalService.getModal('modSelect').open()" style="margin-left:420px ">Selectionner Liste</button>
+      <button (click)="ngxSmartModalService.getModal('modSelect').open()">Selectionner la liste</button>
+      <button (click)="ngxSmartModalService.getModal('modUpload').open()" style="margin-left:20px">Ajouter des images</button>
     </div>
     <!-- /Buttons -->
 
-    <!-- Information Liste -->
-    <div style="float:right; width:500px; height:550px; padding:25px; background-color:rgba(0,0,255,0.2)">
-
-      <br />
-      <br />
-      Nom Liste
-      <br />
-      Date
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-
-
     </div>
-    <!-- /Information Liste -->
+    <!-- /Information pane -->
 
   </div>
-  <!-- /Espace 1 -->
+  <!-- /Main space -->
 
 
   <!-- Modals -->
