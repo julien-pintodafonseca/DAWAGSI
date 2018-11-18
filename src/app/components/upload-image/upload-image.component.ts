@@ -10,8 +10,8 @@ const URL = 'http://skydefr.com/vs/ptut/beta/upload-image.php';
 })
 export class UploadImageComponent implements OnInit {
   info: string = '';
-  succes: int = 0;
-  echec: int = 0;
+  succes: number = 0;
+  echec: number = 0;
 
   constructor() { }
 
