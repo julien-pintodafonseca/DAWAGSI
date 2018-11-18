@@ -8,10 +8,16 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
   exit;
 }
  
+define('KB', 1024);
+define('MB', 1048576);
+define('GB', 1073741824);
+define('TB', 1099511627776);
+  
 //Options
 $path = 'uploads/'; //Répertoire où les images seront stockées
 $renameToMd5 = true; //Génerer un nom aléatoire (true) ou garder le nom original (false)
 $extAccepted = array('jpg','jpeg','png'); //Extensions autorisées
+$maxSize = 60*MB; //Taille maximale (attention ! doit être inférieur à la valeur "post_max_size" de votre php.ini !)
  
 if (isset($_FILES['image'])) {
   //Vérification de l'extension
@@ -33,18 +39,14 @@ if (isset($_FILES['image'])) {
   }
   
   //Vérification de la taille du fichier
-  define('KB', 1024);
-  define('MB', 1048576);
-  define('GB', 1073741824);
-  define('TB', 1099511627776);
   
   $size = $_FILES['image']['size'];
   
-  if ($size > 100*MB) {
-	  echo json_encode(
-		array('status' => false, 'msg' => $size.' : the file is too big.')
-	  );
-	  exit;
+  if ($size > $maxSize) {
+    echo json_encode(
+      array('status' => false, 'msg' => $size.' : the file is too big.')
+	);
+	exit;
   }
   
   //Renommage MD5
@@ -57,10 +59,9 @@ if (isset($_FILES['image'])) {
   
   //Vérifie les droits sur le répertoir de destination
   if (!is_writable($path)) {
-    echo json_encode(array(
-      'status' => false,
-      'msg'    => 'Destination directory is not writable.'
-    ));
+    echo json_encode(
+      array('status' => false, 'msg'    => 'Destination directory is not writable.')
+	);
     exit;
   }
   
