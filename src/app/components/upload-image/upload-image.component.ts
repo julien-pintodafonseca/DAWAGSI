@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FileUploader, FileSelectDirective } from 'ng2-file-upload/ng2-file-upload';
 
-const URL = 'http://skydefr.com/vs/ptut/beta/upload-image.php';
+const URL = 'http://skydefr.com/vs/ptut/dawagsi/api/upload-image.php';
 
 @Component({
   selector: "app-upload-image",
