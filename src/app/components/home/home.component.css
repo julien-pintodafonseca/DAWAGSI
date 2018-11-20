@@ -1,24 +1,32 @@
+#home-component {
+    height:100vh;
+}
+
 #img_accueil
 { 
-    display: flex; 
-    justify-content: center; 
+    display: flex;
+    justify-content: center;
 }
 
 #bienvenue, #intro
 {
-    text-align: center; 
+    text-align: center;
     font-size: 25px;
-    margin-top: 50px; 
+    margin-top: 50px;
 }
 
 footer 
 {
-    background-color: #890700; 
+    background-color: #890700;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 p
 {
     color: white;
-    font-size: 25px; 
-    padding: 35px 0px 25px 0px; 
+    font-size: 25px;
+    padding: 35px 0px 25px 0px;
 }
