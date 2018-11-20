@@ -1,75 +1,32 @@
-body{
-    background-color : #b5b5b5;
-    padding : 0;
-    margin : 0;
-    }
-    
-    #menufond{
-    width: 100%;
-    background: linear-gradient(#E24207, #D00C0C);
-    border-radius: 0px 0px 4px 4px;
-    box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.2),
-                0px 1px 0px 1px rgba(255, 255, 255, 0.5) inset,
-                0px -3px 0px 1px rgba(0, 0, 0, 0.1) inset;
-    overflow : hidden;
-    height : 50px;
-    }
-    
-    #menu{
-        font-family: "Cursive";
-        display: table;
-        margin-right : 1600px;
-        margin-left : auto;
-        margin-top : 0;
-        padding : 0;
-    }
-    
-    #menu li{
-        display: table-cell;
-        width: 180px;
-        transition:1s;
-    }
-    
-    #menu li:hover{
-        width:190px;
-        transition:1s;
-    }
-    
-    #menu a{
-        display: block;
-        line-height: 46px;
-        text-align: center;
-        text-decoration : none;
-        color : rgb(206, 179, 26);
-        text-shadow: 0 1px 0 rgba(92, 4, 84, 0.418);
-        transition : text-shadow,color 1s;
-        position:relative;  /* utilse pour l'affichage du point */
-        
-    }
-    
-    #menu a:hover{
-        background: rgba(255,255,255,0.1);
-        border-bottom: solid 4px rgba(255,255,255,0.8);
-        color : #d0fc0e;
-        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
-        transition : text-shadow,color 1s;
-    }
-    
-    #menu a::before{
-        content: '';
-        position: absolute;
-        left: 50%;
-        bottom: 5px;
-        transition:1s;
-        width: 0;
-        height: 0;
-        border-left: 3px solid transparent;
-        border-right: 3px solid transparent;
-        border-top: 5px solid rgba(0,0,0,0.2);
-    }
-    
-    #menu a:hover::before{
-        border-color: rgba(255, 255, 255, 0.5) transparent transparent;
-        box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
-        transition:1s
-    }
+nav ul
+{
+    list-style-type: none;
+    display: flex;
+    background-color: #890700
+}
+
+nav li
+{
+    margin: 20px 15px 15px 20px; 
+    font-size: 25px; 
+}
+
+nav a
+{
+    font-size: 1.3em;
+    color:white;
+    padding-bottom: 3px;
+    text-decoration: none;
+}
+
+nav a:hover
+{
+    color: #BE8900;
+    border-bottom: 3px solid  #BE8900;
+}
+
+#logo 
+{
+    width: 70px; 
+    height: auto;
+}

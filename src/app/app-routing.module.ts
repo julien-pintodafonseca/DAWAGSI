@@ -13,6 +13,7 @@ import { CreateListAComponent } from "./components/create-list-a/create-list-a.c
 import { CreateListBComponent } from "./components/create-list-b/create-list-b.component";
 import { EditListComponent } from "./components/edit-list/edit-list.component";
 import { GalleryImagesComponent } from "./components/gallery-images/gallery-images.component";
+import { HomeComponent } from "./components/home/home.component";
 
 const routes: Routes = [
   {
@@ -22,6 +23,10 @@ const routes: Routes = [
   },
   {
     path: "accueil",
+    component: HomeComponent
+  },
+  {
+    path: "bibliotheque",
     component: LibraryComponent
   },
   {

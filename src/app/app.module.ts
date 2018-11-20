@@ -22,6 +22,7 @@ import { EditListComponent } from "./components/edit-list/edit-list.component";
 import { ShowListComponent } from "./components/show-list/show-list.component";
 import { GalleryImagesComponent } from "./components/gallery-images/gallery-images.component";
 import { AnnotationComponent } from "./components/annotation/annotation.component";
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   /* composants */
@@ -38,7 +39,8 @@ import { AnnotationComponent } from "./components/annotation/annotation.componen
     ShowListComponent,
     GalleryImagesComponent,
     AnnotationComponent,
-    FileSelectDirective
+    FileSelectDirective,
+    HomeComponent
   ],
   /* modules */
   imports: [
