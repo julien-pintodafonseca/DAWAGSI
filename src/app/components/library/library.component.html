@@ -1,15 +1,20 @@
+<!-- Navigation -->
+<header>
+  <app-navigation></app-navigation>
+</header>
+
 <!-- Library -->
 <div id="library-component">
   <br />
 
   <h2 style="float:left; margin-left:90px">Listes</h2>
   <h2 style="float:right; margin-right:500px">Informations</h2>
-  
+
   <br />
   <br />
 
   <!-- Main space -->
-  <div id = "accueil">
+  <div id="accueil">
 
     <!-- Gallery lists -->
     <div style="float:left; width:900px; height:550px; padding:25px; background-color:rgba(0,255,0,0.2)">
@@ -49,12 +54,12 @@
       <br />
       <br />
 
-    <!-- Buttons -->
-    <div style="float:left;">
-      <button (click)="ngxSmartModalService.getModal('modSelect').open()">Selectionner la liste</button>
-      <button (click)="ngxSmartModalService.getModal('modUpload').open()" style="margin-left:20px">Ajouter des images</button>
-    </div>
-    <!-- /Buttons -->
+      <!-- Buttons -->
+      <div style="float:left;">
+        <button (click)="ngxSmartModalService.getModal('modSelect').open()">Selectionner la liste</button>
+        <button (click)="ngxSmartModalService.getModal('modUpload').open()" style="margin-left:20px">Ajouter des images</button>
+      </div>
+      <!-- /Buttons -->
 
     </div>
     <!-- /Information pane -->
