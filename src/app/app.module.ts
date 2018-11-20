@@ -6,8 +6,6 @@ import { NgxSmartModalModule } from "ngx-smart-modal";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule, MatCheckboxModule } from '@angular/material';
 
-import { DataService } from "./services/data.service";
-
 import { FileSelectDirective } from 'ng2-file-upload';
 
 import { AppComponent } from "./app.component";
@@ -53,7 +51,7 @@ import { HomeComponent } from './components/home/home.component';
     MatCheckboxModule
   ],
   /* services */
-  providers: [DataService],
+  providers: [],
   /* autre */
   bootstrap: [AppComponent]
 })
