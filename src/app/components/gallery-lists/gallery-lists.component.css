@@ -1,0 +1,10 @@
+#gallery
+{
+    display: flex; 
+    justify-content: space-around; 
+}
+
+.nom_liste
+{
+    text-align: center; 
+}
