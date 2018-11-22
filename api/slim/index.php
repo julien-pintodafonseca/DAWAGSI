@@ -24,9 +24,9 @@ function repair($DB) {
 		  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT \'ID de l\'\'image\',
 		  `path` varchar(255) NOT NULL COMMENT \'Chemin de l\'\'image\',
 		  `name` varchar(100) NOT NULL COMMENT \'Nom de l\'\'image\',
-		  `editeur` int(11) NOT NULL COMMENT \'ID de l\'\'éditeur lié à l\'\'image\',
-		  `annotations` text NOT NULL COMMENT \'ID des annotations liées à l\'\'image\',
-		  `relations` text NOT NULL COMMENT \'ID des relations liées à l\'\'image\',
+		  `editeur` int(11) DEFAULT NULL COMMENT \'ID de l\'\'éditeur lié à l\'\'image\',
+		  `annotations` text DEFAULT NULL COMMENT \'ID des annotations liées à l\'\'image\',
+		  `relations` text DEFAULT NULL COMMENT \'ID des relations liées à l\'\'image\',
 		  PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 		
@@ -271,18 +271,19 @@ $app->DELETE('/list/{id}', function($request, $response, $args) {
 	$json = json_encode($args);
 	$json = json_decode($json, true);
 	$id = (int) $json['id'];
-	$req = "DELETE FROM `List` WHERE id=".$id;
 	
 	try {
 		$DB = connect();
+		$req = "DELETE FROM `List` WHERE id=".$id;
 		$DB->exec($req);
-		$response = "successful operation";
+		$data['message'] = "successful operation";
 	}catch(Exception $e){
-		$response = 'Erreur : ' . $e->getMessage();
+		$data['message'] = 'Erreur : ' . $e->getMessage();
 	}
 
-	//$response->write('How about implementing deleteList as a DELETE method ?');
-	return (json_encode($response));
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
 });
 
 
@@ -322,19 +323,30 @@ $app->GET('/image', function($request, $response, $args) {
 $app->POST('/image/create', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
-	$path = $queryParams['path'];    $name = $queryParams['name'];    $editor = $queryParams['editor'];    
-	$req = "INSERT INTO `Image` (path, name, editor) VALUES (".$path.", ".$name.", ".$editor.")";
+	$path = $queryParams['path'];    $name = $queryParams['name'];    $editor = $queryParams['editor'];
 	
 	try {
 		$DB = connect();
-		$DB->exec($req);
-		$response = "successful operation";
+		if (($name == "") || ($path == "")) {
+			$data['message'] = 'an error has occurred : name or path is empty';
+		} else {
+			if ($editor == "") {
+				$req = 'INSERT INTO `Image` (name, path) VALUES(:name, :path)';
+				$result = $DB->prepare($req);		
+				$result->execute(array( 'name' => $name, 'path' => $path));
+			} else {
+				$req = 'INSERT INTO `Image` (name, path, editeur) VALUES(:name, :path, :editor)';
+				$result = $DB->prepare($req);		
+				$result->execute(array('name' => $name, 'path' => $path, 'editor' => $editor));
+			}
+			$data['message'] = 'successful operation';
+		}
 	}catch(Exception $e){
 		$response = 'Erreur : ' . $e->getMessage();
 	}
-
-	/*$response->write('How about implementing createImage as a POST method ?');*/
-	return (json_encode($response));
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));	
 });
 
 
@@ -353,14 +365,20 @@ $app->GET('/image/{id}', function($request, $response, $args) {
 	try {
 		$DB = connect();
 		$result = $DB->query($req);
-		$response = $result->fetchAll();
+		$result = $result->fetchAll(PDO::FETCH_ASSOC);
+		foreach ($result as $row) {
+			$data["id"] = $row["id"];
+			$data["name"] = $row["name"];
+			$data["path"] = $row["path"];
+			$data["editor"] = $row["editor"];
+		}
 	}catch(Exception $e){
-		$response = 'Erreur : '.$e->getMessage();
+		$data["message"] = 'Erreur : '.$e->getMessage();
 	}
-
-	return json_encode($response);
-
-	//$response->write('How about implementing selectImage as a GET method ?');
+	
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
 });
 
 
@@ -377,17 +395,25 @@ $app->PUT('/image/{id}', function($request, $response, $args) {
 	$json = json_encode($args);
 	$json = json_decode($json, true);
 	$id = (int) $json['id'];
-	$req = "UPDATE table `Image` SET path =".$path.", name = ".$name.", editor = ".$editor.", annotations = ".$annotations.", relations = ".$relations." WHERE id = ".$id;
 
 	try {
 		$DB = connect();
-		$DB->exec($req);
-		$response = "successful operation";
-	}catch(Exception $e){
-		$response = 'Erreur : ' . $e->getMessage();
+
+		if ($name != "") {
+			$req = $req = "UPDATE `Image` SET name = :newName, path = :newPath, editeur = :newEditor, annotations = :newAnnotations, relations = :newRelations WHERE id = ".$id;
+			$result = $DB->prepare($req);		
+			$result->execute(array( 'newName' => $name, 'newPath' => $path, 'newEditor' => $editor, 'newAnnotations' => $annotations,'newRelations' => $relations));		
+			$data['message'] = 'successful operation';
+		} else {
+			$data['message'] = 'an error has occurred : name is empty';
+		}
+	} catch(Exception $e) {
+		$data["message"] = $e->getMessage();
 	}
-	/*$response->write('How about implementing updateImage as a PUT method ?');*/
-	return json_encode($response);
+
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
 });
 
 
@@ -401,17 +427,19 @@ $app->DELETE('/image/{id}', function($request, $response, $args) {
 	$json = json_encode($args);
 	$json = json_decode($json, true);
 	$id = (int) $json['id'];
-	$req = "DELETE FROM `Image` WHERE id=".$id;
 	
 	try {
 		$DB = connect();
+		$req = "DELETE FROM `Image` WHERE id=".$id;
 		$DB->exec($req);
-		$response = "successful operation";
+		$data['message'] = "successful operation";
 	}catch(Exception $e){
-		$response = 'Erreur : ' . $e->getMessage();
+		$data['message'] = 'Erreur : ' . $e->getMessage();
 	}
-	//$response->write('How about implementing deleteImage as a DELETE method ?');
-	return json_encode($response);
+
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
 });
 
 
@@ -455,14 +483,22 @@ $app->POST('/editor/create', function($request, $response, $args) {
 	$req = "INSERT INTO `Editor` (name) VALUES (".$name.")";
 	
 	try {
-		$DB = connect();
-		$DB->exec($req);
-		$response = "successful operation";
-	}catch(Exception $e){
-		$response = 'Erreur : ' . $e->getMessage();
+		if ($name != "") {
+				$DB = connect();
+				$req = 'INSERT INTO `Editor` (name) VALUES(:name)';
+				$result = $DB->prepare($req);		
+				$result->execute(array('name' => $name));
+				$data['message'] = 'successful operation';
+			} else {
+				$data['message'] = 'an error has occurred : name is empty';
+			}
+	} catch(Exception $e) {
+		$data["message"] = $e->getMessage();
 	}
-	/*$response->write('How about implementing createEditor as a POST method ?');*/
-	return (json_encode($response));
+
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
 });
 
 
@@ -474,18 +510,25 @@ $app->POST('/editor/create', function($request, $response, $args) {
  */
 $app->GET('/editor/selectAll', function($request, $response, $args) {
 
-	$req = "SELECT * FROM `Editor`";	
-
+	$count = 0;
+	$req = 'SELECT * FROM `Editor`';
 	try {
 		$DB = connect();
 		$result = $DB->query($req);
-		$response = $result->fetchAll();
-	}catch(Exception $e){
-		$response = 'Erreur : ' . $e->getMessage();
-	}
+		$result = $result->fetchAll(PDO::FETCH_ASSOC);
+		foreach ($result as $row) {
+			$data[$count]["id"] = $row["id"];
+			$data[$count]["name"] = $row["name"];
+			$count++;
+		}
 
-	/*$response->write('How about implementing selectEditors as a GET method ?');*/
-	return (json_encode($response));
+	}catch(Exception $e){
+		$data["message"] = 'Erreur : '.$e->getMessage();
+	}
+	
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
 });
 
 
@@ -500,17 +543,22 @@ $app->GET('/editor/{id}', function($request, $response, $args) {
 	$json = json_decode($json, true);
 	$id = (int) $json['id'];
 
-	$req = 'SELECT * FROM `Editor` WHERE id = '.$id;
+	$req = 'SELECT * FROM `Editor` WHERE id ='.$id;
 	try {
 		$DB = connect();
 		$result = $DB->query($req);
-		$response = $result->fetchAll();
+		$result = $result->fetchAll(PDO::FETCH_ASSOC);
+		foreach ($result as $row) {
+			$data["id"] = $row["id"];
+			$data["name"] = $row["name"];
+		}
 	}catch(Exception $e){
-		$response = 'Erreur : '.$e->getMessage();
+		$data["message"] = 'Erreur : '.$e->getMessage();
 	}
-
-	return json_encode($response);
-	//$response->write('How about implementing selectEditor as a GET method ?');
+	
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
 });
 
 
@@ -527,18 +575,25 @@ $app->PUT('/editor/{id}', function($request, $response, $args) {
 	$json = json_encode($args);
 	$json = json_decode($json, true);
 	$id = (int) $json['id'];
-	$req = "UPDATE table `Editor` SET name = ".$name." WHERE id = ".$id;
 
 	try {
 		$DB = connect();
-		$DB->exec($req);
-		$response = "successful operation";
-	}catch(Exception $e){
-		$response = 'Erreur : ' . $e->getMessage();
+
+		if ($name != "") {
+			$req = $req = "UPDATE `Editor` SET name = :newName WHERE id = ".$id;
+			$result = $DB->prepare($req);		
+			$result->execute(array('newName' => $name));		
+			$data['message'] = 'successful operation';
+		} else {
+			$data['message'] = 'an error has occurred : name is empty';
+		}
+	} catch(Exception $e) {
+		$data["message"] = $e->getMessage();
 	}
 
-	//$response->write('How about implementing updateEditor as a PUT method ?');
-	return json_encode($response);
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
 });
 
 
@@ -556,13 +611,16 @@ $app->DELETE('/editor/{id}', function($request, $response, $args) {
 	
 	try {
 		$DB = connect();
+		$req = "DELETE FROM `Editor` WHERE id=".$id;
 		$DB->exec($req);
-		$response = "successful operation";
+		$data['message'] = "successful operation";
 	}catch(Exception $e){
-		$response = 'Erreur : ' . $e->getMessage();
+		$data['message'] = 'Erreur : ' . $e->getMessage();
 	}
-	//$response->write('How about implementing deleteEditor as a DELETE method ?');
-	return json_encode($response);
+
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
 });
 
 
@@ -604,17 +662,24 @@ $app->POST('/annotation/create', function($request, $response, $args) {
 	$queryParams = $request->getQueryParams();
 	$tag = $queryParams['tag'];    $position = $queryParams['position'];    
 	$req = "INSERT INTO `Annotation` (tag, position) VALUES (".$tag.", ".$position.")";
-	
+
 	try {
 		$DB = connect();
-		$DB->exec($req);
-		$response = "successful operation";
-	}catch(Exception $e){
+		if (($tag == "") || ($position == "")) {
+			$data['message'] = 'an error has occurred : tag or position is empty';
+		} else {
+			$req = 'INSERT INTO `Annotation` (tag, position) VALUES(:tag, :position)';
+			$result = $DB->prepare($req);		
+			$result->execute(array( 'tag' => $tag, 'position' => $position));	
+			$data['message'] = 'successful operation';
+		}
+	} catch(Exception $e){
 		$response = 'Erreur : ' . $e->getMessage();
 	}
 
-	$response->write('How about implementing createAnnotation as a POST method ?');
-	return json_encode($response);
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
 });
 
 
@@ -629,17 +694,22 @@ $app->GET('/annotation/{id}', function($request, $response, $args) {
 	$json = json_decode($json, true);
 	$id = (int) $json['id'];
 
-	$req = 'SELECT * FROM `Annotation` WHERE id = '.$id;
+	$req = 'SELECT * FROM `Annotation` WHERE id ='.$id;
 	try {
 		$DB = connect();
 		$result = $DB->query($req);
-		$response = $result->fetchAll();
-	}catch(Exception $e){
-		$response = 'Erreur : '.$e->getMessage();
+		$result = $result->fetchAll(PDO::FETCH_ASSOC);
+		foreach ($result as $row) {
+			$data["tag"] = $row["tag"];
+			$data["position"] = $row["position"];
+		}
+	} catch(Exception $e) {
+		$data["message"] = 'Erreur : '.$e->getMessage();
 	}
-
-	return json_encode($response);
-	//$response->write('How about implementing selectAnnotation as a GET method ?');
+	
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
 });
 
 
@@ -656,18 +726,25 @@ $app->PUT('/annotation/{id}', function($request, $response, $args) {
 	$json = json_encode($args);
 	$json = json_decode($json, true);
 	$id = (int) $json['id'];
-	$req = "UPDATE table `Annotation` SET tag =".$tag.", position = ".$position." WHERE id = ".$id;
 
 	try {
 		$DB = connect();
-		$DB->exec($req);
-		$response = "successful operation";
-	}catch(Exception $e){
-		$response = 'Erreur : ' . $e->getMessage();
+
+		if (($tag != "") && ($position != "")) {
+			$req = $req = "UPDATE `Annotation` SET tag = :newTag, position = :newPosition WHERE id = ".$id;
+			$result = $DB->prepare($req);		
+			$result->execute(array('newTag' => $tag, 'newPosition' => $position));
+			$data['message'] = 'successful operation';
+		} else {
+			$data['message'] = 'an error has occurred : tag or position is empty';
+		}
+	} catch(Exception $e) {
+		$data["message"] = $e->getMessage();
 	}
 
-	//$response->write('How about implementing updateAnnotation as a PUT method ?');
-	return json_encode($response);
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
 });
 
 
@@ -682,17 +759,19 @@ $app->DELETE('/annotation/{id}', function($request, $response, $args) {
 	$json = json_encode($args);
 	$json = json_decode($json, true);
 	$id = (int) $json['id'];
-	$req = "DELETE FROM `Annotation` WHERE id=".$id;
-	
+
 	try {
 		$DB = connect();
+		$req = "DELETE FROM `Annotation` WHERE id=".$id;
 		$DB->exec($req);
-		$response = "successful operation";
+		$data['message'] = "successful operation";
 	}catch(Exception $e){
-		$response = 'Erreur : ' . $e->getMessage();
+		$data['message'] = 'Erreur : ' . $e->getMessage();
 	}
-	//$response->write('How about implementing deleteAnnotation as a DELETE method ?');
-	return json_encode($response);
+
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
 });
 
 
@@ -733,10 +812,25 @@ $app->POST('/relation/create', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
 	$predicate = $queryParams['predicate'];    $annotation1 = $queryParams['annotation1'];    $annotation2 = $queryParams['annotation2'];    
+	$req = "INSERT INTO `Relation` (predicate, annotation1, annotation2) VALUES (".$predicate.", ".$annotation1.", ".$annotation2.")";
 
+	try {
+		$DB = connect();
+		if (($predicate == "") || ($annotation1 == "") || ($annotation2 == "")) {
+			$data['message'] = 'an error has occurred : predicate, annotation1 or annotation2 is empty';
+		} else {
+			$req = 'INSERT INTO `Relation` (predicate, annotation1, annotation2) VALUES(:predicate, :annotation1, :annotation2)';
+			$result = $DB->prepare($req);		
+			$result->execute(array( 'predicate' => $predicate, 'annotation1' => $annotation1, 'annotation2' => $annotation2));	
+			$data['message'] = 'successful operation';
+		}
+	} catch(Exception $e){
+		$response = 'Erreur : ' . $e->getMessage();
+	}
 
-	$response->write('How about implementing createRelation as a POST method ?');
-	return $response;
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
 });
 
 
@@ -751,22 +845,23 @@ $app->GET('/relation/{id}', function($request, $response, $args) {
 	$json = json_decode($json, true);
 	$id = (int) $json['id'];
 
-	$req = 'SELECT * FROM `Relation` WHERE id = '.$id;
+	$req = 'SELECT * FROM `Relation` WHERE id ='.$id;
 	try {
 		$DB = connect();
 		$result = $DB->query($req);
-		$response = $result->fetchAll();
-	}catch(Exception $e){
-		$response = 'Erreur : '.$e->getMessage();
+		$result = $result->fetchAll(PDO::FETCH_ASSOC);
+		foreach ($result as $row) {
+			$data["predicate"] = $row["predicate"];
+			$data["annotation1"] = $row["annotation1"];
+			$data["annotation2"] = $row["annotation2"];
+		}
+	} catch(Exception $e) {
+		$data["message"] = 'Erreur : '.$e->getMessage();
 	}
-
-	return json_encode($response);
-
-
-
-
-//$response->write('How about implementing selectRelation as a GET method ?');
 	
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));	
 });
 
 
@@ -779,22 +874,30 @@ $app->GET('/relation/{id}', function($request, $response, $args) {
 $app->PUT('/relation/{id}', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
-	$predicate = $queryParams['predicate'];    $annotation1 = $queryParams['annotation1'];    $annotation2 = $queryParams['annotation2'];    
+	$predicate = $queryParams['predicate'];    $annotation1 = $queryParams['annotation1'];    $annotation2 = $queryParams['annotation2'];
+	
 	$json = json_encode($args);
 	$json = json_decode($json, true);
 	$id = (int) $json['id'];
-	$req = "UPDATE table `Relation` SET predicate =".$predicate.", annotation1 = ".$annotation1.", annotation2 = ".$annotation2." WHERE id = ".$id;
 
 	try {
 		$DB = connect();
-		$DB->exec($req);
-		$response = "successful operation";
-	}catch(Exception $e){
-		$response = 'Erreur : ' . $e->getMessage();
+
+		if (($predicate != "") && ($annotation1 != "") && ($annotation2 != "")) {
+			$req = $req = "UPDATE `Relation` SET predicate = :newPredicate, annotation1 = :newAnnotation1, annotation2 = :newAnnotation2 WHERE id = ".$id;
+			$result = $DB->prepare($req);		
+			$result->execute(array( 'newPredicate' => $predicate, 'newAnnotation1' => $annotation1, 'newAnnotation2' => $annotation2));		
+			$data['message'] = 'successful operation';
+		} else {
+			$data['message'] = 'an error has occurred : predicate, annotation1 or annotation2 is empty';
+		}
+	} catch(Exception $e) {
+		$data["message"] = $e->getMessage();
 	}
 
-	//$response->write('How about implementing updateRelation as a PUT method ?');
-	return json_encode($response);
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data)); 
 });
 
 
@@ -809,17 +912,19 @@ $app->DELETE('/relation/{id}', function($request, $response, $args) {
 	$json = json_encode($args);
 	$json = json_decode($json, true);
 	$id = (int) $json['id'];
-	$req = "DELETE FROM `Relation` WHERE id=".$id;
 	
 	try {
 		$DB = connect();
+		$req = "DELETE FROM `Relation` WHERE id=".$id;	
 		$DB->exec($req);
-		$response = "successful operation";
+		$data['message'] = "successful operation";
 	}catch(Exception $e){
-		$response = 'Erreur : ' . $e->getMessage();
+		$data['message'] = 'Erreur : ' . $e->getMessage();
 	}
-	//$response->write('How about implementing deleteRelation as a DELETE method ?');
-	return json_encode($response);
+
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
 });
 
 
