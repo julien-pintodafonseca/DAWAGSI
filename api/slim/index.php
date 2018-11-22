@@ -15,8 +15,8 @@ function repair($DB) {
 		CREATE TABLE IF NOT EXISTS `List` (
 		  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT \'ID de la liste\',
 		  `name` varchar(100) NOT NULL COMMENT \'Nom de la liste\',
-		  `description` varchar(255) NOT NULL COMMENT \'Description de la liste\',
-		  `images` text NOT NULL COMMENT \'ID des images appartenant à la liste\',
+		  `description` varchar(255) DEFAULT NULL COMMENT \'Description de la liste\',
+		  `images` text DEFAULT NULL COMMENT \'ID des images appartenant à la liste\',
 		  PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 		
@@ -131,21 +131,32 @@ $app->GET('/list', function($request, $response, $args) {
 $app->POST('/list/create', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
-	$name = $queryParams['name'];    $description = $queryParams['description'];    
-	//$req = "INSERT INTO `List`(name, description) VALUES (".$name.", ".$description.")";
-
+	$name = $queryParams['name'];    $description = $queryParams['description'];
 		
 	try {
 		$DB = connect();
-		$req = $DB->prepare('INSERT INTO `List` (name, description) VALUES(:name, :description)');		
-		$req->execute(array( 'name' => $name, 'description' => $description));
-		//$DB->exec($req);
-		$response = "successful operation";
-	}catch(Exception $e){
-		$response = 'Erreur : ' . $e->getMessage();
+
+		if ($name != "") {
+			if ($description != "") {
+				$req = 'INSERT INTO `List` (name, description) VALUES(:name, :description)';
+				$result = $DB->prepare($req);		
+				$result->execute(array( 'name' => $name, 'description' => $description));
+			} else {
+				$req = 'INSERT INTO `List` (name) VALUES(:name)';
+				$result = $DB->prepare($req);		
+				$result->execute(array( 'name' => $name));
+			}
+			$data['message'] = 'successful operation';
+		} else {
+			$data['message'] = 'an error has occurred : name is empty';
+		}
+	} catch(Exception $e) {
+		$data["message"] = $e->getMessage();
 	}
-	/*$response->write('How about implementing createList as a POST method ?');*/
-	return (json_encode($response));
+
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
 });
 
 
@@ -156,17 +167,27 @@ $app->POST('/list/create', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/list/selectAll', function($request, $response, $args) {
+	$count = 0;
 	$req = 'SELECT * FROM `List`';
 	try {
 		$DB = connect();
 		$result = $DB->query($req);
-		$response = $result->fetchAll();
-	}catch(Exception $e){
-		$response = 'Erreur : '.$e->getMessage();
-	}
+		$result = $result->fetchAll(PDO::FETCH_ASSOC);
+		foreach ($result as $row) {
+			$data[$count]["id"] = $row["id"];
+			$data[$count]["name"] = $row["name"];
+			$data[$count]["description"] = $row["description"];
+			$data[$count]["images"] = $row["images"];
+			$count++;
+		}
 
-	/*$response->write('How about implementing selectLists as a GET method ?');*/
-	return (json_encode($response));
+	}catch(Exception $e){
+		$data["message"] = 'Erreur : '.$e->getMessage();
+	}
+	
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
 });
 
 
@@ -177,7 +198,7 @@ $app->GET('/list/selectAll', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/list/{id}', function($request, $response, $args) {
-
+	
 	$json = json_encode($args);
 	$json = json_decode($json, true);
 	$id = (int) $json['id'];
@@ -186,12 +207,21 @@ $app->GET('/list/{id}', function($request, $response, $args) {
 	try {
 		$DB = connect();
 		$result = $DB->query($req);
-		$response = $result->fetchAll();
+		$result = $result->fetchAll(PDO::FETCH_ASSOC);
+		foreach ($result as $row) {
+			$data["id"] = $row["id"];
+			$data["name"] = $row["name"];
+			$data["description"] = $row["description"];
+			$data["images"] = $row["images"];
+		}
+
 	}catch(Exception $e){
-		$response = 'Erreur : '.$e->getMessage();
+		$data["message"] = 'Erreur : '.$e->getMessage();
 	}
 	
-	return json_encode($response);
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
 });
 
 
@@ -204,22 +234,29 @@ $app->GET('/list/{id}', function($request, $response, $args) {
 $app->PUT('/list/{id}', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
-	$name = $queryParams['name'];    $description = $queryParams['description'];    $images = $queryParams['images'];
+	$name = $queryParams['name'];    $description = $queryParams['description'];	$images = $queryParams['images'];
 	$json = json_encode($args);
 	$json = json_decode($json, true);
 	$id = (int) $json['id'];
-	$req = "UPDATE table `List` SET name =".$name.", description = ".$description.", images = ".$images."WHERE id = ".$id;
-
+		
 	try {
 		$DB = connect();
-		$DB->exec($req);
-		$response = "successful operation";
-	}catch(Exception $e){
-		$response = 'Erreur : ' . $e->getMessage();
+
+		if ($name != "") {
+			$req = $req = "UPDATE `List` SET name = :newName, description = :newDescription, images = :newImages WHERE id = ".$id;				;
+			$result = $DB->prepare($req);		
+			$result->execute(array( 'newName' => $name, 'newDescription' => $description, 'newImages' => $images));		
+			$data['message'] = 'successful operation';
+		} else {
+			$data['message'] = 'an error has occurred : name is empty';
+		}
+	} catch(Exception $e) {
+		$data["message"] = $e->getMessage();
 	}
-	/* Il manque l'id de la liste à modifier en paramètre d'entrée*/ 
-	$response->write('How about implementing updateList as a PUT method ?');
-	return json_encode($response);
+
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
 });
 
 
@@ -788,5 +825,4 @@ $app->DELETE('/relation/{id}', function($request, $response, $args) {
 
 /* RUN APP */
 $app->run();
-
 
