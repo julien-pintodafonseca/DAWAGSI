@@ -159,8 +159,8 @@ $app->POST('/list/create', function($request, $response, $args) {
 		} else {
 			$data['message'] = 'an error has occurred : name is empty';
 		}
-	} catch(Exception $e) {
-		$data["exception"] = $e->getMessage();
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 
 	return $response->withStatus(200)
@@ -197,8 +197,8 @@ $app->GET('/list/selectAll', function($request, $response, $args) {
 		} else {
 			$data['message'] = 'an error has occurred : table \'List\' is empty';
 		}
-	} catch(Exception $e) {
-		$data["exception"] = $e->getMessage();
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 	
 	return $response->withStatus(200)
@@ -237,8 +237,8 @@ $app->GET('/list/{id}', function($request, $response, $args) {
 		} else {
 			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
 		}
-	} catch(Exception $e) {
-		$data["exception"] = $e->getMessage();
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 	
 	return $response->withStatus(200)
@@ -284,8 +284,8 @@ $app->PUT('/list/{id}', function($request, $response, $args) {
 		} else {
 			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
 		}
-	} catch(Exception $e) {
-		$data["exception"] = $e->getMessage();
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 
 	return $response->withStatus(200)
@@ -318,8 +318,8 @@ $app->DELETE('/list/{id}', function($request, $response, $args) {
 		} else {
 			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
 		}
-	} catch(Exception $e) {
-		$data["exception"] = $e->getMessage();
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 
 	return $response->withStatus(200)
@@ -388,8 +388,8 @@ $app->POST('/image/create', function($request, $response, $args) {
 		} else {
 			$data['message'] = 'an error has occurred : name or path is empty';
 		}
-	} catch(Exception $e) {
-		$data["exception"] = $e->getMessage();
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 
 	return $response->withStatus(200)
@@ -428,8 +428,8 @@ $app->GET('/image/{id}', function($request, $response, $args) {
 		} else {
 			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
 		}
-	} catch(Exception $e) {
-		$data["exception"] = $e->getMessage();
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 	
 	return $response->withStatus(200)
@@ -477,8 +477,8 @@ $app->PUT('/image/{id}', function($request, $response, $args) {
 		} else {
 			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
 		}
-	} catch(Exception $e) {
-		$data["exception"] = $e->getMessage();
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 
 	return $response->withStatus(200)
@@ -511,8 +511,8 @@ $app->DELETE('/image/{id}', function($request, $response, $args) {
 		} else {
 			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
 		}
-	} catch(Exception $e) {
-		$data["exception"] = $e->getMessage();
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 
 	return $response->withStatus(200)
@@ -574,8 +574,8 @@ $app->POST('/editor/create', function($request, $response, $args) {
 		} else {
 			$data['message'] = 'an error has occurred : name is empty';
 		}
-	} catch(Exception $e) {
-		$data["exception"] = $e->getMessage();
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 
 	return $response->withStatus(200)
@@ -610,8 +610,8 @@ $app->GET('/editor/selectAll', function($request, $response, $args) {
 		} else {
 			$data['message'] = 'an error has occurred : table \'Editor\' is empty';
 		}
-	} catch(Exception $e) {
-		$data["exception"] = $e->getMessage();
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 	
 	return $response->withStatus(200)
@@ -648,8 +648,8 @@ $app->GET('/editor/{id}', function($request, $response, $args) {
 		} else {
 			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
 		}
-	} catch(Exception $e) {
-		$data["exception"] = $e->getMessage();
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 	
 	return $response->withStatus(200)
@@ -693,8 +693,8 @@ $app->PUT('/editor/{id}', function($request, $response, $args) {
 		} else {
 			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
 		}
-	} catch(Exception $e) {
-		$data["exception"] = $e->getMessage();
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 
 	return $response->withStatus(200)
@@ -727,8 +727,8 @@ $app->DELETE('/editor/{id}', function($request, $response, $args) {
 		} else {
 			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
 		}
-	} catch(Exception $e) {
-		$data["exception"] = $e->getMessage();
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 
 	return $response->withStatus(200)
@@ -745,6 +745,7 @@ $app->DELETE('/editor/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/annotation', function($request, $response, $args) {
+
 	try {
 		$DB = connect();
 		
@@ -763,6 +764,7 @@ $app->GET('/annotation', function($request, $response, $args) {
 	return $response->withStatus(200)
 	->withHeader('Content-Type', 'application/json')
 	->write(json_encode($data));
+
 });
 
 
@@ -775,26 +777,28 @@ $app->GET('/annotation', function($request, $response, $args) {
 $app->POST('/annotation/create', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
-	$tag = $queryParams['tag'];    $position = $queryParams['position'];    
-	$req = "INSERT INTO `Annotation` (tag, position) VALUES (".$tag.", ".$position.")";
+	$tag = $queryParams['tag'];
+	$position = $queryParams['position'];
 
 	try {
 		$DB = connect();
-		if (($tag == "") || ($position == "")) {
-			$data['message'] = 'an error has occurred : tag or position is empty';
-		} else {
+
+		if ($tag != "" && $position != "") {
 			$req = 'INSERT INTO `Annotation` (tag, position) VALUES(:tag, :position)';
 			$result = $DB->prepare($req);		
-			$result->execute(array( 'tag' => $tag, 'position' => $position));	
+			$result = $result->execute(array( 'tag' => $tag, 'position' => $position));	
 			$data['message'] = 'successful operation';
+		} else {
+			$data['message'] = 'an error has occurred : tag or position is empty';
 		}
-	} catch(Exception $e){
-		$response = 'Erreur : ' . $e->getMessage();
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 
 	return $response->withStatus(200)
 	->withHeader('Content-Type', 'application/json')
 	->write(json_encode($data));
+
 });
 
 
@@ -805,26 +809,34 @@ $app->POST('/annotation/create', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/annotation/{id}', function($request, $response, $args) {
+
 	$json = json_encode($args);
 	$json = json_decode($json, true);
 	$id = (int) $json['id'];
 
-	$req = 'SELECT * FROM `Annotation` WHERE id ='.$id;
 	try {
 		$DB = connect();
+
+		$req = 'SELECT * FROM `Annotation` WHERE id ='.$id;
 		$result = $DB->query($req);
 		$result = $result->fetchAll(PDO::FETCH_ASSOC);
-		foreach ($result as $row) {
-			$data["tag"] = $row["tag"];
-			$data["position"] = $row["position"];
+
+		if ($result) {
+			foreach ($result as $row) {
+				$data["tag"] = $row["tag"];
+				$data["position"] = $row["position"];
+			}
+		} else {
+			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
 		}
-	} catch(Exception $e) {
-		$data["message"] = 'Erreur : '.$e->getMessage();
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 	
 	return $response->withStatus(200)
 	->withHeader('Content-Type', 'application/json')
 	->write(json_encode($data));
+
 });
 
 
@@ -837,29 +849,40 @@ $app->GET('/annotation/{id}', function($request, $response, $args) {
 $app->PUT('/annotation/{id}', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
-	$tag = $queryParams['tag'];    $position = $queryParams['position'];    
+	$tag = $queryParams['tag'];
+	$position = $queryParams['position'];
+
 	$json = json_encode($args);
 	$json = json_decode($json, true);
 	$id = (int) $json['id'];
-
+	
 	try {
 		$DB = connect();
 
-		if (($tag != "") && ($position != "")) {
-			$req = $req = "UPDATE `Annotation` SET tag = :newTag, position = :newPosition WHERE id = ".$id;
-			$result = $DB->prepare($req);		
-			$result->execute(array('newTag' => $tag, 'newPosition' => $position));
-			$data['message'] = 'successful operation';
+		$req = 'SELECT * FROM `Annotation` WHERE id ='.$id;
+		$result = $DB->query($req);
+		$result = $result->fetchAll(PDO::FETCH_ASSOC);
+
+		if ($result) {
+			if ($tag != "" && $position != "") {
+				$req = $req = "UPDATE `Annotation` SET tag = :newTag, position = :newPosition WHERE id = ".$id;
+				$result = $DB->prepare($req);		
+				$result = $result->execute(array('newTag' => $tag, 'newPosition' => $position));
+				$data['message'] = 'successful operation';
+			} else {
+				$data['message'] = 'an error has occurred : tag or position is empty';
+			}
 		} else {
-			$data['message'] = 'an error has occurred : tag or position is empty';
+			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
 		}
-	} catch(Exception $e) {
-		$data["exception"] = $e->getMessage();
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 
 	return $response->withStatus(200)
 	->withHeader('Content-Type', 'application/json')
 	->write(json_encode($data));
+
 });
 
 
@@ -877,16 +900,23 @@ $app->DELETE('/annotation/{id}', function($request, $response, $args) {
 
 	try {
 		$DB = connect();
+
 		$req = "DELETE FROM `Annotation` WHERE id=".$id;
-		$DB->exec($req);
-		$data['message'] = "successful operation";
-	}catch(Exception $e){
-		$data['message'] = 'Erreur : ' . $e->getMessage();
+		$result = $DB->exec($req);
+
+		if ($result) {
+			$data['message'] = "successful operation";
+		} else {
+			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
+		}
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 
 	return $response->withStatus(200)
 	->withHeader('Content-Type', 'application/json')
 	->write(json_encode($data));
+
 });
 
 
@@ -897,6 +927,7 @@ $app->DELETE('/annotation/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/relation', function($request, $response, $args) {
+
 	try {
 		$DB = connect();
 		
@@ -915,6 +946,7 @@ $app->GET('/relation', function($request, $response, $args) {
 	return $response->withStatus(200)
 	->withHeader('Content-Type', 'application/json')
 	->write(json_encode($data));
+
 });
 
 
@@ -927,26 +959,29 @@ $app->GET('/relation', function($request, $response, $args) {
 $app->POST('/relation/create', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
-	$predicate = $queryParams['predicate'];    $annotation1 = $queryParams['annotation1'];    $annotation2 = $queryParams['annotation2'];    
-	$req = "INSERT INTO `Relation` (predicate, annotation1, annotation2) VALUES (".$predicate.", ".$annotation1.", ".$annotation2.")";
+	$predicate = $queryParams['predicate'];
+	$annotation1 = $queryParams['annotation1'];
+	$annotation2 = $queryParams['annotation2'];
 
 	try {
 		$DB = connect();
-		if (($predicate == "") || ($annotation1 == "") || ($annotation2 == "")) {
-			$data['message'] = 'an error has occurred : predicate, annotation1 or annotation2 is empty';
-		} else {
+
+		if ($predicate != "" && $annotation1 != "" && $annotation2 != "") {
 			$req = 'INSERT INTO `Relation` (predicate, annotation1, annotation2) VALUES(:predicate, :annotation1, :annotation2)';
 			$result = $DB->prepare($req);		
-			$result->execute(array( 'predicate' => $predicate, 'annotation1' => $annotation1, 'annotation2' => $annotation2));	
+			$result = $result->execute(array( 'predicate' => $predicate, 'annotation1' => $annotation1, 'annotation2' => $annotation2));	
 			$data['message'] = 'successful operation';
+		} else {
+			$data['message'] = 'an error has occurred : predicate, annotation1 or annotation2 is empty';
 		}
-	} catch(Exception $e){
-		$response = 'Erreur : ' . $e->getMessage();
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 
 	return $response->withStatus(200)
 	->withHeader('Content-Type', 'application/json')
 	->write(json_encode($data));
+
 });
 
 
@@ -957,27 +992,35 @@ $app->POST('/relation/create', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/relation/{id}', function($request, $response, $args) {
+
 	$json = json_encode($args);
 	$json = json_decode($json, true);
 	$id = (int) $json['id'];
 
-	$req = 'SELECT * FROM `Relation` WHERE id ='.$id;
 	try {
 		$DB = connect();
+
+		$req = 'SELECT * FROM `Relation` WHERE id ='.$id;
 		$result = $DB->query($req);
 		$result = $result->fetchAll(PDO::FETCH_ASSOC);
-		foreach ($result as $row) {
-			$data["predicate"] = $row["predicate"];
-			$data["annotation1"] = $row["annotation1"];
-			$data["annotation2"] = $row["annotation2"];
+
+		if ($result) {
+			foreach ($result as $row) {
+				$data["predicate"] = $row["predicate"];
+				$data["annotation1"] = $row["annotation1"];
+				$data["annotation2"] = $row["annotation2"];
+			}
+		} else {
+			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
 		}
-	} catch(Exception $e) {
-		$data["message"] = 'Erreur : '.$e->getMessage();
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 	
 	return $response->withStatus(200)
 	->withHeader('Content-Type', 'application/json')
-	->write(json_encode($data));	
+	->write(json_encode($data));
+
 });
 
 
@@ -990,8 +1033,10 @@ $app->GET('/relation/{id}', function($request, $response, $args) {
 $app->PUT('/relation/{id}', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
-	$predicate = $queryParams['predicate'];    $annotation1 = $queryParams['annotation1'];    $annotation2 = $queryParams['annotation2'];
-	
+	$predicate = $queryParams['predicate'];
+	$annotation1 = $queryParams['annotation1'];
+	$annotation2 = $queryParams['annotation2'];
+
 	$json = json_encode($args);
 	$json = json_decode($json, true);
 	$id = (int) $json['id'];
@@ -999,21 +1044,30 @@ $app->PUT('/relation/{id}', function($request, $response, $args) {
 	try {
 		$DB = connect();
 
-		if (($predicate != "") && ($annotation1 != "") && ($annotation2 != "")) {
-			$req = $req = "UPDATE `Relation` SET predicate = :newPredicate, annotation1 = :newAnnotation1, annotation2 = :newAnnotation2 WHERE id = ".$id;
-			$result = $DB->prepare($req);		
-			$result->execute(array( 'newPredicate' => $predicate, 'newAnnotation1' => $annotation1, 'newAnnotation2' => $annotation2));		
-			$data['message'] = 'successful operation';
+		$req = 'SELECT * FROM `Relation` WHERE id ='.$id;
+		$result = $DB->query($req);
+		$result = $result->fetchAll(PDO::FETCH_ASSOC);
+
+		if ($result) {
+			if ($predicate != "" && $annotation1 != "" && $annotation2 != "") {
+				$req = $req = "UPDATE `Relation` SET predicate = :newPredicate, annotation1 = :newAnnotation1, annotation2 = :newAnnotation2 WHERE id = ".$id;
+				$result = $DB->prepare($req);		
+				$result = $result->execute(array( 'newPredicate' => $predicate, 'newAnnotation1' => $annotation1, 'newAnnotation2' => $annotation2));		
+				$data['message'] = 'successful operation';
+			} else {
+				$data['message'] = 'an error has occurred : predicate, annotation1 or annotation2 is empty';
+			}
 		} else {
-			$data['message'] = 'an error has occurred : predicate, annotation1 or annotation2 is empty';
+			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
 		}
-	} catch(Exception $e) {
-		$data["exception"] = $e->getMessage();
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 
 	return $response->withStatus(200)
 	->withHeader('Content-Type', 'application/json')
-	->write(json_encode($data)); 
+	->write(json_encode($data));
+
 });
 
 
@@ -1028,22 +1082,28 @@ $app->DELETE('/relation/{id}', function($request, $response, $args) {
 	$json = json_encode($args);
 	$json = json_decode($json, true);
 	$id = (int) $json['id'];
-	
+
 	try {
 		$DB = connect();
+
 		$req = "DELETE FROM `Relation` WHERE id=".$id;	
-		$DB->exec($req);
-		$data['message'] = "successful operation";
-	}catch(Exception $e){
-		$data['message'] = 'Erreur : ' . $e->getMessage();
+		$result = $DB->exec($req);
+
+		if ($result) {
+			$data['message'] = "successful operation";
+		} else {
+			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
+		}
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 
 	return $response->withStatus(200)
 	->withHeader('Content-Type', 'application/json')
 	->write(json_encode($data));
+
 });
 
 
 /* RUN APP */
 $app->run();
-
