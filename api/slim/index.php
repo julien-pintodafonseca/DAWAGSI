@@ -54,7 +54,7 @@ function repair($DB) {
 	$req->execute();
 }
 
-/* $DB PDO INSTANCE */
+/* PDO INSTANCE */
 function connect() {
 	$password = '6,T3PKiaWsvB';
 	$user = 'skydefrc_ptut';
@@ -66,9 +66,8 @@ function connect() {
 		$DB = new PDO('mysql:host='.$server.':'.$port.';dbname='.$name.'',''.$user.'',''.$password.'');
 		repair($DB);
 		return $DB;
-	}
-	catch (Exception $e) {
-		//print_r('Exception : ' . $e->getMessage());
+	} catch (Exception $e) {
+		print_r($e->getMessage());
 		return null;
 	}
 }
@@ -81,17 +80,23 @@ function connect() {
  * Output-Formats: [application/json]
  */
 $app->GET('/database', function($request, $response, $args) {
-	$DB = connect();
 	
-	if ($DB) {
-		$data['status'] = "Ok";
-	} else {
-		$data['status'] = "Unreachable";
+	try {
+		$DB = connect();
+		
+		if ($DB) {
+			$data['status'] = "Ok";
+		} else {
+			$data['status'] = "Unreachable";
+		}
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 	
 	return $response->withStatus(200)
 	->withHeader('Content-Type', 'application/json')
 	->write(json_encode($data));
+	
 });
 
 
@@ -102,23 +107,26 @@ $app->GET('/database', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/list', function($request, $response, $args) {
-	$DB = connect();
 	
-	$req = "
-		SHOW TABLES LIKE 'List';
-	";
-	
-	$result = $DB->query($req)->rowCount();
-	
-	if ($result == 1) {
-		$data['status'] = "Ok";	
-	} else {
-		$data['status'] = "Unreachable";
+	try {
+		$DB = connect();
+		
+		$req = "SHOW TABLES LIKE 'List';";
+		$result = $DB->query($req)->rowCount();
+		
+		if ($result == 1) {
+			$data['status'] = "Ok";	
+		} else {
+			$data['status'] = "Unreachable";
+		}
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 	
 	return $response->withStatus(200)
 	->withHeader('Content-Type', 'application/json')
 	->write(json_encode($data));
+	
 });
 
 
@@ -131,7 +139,8 @@ $app->GET('/list', function($request, $response, $args) {
 $app->POST('/list/create', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
-	$name = $queryParams['name'];    $description = $queryParams['description'];
+	$name = $queryParams['name'];
+	$description = $queryParams['description'];
 		
 	try {
 		$DB = connect();
@@ -151,12 +160,13 @@ $app->POST('/list/create', function($request, $response, $args) {
 			$data['message'] = 'an error has occurred : name is empty';
 		}
 	} catch(Exception $e) {
-		$data["message"] = $e->getMessage();
+		$data["exception"] = $e->getMessage();
 	}
 
 	return $response->withStatus(200)
 	->withHeader('Content-Type', 'application/json')
 	->write(json_encode($data));
+	
 });
 
 
@@ -167,27 +177,34 @@ $app->POST('/list/create', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/list/selectAll', function($request, $response, $args) {
-	$count = 0;
-	$req = 'SELECT * FROM `List`';
+	
 	try {
 		$DB = connect();
+		
+		$req = 'SELECT * FROM `List`';
 		$result = $DB->query($req);
 		$result = $result->fetchAll(PDO::FETCH_ASSOC);
-		foreach ($result as $row) {
-			$data[$count]["id"] = $row["id"];
-			$data[$count]["name"] = $row["name"];
-			$data[$count]["description"] = $row["description"];
-			$data[$count]["images"] = $row["images"];
-			$count++;
+		
+		if ($result) {
+			$count = 0;
+			foreach ($result as $row) {
+				$data[$count]["id"] = $row["id"];
+				$data[$count]["name"] = $row["name"];
+				$data[$count]["description"] = $row["description"];
+				$data[$count]["images"] = $row["images"];
+				$count++;
+			}
+		} else {
+			$data['message'] = 'an error has occurred : table \'List\' is empty';
 		}
-
-	}catch(Exception $e){
-		$data["message"] = 'Erreur : '.$e->getMessage();
+	} catch(Exception $e) {
+		$data["exception"] = $e->getMessage();
 	}
 	
 	return $response->withStatus(200)
 	->withHeader('Content-Type', 'application/json')
 	->write(json_encode($data));
+	
 });
 
 
@@ -202,26 +219,32 @@ $app->GET('/list/{id}', function($request, $response, $args) {
 	$json = json_encode($args);
 	$json = json_decode($json, true);
 	$id = (int) $json['id'];
-
-	$req = 'SELECT * FROM `List` WHERE id = '.$id;
+	
 	try {
 		$DB = connect();
+		
+		$req = 'SELECT * FROM `List` WHERE id = '.$id;
 		$result = $DB->query($req);
 		$result = $result->fetchAll(PDO::FETCH_ASSOC);
-		foreach ($result as $row) {
-			$data["id"] = $row["id"];
-			$data["name"] = $row["name"];
-			$data["description"] = $row["description"];
-			$data["images"] = $row["images"];
+		
+		if ($result) {
+			foreach ($result as $row) {
+				$data["id"] = $row["id"];
+				$data["name"] = $row["name"];
+				$data["description"] = $row["description"];
+				$data["images"] = $row["images"];
+			}
+		} else {
+			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
 		}
-
-	}catch(Exception $e){
-		$data["message"] = 'Erreur : '.$e->getMessage();
+	} catch(Exception $e) {
+		$data["exception"] = $e->getMessage();
 	}
 	
 	return $response->withStatus(200)
 	->withHeader('Content-Type', 'application/json')
 	->write(json_encode($data));
+	
 });
 
 
@@ -234,21 +257,32 @@ $app->GET('/list/{id}', function($request, $response, $args) {
 $app->PUT('/list/{id}', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
-	$name = $queryParams['name'];    $description = $queryParams['description'];	$images = $queryParams['images'];
+	$name = $queryParams['name'];
+	$description = $queryParams['description'];
+	$images = $queryParams['images'];
+	
 	$json = json_encode($args);
 	$json = json_decode($json, true);
 	$id = (int) $json['id'];
 		
 	try {
 		$DB = connect();
-
-		if ($name != "") {
-			$req = $req = "UPDATE `List` SET name = :newName, description = :newDescription, images = :newImages WHERE id = ".$id;				;
-			$result = $DB->prepare($req);		
-			$result->execute(array( 'newName' => $name, 'newDescription' => $description, 'newImages' => $images));		
-			$data['message'] = 'successful operation';
+		
+		$req = 'SELECT * FROM `List` WHERE id = '.$id;
+		$result = $DB->query($req);
+		$result = $result->fetchAll(PDO::FETCH_ASSOC);
+		
+		if ($result) {
+			if ($name != "") {
+				$req = $req = "UPDATE `List` SET name = :newName, description = :newDescription, images = :newImages WHERE id = ".$id;
+				$result = $DB->prepare($req);
+				$result = $result->execute(array( 'newName' => $name, 'newDescription' => $description, 'newImages' => $images));
+				$data['message'] = "successful operation";
+			} else {
+				$data['message'] = 'an error has occurred : name is empty';
+			}
 		} else {
-			$data['message'] = 'an error has occurred : name is empty';
+			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
 		}
 	} catch(Exception $e) {
 		$data["message"] = $e->getMessage();
@@ -257,6 +291,7 @@ $app->PUT('/list/{id}', function($request, $response, $args) {
 	return $response->withStatus(200)
 	->withHeader('Content-Type', 'application/json')
 	->write(json_encode($data));
+	
 });
 
 
@@ -274,16 +309,23 @@ $app->DELETE('/list/{id}', function($request, $response, $args) {
 	
 	try {
 		$DB = connect();
+		
 		$req = "DELETE FROM `List` WHERE id=".$id;
-		$DB->exec($req);
-		$data['message'] = "successful operation";
-	}catch(Exception $e){
-		$data['message'] = 'Erreur : ' . $e->getMessage();
+		$result = $DB->exec($req);
+		
+		if ($result) {
+			$data['message'] = "successful operation";
+		} else {
+			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
+		}
+	} catch(Exception $e) {
+		$data["message"] = $e->getMessage();
 	}
 
 	return $response->withStatus(200)
 	->withHeader('Content-Type', 'application/json')
 	->write(json_encode($data));
+	
 });
 
 
@@ -294,18 +336,19 @@ $app->DELETE('/list/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/image', function($request, $response, $args) {
-	$DB = connect();
-	
-	$req = "
-		SHOW TABLES LIKE 'Image';
-	";
-	
-	$result = $DB->query($req)->rowCount();
-	
-	if ($result == 1) {
-		$data['status'] = "Ok";	
-	} else {
-		$data['status'] = "Unreachable";
+	try {
+		$DB = connect();
+		
+		$req = "SHOW TABLES LIKE 'Image';";
+		$result = $DB->query($req)->rowCount();
+		
+		if ($result == 1) {
+			$data['status'] = "Ok";	
+		} else {
+			$data['status'] = "Unreachable";
+		}
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 	
 	return $response->withStatus(200)
@@ -450,18 +493,19 @@ $app->DELETE('/image/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/editor', function($request, $response, $args) {
-	$DB = connect();
-	
-	$req = "
-		SHOW TABLES LIKE 'Editor';
-	";
-	
-	$result = $DB->query($req)->rowCount();
-	
-	if ($result == 1) {
-		$data['status'] = "Ok";	
-	} else {
-		$data['status'] = "Unreachable";
+	try {
+		$DB = connect();
+		
+		$req = "SHOW TABLES LIKE 'Editor';";
+		$result = $DB->query($req)->rowCount();
+		
+		if ($result == 1) {
+			$data['status'] = "Ok";	
+		} else {
+			$data['status'] = "Unreachable";
+		}
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 	
 	return $response->withStatus(200)
@@ -631,18 +675,19 @@ $app->DELETE('/editor/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/annotation', function($request, $response, $args) {
-	$DB = connect();
-	
-	$req = "
-		SHOW TABLES LIKE 'Annotation';
-	";
-	
-	$result = $DB->query($req)->rowCount();
-	
-	if ($result == 1) {
-		$data['status'] = "Ok";	
-	} else {
-		$data['status'] = "Unreachable";
+	try {
+		$DB = connect();
+		
+		$req = "SHOW TABLES LIKE 'Annotation';";
+		$result = $DB->query($req)->rowCount();
+		
+		if ($result == 1) {
+			$data['status'] = "Ok";	
+		} else {
+			$data['status'] = "Unreachable";
+		}
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 	
 	return $response->withStatus(200)
@@ -782,18 +827,19 @@ $app->DELETE('/annotation/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/relation', function($request, $response, $args) {
-	$DB = connect();
-	
-	$req = "
-		SHOW TABLES LIKE 'Relation';
-	";
-	
-	$result = $DB->query($req)->rowCount();
-	
-	if ($result == 1) {
-		$data['status'] = "Ok";	
-	} else {
-		$data['status'] = "Unreachable";
+	try {
+		$DB = connect();
+		
+		$req = "SHOW TABLES LIKE 'Relation';";
+		$result = $DB->query($req)->rowCount();
+		
+		if ($result == 1) {
+			$data['status'] = "Ok";	
+		} else {
+			$data['status'] = "Unreachable";
+		}
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
 	}
 	
 	return $response->withStatus(200)
