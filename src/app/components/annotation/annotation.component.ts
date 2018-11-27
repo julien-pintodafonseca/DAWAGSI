@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+declare var anno:any;
+
 
 @Component({
   selector: "app-annotation",
