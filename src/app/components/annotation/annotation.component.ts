@@ -27,7 +27,7 @@ export class AnnotationComponent implements OnInit {
 		  console.log("Image : "+annotation.src);
 		  console.log("Tag : "+annotation.text);
 		  console.log("Position : "+JSON.stringify(annotation.shapes));
-      console.log("-----");
+		  console.log("-----");
       
       // ++Sauvegarder l'annotation dans la bdd
     });
@@ -38,7 +38,7 @@ export class AnnotationComponent implements OnInit {
 		  console.log("Image : "+annotation.src);
 		  console.log("Tag : "+annotation.text);
 		  console.log("Position : "+JSON.stringify(annotation.shapes));
-      console.log("-----");
+		  console.log("-----");
       
       // ++Supprimer l'annotation de la bdd
     });
@@ -49,7 +49,7 @@ export class AnnotationComponent implements OnInit {
 		  console.log("Image : "+annotation.src);
 		  console.log("Tag : "+annotation.text);
 		  console.log("Position : "+JSON.stringify(annotation.shapes));
-      console.log("-----");
+		  console.log("-----");
       
       // ++Modifier le tag de l'annotation dans la bdd
     });
@@ -57,12 +57,14 @@ export class AnnotationComponent implements OnInit {
 
   public loadAnnotations() {
     // ++Charger les infos de la bdd 
-    this.src = 'http://localhost:4200/assets/ressources/test.jpg';
-    this.text = 'test';
-    this.x = 0.434375;
-    this.y = 0.4375;
-    this.width = 0.1421875;
-    this.height = 0.205;
+	
+	/* Annotation 1 */
+    this.src = 'http://localhost:4200/assets/ressources/cat.jpg';
+    this.text = 'cuillère';
+    this.x = 0.4099173553719008;
+    this.y = 0.628099173553719;
+    this.width = 0.5867768595041323;
+    this.height = 0.128099173553719;
 
     // Création de l'annotation
 		this.myAnnotation ={
@@ -84,6 +86,47 @@ export class AnnotationComponent implements OnInit {
     
     // Ajout de l'annotation
     anno.addAnnotation(this.myAnnotation);
+	console.log("-----");
+	console.log("Annotation chargée :");
+	console.log("Image : "+this.myAnnotation.src);
+	console.log("Tag : "+this.myAnnotation.text);
+	console.log("Position : "+JSON.stringify(this.myAnnotation.shapes));
+	console.log("-----");
+	
+	/* Annotation 2 */
+	 this.src = 'http://localhost:4200/assets/ressources/cat.jpg';
+    this.text = 'gamelle';
+    this.x = 0.2413223140495868;
+    this.y = 0.6060606060606061;
+    this.width = 0.7570247933884298;
+    this.height = 0.3925619834710744;
+
+    // Création de l'annotation
+		this.myAnnotation ={
+			"src": this.src,
+      "text": this.text,
+      "shapes": [
+          {
+            "type": "rect",
+            "geometry": {
+                "x": this.x,
+                "y": this.y,
+                "width": this.width,
+                "height": this.height
+            },
+            "style": {}
+          }
+      ]
+    };
+    
+    // Ajout de l'annotation
+    anno.addAnnotation(this.myAnnotation);
+	console.log("-----");
+	console.log("Annotation chargée :");
+	console.log("Image : "+this.myAnnotation.src);
+	console.log("Tag : "+this.myAnnotation.text);
+	console.log("Position : "+JSON.stringify(this.myAnnotation.shapes));
+	console.log("-----");
   }
   
 }
