@@ -12,7 +12,8 @@
     background-color: #890700;
 }
 
-#gallery{
+#gallery
+{
     float:left; 
     width:900px; 
     height:550px; 
@@ -21,11 +22,13 @@
     border: solid 5px #BE8900;
 }
 
-gallery.button{
+gallery.button
+{
     margin-top: 50px; 
 }
 
-#information{
+#information
+{
     float:right; 
     width:500px; 
     height:550px; 
