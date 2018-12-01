@@ -32,7 +32,7 @@ export class UploadImageComponent implements OnInit {
         this.echec++;
         this.info = "Type de fichier non autorisé !";
       }
-      this.http.post(this.constURL + "/image/create" + '?originalName=' + JSON.parse(response).originalName + '&generatedName=' + JSON.parse(response).generatedName, "").subscribe(res => console.log(res));
+      this.http.post(this.constURL + "/image/create" + '?list=1&originalName=' + JSON.parse(response).originalName + '&generatedName=' + JSON.parse(response).generatedName, "").subscribe(res => console.log(res));
     };
   }
 
