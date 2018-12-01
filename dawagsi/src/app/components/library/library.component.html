@@ -5,7 +5,7 @@
     <app-navigation></app-navigation>
   </header>
 
-  <h2 style="float:left; margin-left:90px">Listes</h2>
+  <h2 style="float:left; margin-left:80px">Listes</h2>
   <h2 style="float:right; margin-right:500px">Informations</h2>
 
   <!-- Main space -->
@@ -16,15 +16,16 @@
       <!-- Gallery-lists component -->
       <app-gallery-lists></app-gallery-lists>
       <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-          <div class="btn-group mr-2" role="group" aria-label="First group">
-              <button type="button" routerLink="/liste" class="btn btn-dark">Selectionner la liste</button>
-          </div>
-          <div class="btn-group mr-2" role="group" aria-label="Second group">
-              <button type="button" class="btn btn-dark">Supprimer liste</button>
-          </div>
-          <div class="btn-group" role="group" aria-label="Third group">
-              <button type="button" (click)="ngxSmartModalService.getModal('modCreateListA').open()" class="btn btn-dark">Créer liste</button>
-          </div>
+        <div class="btn-group mr-2" role="group" aria-label="First group">
+          <button type="button" routerLink="/liste" class="btn btn-dark">Selectionner la liste</button>
+        </div>
+        <div class="btn-group mr-2" role="group" aria-label="Second group">
+          <button type="button" class="btn btn-dark">Supprimer liste</button>
+        </div>
+        <div class="btn-group" role="group" aria-label="Third group">
+          <button type="button" (click)="ngxSmartModalService.getModal('modCreateListA').open()" class="btn btn-dark">Créer
+            liste</button>
+        </div>
       </div>
       <!-- !!Bouton "Créer une liste" qui affiche la modal "modCreateListA" -->
       <!-- /Gallery-lists component -->
@@ -35,11 +36,11 @@
     <div id="information">
       <strong>Nom Liste</strong>
       <br />
-      Déscription de la liste 
+      Description de la liste
       <br />
-      Date de création : 
+      Date de création :
       <br />
-      Nombre d'images : 
+      Nombre d'images :
       <br />
 
       <!-- Buttons -->
@@ -55,14 +56,13 @@
   </div>
   <!-- /Main space -->
 
-
   <!-- Modals -->
   <span>
 
     <!-- Modal "modEdit" -->
     <ngx-smart-modal #modEdit customClass="modEdit" identifier="modEdit" [closable]=true [escapable]=false
       [dismissable]=false>
-      <div style="height:50vh; text-align:center">
+      <div style="height:50vh; text-align:center;">
         <div style="width:80%; margin-left:10%">
           <!-- A faire dans le composant edit-list : -->
           <!-- !!Nom de la liste (zone de texte éditable) cf drive "interfaces/maquettes finales/EditerListe.png"  -->
@@ -101,19 +101,6 @@
           <app-upload-image></app-upload-image>
           <!-- !!Bouton valider -->
         </div>
-      </div>
-    </ngx-smart-modal>
-
-    <!-- Modal "modSelect" -->
-    <ngx-smart-modal #modSelect customClass="modSelect" identifier="modSelect" [closable]=true [escapable]=false
-      [dismissable]=false>
-      <div style="height:75vh; text-align:center">
-        <h2>[Nom liste]</h2>
-        <br />
-        <br />
-        <br />
-        <br />
-        <h2>[Images de la liste]</h2>
       </div>
     </ngx-smart-modal>
 

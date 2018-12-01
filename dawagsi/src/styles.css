@@ -52,7 +52,7 @@ body.dialog-open {
   flex-direction: column;
   pointer-events: auto;
   background-clip: padding-box;
-  background-color: #fff;
+  background-color: none;
   border-radius: 2px;
   padding: 1rem;
   margin: 1.75rem;
@@ -101,8 +101,12 @@ body.dialog-open {
 /* /ngx-smart-modal default style */
 
 /* ngx-smart-modal custom style */
-.modUpload, .modSelect {
-    width: 60% !important;
-    max-width: 100% !important;
+.modEdit, .modCreateListA, .modCreateListB {
+  width: 60% !important;
+  max-width: 100% !important;
+}
+
+.modEdit .nsm-content, .modCreateListA .nsm-content, .modCreateListB .nsm-content {
+  background:url('./assets/ressources/background_white.jpg') !important;
 }
 /* /ngx-smart-modal custom style */

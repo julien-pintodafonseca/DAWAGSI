@@ -1,8 +1,9 @@
 #library-component {
     height:100vh;
+    background:url('./../../../assets/ressources/background_white.jpg');
 }
 
-#accueil{
+#accueil {
     position:absolute; 
     margin:50px; 
     margin-top:50px;  
@@ -12,7 +13,7 @@
     background-color: #890700;
 }
 
-#gallery{
+#gallery {
     float:left; 
     width:900px; 
     height:550px; 
@@ -21,15 +22,19 @@
     border: solid 5px #BE8900;
 }
 
-gallery.button{
+gallery.button {
     margin-top: 50px; 
 }
 
-#information{
+#information {
     float:right; 
     width:500px; 
     height:550px; 
     padding:25px; 
     background-color:white; 
     border: solid 5px #BE8900;
+}
+
+#azert {
+    background:url('./../../../assets/ressources/background_white.jpg');
 }
