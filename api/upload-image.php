@@ -14,7 +14,7 @@ define('GB', 1073741824);
 define('TB', 1099511627776);
   
 //Options
-$path = '../uploads/'; //Répertoire où les images seront stockées
+$path = './../uploads/'; //Répertoire où les images seront stockées
 $renameToMd5 = true; //Génerer un nom aléatoire (true) ou garder le nom original (false)
 $extAccepted = array('jpg','jpeg','png'); //Extensions autorisées
 $maxSize = 60*MB; //Taille maximale (attention ! doit être inférieur à la valeur "post_max_size" de votre php.ini !)
