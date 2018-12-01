@@ -5,6 +5,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { NgxSmartModalModule } from "ngx-smart-modal";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule, MatCheckboxModule } from '@angular/material';
+import { HttpClientModule } from '@angular/common/http';
 
 import { FileSelectDirective } from 'ng2-file-upload';
 
@@ -48,7 +49,8 @@ import { HomeComponent } from './components/home/home.component';
     NgxSmartModalModule.forRoot(),
     BrowserAnimationsModule,
     MatButtonModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    HttpClientModule
   ],
   /* services */
   providers: [],
