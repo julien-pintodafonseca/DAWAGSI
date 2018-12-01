@@ -10,8 +10,7 @@ export class HomeComponent implements OnInit {
 
   constURL: string = "http://skydefr.com/ptut/api/slim";
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) { }
 
   ngOnInit() {
     var partialURL = "";;

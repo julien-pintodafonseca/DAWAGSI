@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FileUploader, FileSelectDirective } from 'ng2-file-upload/ng2-file-upload';
+import { HttpClient } from '@angular/common/http';
 
 // Chemin vers pload-image.php
 const URL = './../api/upload-image.php';
@@ -14,7 +15,9 @@ export class UploadImageComponent implements OnInit {
   succes: number = 0;
   echec: number = 0;
 
-  constructor() { }
+  constURL: string = "http://skydefr.com/ptut/api/slim";
+
+  constructor(private http: HttpClient) { }
 
   public uploader: FileUploader = new FileUploader({ url: URL, itemAlias: 'image' });
 
@@ -29,6 +32,7 @@ export class UploadImageComponent implements OnInit {
         this.echec++;
         this.info = "Type de fichier non autorisé !";
       }
+      this.http.post(this.constURL + "/image/create" + '?originalName=' + JSON.parse(response).originalName + '&generatedName=' + JSON.parse(response).generatedName, "").subscribe(res => console.log(res));
     };
   }
 
