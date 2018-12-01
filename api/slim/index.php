@@ -320,6 +320,7 @@ $app->GET('/image', function($request, $response, $args) {
 $app->POST('/image/create', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
+	$list = $queryParams['list'];
 	$originalName = $queryParams['originalName'];
 	$generatedName = $queryParams['generatedName'];
 	$editor = $queryParams['editor'];
@@ -327,19 +328,19 @@ $app->POST('/image/create', function($request, $response, $args) {
 	try {
 		$DB = connect();
 
-		if ($originalName != "" && $generatedName != "") {
+		if ($originalName != "" && $generatedName != "" && $list != "") {
 			if ($editor == "") {
-				$req = 'INSERT INTO `Image` (originalName, generatedName) VALUES(:originalName, :generatedName)';
+				$req = 'INSERT INTO `Image` (list, originalName, generatedName) VALUES(:list, :originalName, :generatedName)';
 				$result = $DB->prepare($req);
-				$result = $result->execute(array( 'originalName' => $originalName, 'generatedName' => $generatedName));
+				$result = $result->execute(array('list' => $list, 'originalName' => $originalName, 'generatedName' => $generatedName));
 			} else {
-				$req = 'INSERT INTO `Image` (originalName, generatedName, editor) VALUES(:originalName, :generatedName, :editor)';
+				$req = 'INSERT INTO `Image` (list, originalName, generatedName, editor) VALUES(:list, :originalName, :generatedName, :editor)';
 				$result = $DB->prepare($req);
-				$result = $result->execute(array('originalName' => $originalName, 'generatedName' => $generatedName, 'editor' => $editor));
+				$result = $result->execute(array('list' => $list, 'originalName' => $originalName, 'generatedName' => $generatedName, 'editor' => $editor));
 			}
 			$data['message'] = 'successful operation';
 		} else {
-			$data['message'] = 'an error has occurred : originalName, generatedName or path is empty';
+			$data['message'] = 'an error has occurred : list, originalName or generatedName is empty';
 		}
 	} catch (Exception $e) {
 		$data['exception'] = $e->getMessage();
@@ -374,11 +375,10 @@ $app->GET('/image/{id}', function($request, $response, $args) {
 		if ($result) {
 			foreach ($result as $row) {
 				$data["id"] = $row["id"];
+				$data["list"] = $row["list"];
 				$data["originalName"] = $row["originalName"];
 				$data["generatedName"] = $row["generatedName"];
 				$data["editor"] = $row["editor"];
-				$data["annotations"] = $row["annotations"];
-				$data["relations"] = $row["relations"];
 			}
 		} else {
 			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
@@ -403,11 +403,10 @@ $app->GET('/image/{id}', function($request, $response, $args) {
 $app->PUT('/image/{id}', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
+	$list = $queryParams['list'];
 	$originalName = $queryParams['originalName'];
 	$generatedName = $queryParams['generatedName'];
 	$editor = $queryParams['editor'];
-	$annotations = $queryParams['annotations'];
-	$relations = $queryParams['relations'];
 
 	$json = json_encode($args);
 	$json = json_decode($json, true);
@@ -422,12 +421,12 @@ $app->PUT('/image/{id}', function($request, $response, $args) {
 
 		if ($result) {
 			if ($originalName != "" && $generatedName != "") {
-				$req = $req = "UPDATE `Image` SET originalName = :newOriginalName, generatedName = :newGeneratedName, editor = :newEditor, annotations = :newAnnotations, relations = :newRelations WHERE id = ".$id;
+				$req = $req = "UPDATE `Image` SET list = newList, originalName = :newOriginalName, generatedName = :newGeneratedName, editor = :newEditor WHERE id = ".$id;
 				$result = $DB->prepare($req);		
-				$result->execute(array( 'newOriginalName' => $originalName, 'newGeneratedName' => $generatedName, 'newEditor' => $editor, 'newAnnotations' => $annotations,'newRelations' => $relations));		
+				$result->execute(array('newList' => $list, 'newOriginalName' => $originalName, 'newGeneratedName' => $generatedName, 'newEditor' => $editor));		
 				$data['message'] = 'successful operation';
 			} else {
-				$data['message'] = 'an error has occurred : name or path is empty';
+				$data['message'] = 'an error has occurred : list, originalName or generatedName is empty';
 			}
 		} else {
 			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
@@ -732,19 +731,20 @@ $app->GET('/annotation', function($request, $response, $args) {
 $app->POST('/annotation/create', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
+	$image = $queryParams['image'];
 	$tag = $queryParams['tag'];
 	$position = $queryParams['position'];
 
 	try {
 		$DB = connect();
 
-		if ($tag != "" && $position != "") {
-			$req = 'INSERT INTO `Annotation` (tag, position) VALUES(:tag, :position)';
+		if ($image != "" && $tag != "" && $position != "") {
+			$req = 'INSERT INTO `Annotation` (image, tag, position) VALUES(:image, :tag, :position)';
 			$result = $DB->prepare($req);		
-			$result = $result->execute(array( 'tag' => $tag, 'position' => $position));	
+			$result = $result->execute(array('image' => $image, 'tag' => $tag, 'position' => $position));	
 			$data['message'] = 'successful operation';
 		} else {
-			$data['message'] = 'an error has occurred : tag or position is empty';
+			$data['message'] = 'an error has occurred : image, tag or position is empty';
 		}
 	} catch (Exception $e) {
 		$data['exception'] = $e->getMessage();
@@ -778,6 +778,7 @@ $app->GET('/annotation/{id}', function($request, $response, $args) {
 
 		if ($result) {
 			foreach ($result as $row) {
+				$data["image"] = $row["image"];
 				$data["tag"] = $row["tag"];
 				$data["position"] = $row["position"];
 			}
@@ -804,6 +805,7 @@ $app->GET('/annotation/{id}', function($request, $response, $args) {
 $app->PUT('/annotation/{id}', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
+	$image = $queryParams['image'];
 	$tag = $queryParams['tag'];
 	$position = $queryParams['position'];
 
@@ -819,13 +821,13 @@ $app->PUT('/annotation/{id}', function($request, $response, $args) {
 		$result = $result->fetchAll(PDO::FETCH_ASSOC);
 
 		if ($result) {
-			if ($tag != "" && $position != "") {
-				$req = $req = "UPDATE `Annotation` SET tag = :newTag, position = :newPosition WHERE id = ".$id;
+			if ($image != "" && $tag != "" && $position != "") {
+				$req = $req = "UPDATE `Annotation` SET image = :newImage, tag = :newTag, position = :newPosition WHERE id = ".$id;
 				$result = $DB->prepare($req);		
-				$result = $result->execute(array('newTag' => $tag, 'newPosition' => $position));
+				$result = $result->execute(array('newImage' => $image, 'newTag' => $tag, 'newPosition' => $position));
 				$data['message'] = 'successful operation';
 			} else {
-				$data['message'] = 'an error has occurred : tag or position is empty';
+				$data['message'] = 'an error has occurred : image, tag or position is empty';
 			}
 		} else {
 			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
@@ -914,6 +916,7 @@ $app->GET('/relation', function($request, $response, $args) {
 $app->POST('/relation/create', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
+	$image = $queryParams['image'];
 	$predicate = $queryParams['predicate'];
 	$annotation1 = $queryParams['annotation1'];
 	$annotation2 = $queryParams['annotation2'];
@@ -921,13 +924,13 @@ $app->POST('/relation/create', function($request, $response, $args) {
 	try {
 		$DB = connect();
 
-		if ($predicate != "" && $annotation1 != "" && $annotation2 != "") {
-			$req = 'INSERT INTO `Relation` (predicate, annotation1, annotation2) VALUES(:predicate, :annotation1, :annotation2)';
+		if ($image != "" &&$predicate != "" && $annotation1 != "" && $annotation2 != "") {
+			$req = 'INSERT INTO `Relation` (image, predicate, annotation1, annotation2) VALUES(:image, :predicate, :annotation1, :annotation2)';
 			$result = $DB->prepare($req);		
-			$result = $result->execute(array( 'predicate' => $predicate, 'annotation1' => $annotation1, 'annotation2' => $annotation2));	
+			$result = $result->execute(array('image' => $image, 'predicate' => $predicate, 'annotation1' => $annotation1, 'annotation2' => $annotation2));	
 			$data['message'] = 'successful operation';
 		} else {
-			$data['message'] = 'an error has occurred : predicate, annotation1 or annotation2 is empty';
+			$data['message'] = 'an error has occurred : image, predicate, annotation1 or annotation2 is empty';
 		}
 	} catch (Exception $e) {
 		$data['exception'] = $e->getMessage();
@@ -961,6 +964,7 @@ $app->GET('/relation/{id}', function($request, $response, $args) {
 
 		if ($result) {
 			foreach ($result as $row) {
+				$data["image"] = $row["image"];
 				$data["predicate"] = $row["predicate"];
 				$data["annotation1"] = $row["annotation1"];
 				$data["annotation2"] = $row["annotation2"];
@@ -988,6 +992,7 @@ $app->GET('/relation/{id}', function($request, $response, $args) {
 $app->PUT('/relation/{id}', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
+	$image = $queryParams['image'];
 	$predicate = $queryParams['predicate'];
 	$annotation1 = $queryParams['annotation1'];
 	$annotation2 = $queryParams['annotation2'];
@@ -1004,13 +1009,13 @@ $app->PUT('/relation/{id}', function($request, $response, $args) {
 		$result = $result->fetchAll(PDO::FETCH_ASSOC);
 
 		if ($result) {
-			if ($predicate != "" && $annotation1 != "" && $annotation2 != "") {
-				$req = $req = "UPDATE `Relation` SET predicate = :newPredicate, annotation1 = :newAnnotation1, annotation2 = :newAnnotation2 WHERE id = ".$id;
+			if ($image != "" &&$predicate != "" && $annotation1 != "" && $annotation2 != "") {
+				$req = $req = "UPDATE `Relation` SET image = :newImage, predicate = :newPredicate, annotation1 = :newAnnotation1, annotation2 = :newAnnotation2 WHERE id = ".$id;
 				$result = $DB->prepare($req);		
-				$result = $result->execute(array( 'newPredicate' => $predicate, 'newAnnotation1' => $annotation1, 'newAnnotation2' => $annotation2));		
+				$result = $result->execute(array('newImage' => $image, 'newPredicate' => $predicate, 'newAnnotation1' => $annotation1, 'newAnnotation2' => $annotation2));		
 				$data['message'] = 'successful operation';
 			} else {
-				$data['message'] = 'an error has occurred : predicate, annotation1 or annotation2 is empty';
+				$data['message'] = 'an error has occurred : image, predicate, annotation1 or annotation2 is empty';
 			}
 		} else {
 			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';

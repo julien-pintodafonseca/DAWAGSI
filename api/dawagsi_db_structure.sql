@@ -54,9 +54,9 @@ CREATE TABLE `Editor` (
 
 CREATE TABLE `Image` (
   `id` int(11) NOT NULL COMMENT 'ID de l''image',
+  `list` int(11) NOT NULL COMMENT 'ID de la liste de l''image',
   `originalName` varchar(100) NOT NULL COMMENT 'Nom original de l''image',
   `generatedName` varchar(100) NOT NULL COMMENT 'Nom md5 de l''image',
-  `list` int(11) NOT NULL COMMENT 'ID de la liste de l''image',
   `editor` int(11) DEFAULT NULL COMMENT 'ID de l''éditeur lié à l''image'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
