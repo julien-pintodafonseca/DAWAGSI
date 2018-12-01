@@ -22,8 +22,8 @@ function repair($DB) {
 		
 		CREATE TABLE IF NOT EXISTS `Image` (
 		  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT \'ID de l\'\'image\',
-		  `name` varchar(100) NOT NULL COMMENT \'Nom de l\'\'image\',
-		  `path` varchar(255) NOT NULL COMMENT \'Chemin de l\'\'image\',
+		  `originalName` varchar(100) NOT NULL COMMENT \'Nom original de l\'\'image\',
+		  `generatedName` varchar(100) NOT NULL COMMENT \'Nom md5 de l\'\'image\',
 		  `editor` int(11) DEFAULT NULL COMMENT \'ID de l\'\'éditeur lié à l\'\'image\',
 		  `annotations` text DEFAULT NULL COMMENT \'ID des annotations liées à l\'\'image\',
 		  `relations` text DEFAULT NULL COMMENT \'ID des relations liées à l\'\'image\',
@@ -367,26 +367,26 @@ $app->GET('/image', function($request, $response, $args) {
 $app->POST('/image/create', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
-	$name = $queryParams['name'];
-	$path = $queryParams['path'];
+	$originalName = $queryParams['originalName'];
+	$generatedName = $queryParams['generatedName'];
 	$editor = $queryParams['editor'];
 	
 	try {
 		$DB = connect();
 
-		if ($name != "" && $path != "") {
+		if ($originalName != "" && $generatedName != "") {
 			if ($editor == "") {
-				$req = 'INSERT INTO `Image` (name, path) VALUES(:name, :path)';
+				$req = 'INSERT INTO `Image` (originalName, generatedName) VALUES(:originalName, :generatedName)';
 				$result = $DB->prepare($req);
-				$result = $result->execute(array( 'name' => $name, 'path' => $path));
+				$result = $result->execute(array( 'originalName' => $originalName, 'generatedName' => $generatedName));
 			} else {
-				$req = 'INSERT INTO `Image` (name, path, editor) VALUES(:name, :path, :editor)';
+				$req = 'INSERT INTO `Image` (originalName, generatedName, editor) VALUES(:originalName, :generatedName, :editor)';
 				$result = $DB->prepare($req);
-				$result = $result->execute(array('name' => $name, 'path' => $path, 'editor' => $editor));
+				$result = $result->execute(array('originalName' => $originalName, 'generatedName' => $generatedName, 'editor' => $editor));
 			}
 			$data['message'] = 'successful operation';
 		} else {
-			$data['message'] = 'an error has occurred : name or path is empty';
+			$data['message'] = 'an error has occurred : originalName, generatedName or path is empty';
 		}
 	} catch (Exception $e) {
 		$data['exception'] = $e->getMessage();
@@ -421,9 +421,11 @@ $app->GET('/image/{id}', function($request, $response, $args) {
 		if ($result) {
 			foreach ($result as $row) {
 				$data["id"] = $row["id"];
-				$data["name"] = $row["name"];
-				$data["path"] = $row["path"];
+				$data["originalName"] = $row["originalName"];
+				$data["generatedName"] = $row["generatedName"];
 				$data["editor"] = $row["editor"];
+				$data["annotations"] = $row["annotations"];
+				$data["relations"] = $row["relations"];
 			}
 		} else {
 			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
@@ -448,8 +450,8 @@ $app->GET('/image/{id}', function($request, $response, $args) {
 $app->PUT('/image/{id}', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
-	$path = $queryParams['path'];
-	$name = $queryParams['name'];
+	$originalName = $queryParams['originalName'];
+	$generatedName = $queryParams['generatedName'];
 	$editor = $queryParams['editor'];
 	$annotations = $queryParams['annotations'];
 	$relations = $queryParams['relations'];
@@ -466,10 +468,10 @@ $app->PUT('/image/{id}', function($request, $response, $args) {
 		$result = $result->fetchAll(PDO::FETCH_ASSOC);
 
 		if ($result) {
-			if ($name != "" && $path != "") {
-				$req = $req = "UPDATE `Image` SET name = :newName, path = :newPath, editor = :newEditor, annotations = :newAnnotations, relations = :newRelations WHERE id = ".$id;
+			if ($originalName != "" && $generatedName != "") {
+				$req = $req = "UPDATE `Image` SET originalName = :newOriginalName, generatedName = :newGeneratedName, editor = :newEditor, annotations = :newAnnotations, relations = :newRelations WHERE id = ".$id;
 				$result = $DB->prepare($req);		
-				$result->execute(array( 'newName' => $name, 'newPath' => $path, 'newEditor' => $editor, 'newAnnotations' => $annotations,'newRelations' => $relations));		
+				$result->execute(array( 'newOriginalName' => $originalName, 'newGeneratedName' => $generatedName, 'newEditor' => $editor, 'newAnnotations' => $annotations,'newRelations' => $relations));		
 				$data['message'] = 'successful operation';
 			} else {
 				$data['message'] = 'an error has occurred : name or path is empty';
