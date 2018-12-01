@@ -1,4 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
+/* Custom style */
+body {
+  background: url('./assets/ressources/background_white.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
 
 /* ngx-smart-modal default style */
 body.dialog-open {

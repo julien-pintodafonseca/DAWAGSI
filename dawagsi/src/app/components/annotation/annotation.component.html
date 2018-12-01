@@ -1,8 +1,15 @@
 <!-- Annotation -->
 <div id="annotation-component" style="text-align:center">
+  <!-- Navigation -->
+  <header>
+    <app-navigation></app-navigation>
+  </header>
+
   <h2>Demo Image</h2>
-  <img src="./assets/ressources/cat.jpg" class="annotatable" style="border: 1px solid black;">
+  <img src="./assets/ressources/cat.jpg" class="annotatable" style="border: 1px solid black; max-height:75vh;">
   <br />
   <br />
   <button (click)="loadAnnotations()" class="btn btn-dark">Charger annotations</button>
+  <br />
+  <br />
 </div>
