@@ -29,6 +29,8 @@ export class CreateListAComponent implements OnInit {
     {
       this.http.post(constURL + partialURL + '?name=' + this.name + '&description=' + this.description, body).subscribe(res => console.log(res));
       alert("Liste créée");
+      this.name = "";
+      this.description = "";
     }
     else
     {
