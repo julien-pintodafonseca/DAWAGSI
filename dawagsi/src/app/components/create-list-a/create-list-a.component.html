@@ -1,7 +1,10 @@
-<h1>[Créer liste]</h1>
-<br /><br /><br />
-<form method="post" action="">
-  Nom de la liste : <input type="text" name="nom_liste" id="nom_liste" autofocus /><br /><br />
-  Déscription : <textarea name="description" id="description" rows="3" cols="25">Décris ta liste...</textarea><br /><br /><br />
-  <input type="submit" class="btn btn-dark" value="Valider" />
-</form>
+<h1>Création d'une liste</h1>
+
+<br />
+<input type="text" name="name" id="name" placeholder="Nom de la liste" autofocus [(ngModel)]="name"/>
+<br />
+<br />
+<br />
+<textarea name="description" id="description" rows="5" cols="50" placeholder="Description de la liste" [(ngModel)]="description"></textarea><br /><br />
+<button (click)="creationListe()" class="btn btn-dark">Valider</button>
+<br />

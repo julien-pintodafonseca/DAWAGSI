@@ -1,3 +1,8 @@
-<p>
-  edit-list works!
-</p>
+<h1>Modification d'une liste</h1>
+
+<br />
+<input type="text" name="name" id="name" placeholder="Nom de la liste" autofocus [(ngModel)]="name"/>
+<br />
+<textarea name="description" id="description" rows="3" cols="25" placeholder="Description de la liste" [(ngModel)]="description"></textarea><br /><br /><br />
+<br />
+<button (click)="modificationListe()" class="btn btn-dark">Valider</button>
