@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * DAWAGSI Database API
  * @version 1.0.0
@@ -17,7 +17,7 @@ function connect() {
 	$port = 3306;
 	
 	try {
-		$DB = new PDO('mysql:host='.$server.':'.$port.';dbname='.$name.'',''.$user.'',''.$password.'');
+		$DB = new PDO('mysql:host='.$server.':'.$port.';dbname='.$name.'',''.$user.'',''.$password.'', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
 		return $DB;
 	} catch (Exception $e) {
 		print_r($e->getMessage());
