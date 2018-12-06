@@ -1,12 +1,17 @@
-<br />
-<br />
-<br />
-<br />
-<button (click)="changePage(-1)">moins</button>
-<div id="gallery" [innerHTML]="html_lists"></div>
-<button (click)="changePage(1)">plus</button>
-<br />
-<br />
-<br />
-<br />
-<br />
+<!-- Gallery Lists -->
+<div id="gallery-lists-component">
+    <br />
+    <br />
+    <br />
+    <br />
+    <div id="gallery" [innerHTML]="html_lists"></div>
+    <br />
+    <br />
+    <div class="text-center">
+        <button (click)="changePage(-1)" class="btn btn-dark">
+            <</button> Page {{page_actuelle}} <button (click)="changePage(1)" class="btn btn-dark">>
+        </button>
+    </div>
+    <br />
+    <br />
+</div>

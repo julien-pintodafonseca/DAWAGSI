@@ -9,7 +9,7 @@ import { NullAstVisitor } from "@angular/compiler";
 })
 export class GalleryListsComponent implements OnInit {
   constURL: string = "http://skydefr.com/ptut/api/slim";
-  lists: string[][];
+  lists: any;
   html_lists: any;
   page_actuelle: number;
   nbPages: number;
@@ -20,49 +20,36 @@ export class GalleryListsComponent implements OnInit {
   ngOnInit() {
     var partialURL = "/list/selectAll";
 
-    this.http.get<string>(this.constURL + partialURL).subscribe(res => this.lists);
+    this.http.get<string>(this.constURL + partialURL)
+      .subscribe(res => {
+        this.lists = res;
+        this.nbLists = this.lists.length;
 
-    //var obj = JSON.parse(this.lists);
-    //var nbLists = obj.length;
+        this.html_lists = "";
+        this.page_actuelle = 1;
+        this.nbPages = 1;
 
-    this.lists = new Array();
-    this.lists.push(["1", "test", "descri", null]);
-    this.lists.push(["2", "maliste2", "ok descri", null]);
-    this.lists.push(["3", "oui3", "ok 3descri", null]);
-    this.lists.push(["4", "ok4", "ok d4escri", null]);
-    this.lists.push(["5", "oui5", "ok 3descri", null]);
-    this.lists.push(["6", "ok6", "ok d4escri", null]);
-    this.lists.push(["7", "oui7", "ok 3descri", null]);
-    this.lists.push(["8", "ok8", "ok d4escri", null]);
-    this.nbLists = this.lists.length;
-
-    this.html_lists = "";
-    this.page_actuelle = 1; //valeur modifiée en fonction des boutons "flèches"
-    this.nbPages = 1;
-
-    this.loadLists();
+        localStorage.removeItem('list');
+        this.loadLists();
+      });
   }
 
   public loadLists() {
-    //this.html_lists += "<a (click)=\"changePage(-1)\"><img src=\"./assets/ressources/arrow_l.png\" alt=\"image\" width=\"50%\" height=\"50%\"></a>";
-
     for (var i = 0; i < this.nbLists; i++) {
       var page = Math.ceil((i + 1) / 3);
+      var myList = this.lists[Object.keys(this.lists)[i]];
+
       if (this.nbPages < page) {
         this.nbPages = page;
       }
 
       if (page == this.page_actuelle) {
         this.html_lists += "<div class=\"element\">";
-        this.html_lists += "<a href=\"javascript: void(0)\" (click)=\"selectionList(" + i + "\">";
         this.html_lists += "<img src=\"./assets/ressources/image.png\" alt=\"image\" width=\"200px\" height=\"auto\" />";
-        this.html_lists += "</a>";
-        this.html_lists += "<div class=\"nom_liste\">" + this.lists[i][1] + "</div>";
+        this.html_lists += "<div class=\"nom_liste\">" + myList[Object.keys(myList)[1]] + "</div>";
         this.html_lists += "</div>";
       }
     }
-
-    //this.html_lists += "<a href=\"javascript: void(0)\" (click)=\"changePage(1)\"><img src=\"./assets/ressources/arrow_r.png\" alt=\"image\" width=\"50%\" height=\"50%\" /></a>";
   }
 
   public changePage(val) {
@@ -76,9 +63,5 @@ export class GalleryListsComponent implements OnInit {
       this.html_lists = "";
       this.loadLists();
     }
-  }
-
-  public selectionList(id) {
-
   }
 }
