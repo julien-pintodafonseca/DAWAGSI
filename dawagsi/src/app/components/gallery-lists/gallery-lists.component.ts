@@ -18,6 +18,9 @@ export class GalleryListsComponent implements OnInit {
   list3: Array<any> = new Array<any>(); //3ème liste à afficher
   selectedList: Array<any> = new Array<any>(); //liste selectionnée
 
+  CreateListName: string = ""; //Nom de la liste à créer
+  CreateListDescription: string = ""; //Description de la liste à créer
+
   constructor(public ngxSmartModalService: NgxSmartModalService, private http: HttpClient) { }
 
   ngOnInit() {
@@ -164,6 +167,25 @@ export class GalleryListsComponent implements OnInit {
       });
     } else {
       window.alert("Aucune liste sélectionnée !");
+    }
+  }
+
+  /* Fonction permettant de créer une liste */
+  public createList() {
+    var partialURL: string = "/list/create";
+
+    if (this.CreateListName != "") {
+      this.http.post(this.constURL + partialURL + '?name=' + this.CreateListName + '&description=' + this.CreateListDescription, "").subscribe(res => {
+        console.log(res);
+        window.alert("Liste créée");
+        this.requestAPI(); //On recharge les listes
+        this.ngxSmartModalService.getModal('modCreateList').close() //On ferme la fenêtre modale
+      });
+      this.CreateListName = "";
+      this.CreateListDescription = "";
+    }
+    else {
+      window.alert("La liste doit posséder un nom !");
     }
   }
 }

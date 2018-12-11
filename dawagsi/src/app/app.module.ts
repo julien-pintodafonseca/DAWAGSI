@@ -15,8 +15,6 @@ import { UploadImageComponent } from "./components/upload-image/upload-image.com
 import { PageNotFoundComponent } from "./components/page-not-found/page-not-found.component";
 import { GalleryListsComponent } from "./components/gallery-lists/gallery-lists.component";
 import { NavigationComponent } from "./components/navigation/navigation.component";
-import { CreateListAComponent } from "./components/create-list-a/create-list-a.component";
-import { CreateListBComponent } from "./components/create-list-b/create-list-b.component";
 import { EditListComponent } from "./components/edit-list/edit-list.component";
 import { ShowListComponent } from "./components/show-list/show-list.component";
 import { GalleryImagesComponent } from "./components/gallery-images/gallery-images.component";
@@ -32,8 +30,6 @@ import { HomeComponent } from './components/home/home.component';
     UploadImageComponent,
     GalleryListsComponent,
     NavigationComponent,
-    CreateListAComponent,
-    CreateListBComponent,
     EditListComponent,
     ShowListComponent,
     GalleryImagesComponent,

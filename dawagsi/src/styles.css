@@ -108,12 +108,12 @@ body.dialog-open {
 /* /ngx-smart-modal default style */
 
 /* ngx-smart-modal custom style */
-.modEdit, .modCreateListA, .modCreateListB {
+.modEdit, .modCreateList {
   width: 60% !important;
   max-width: 100% !important;
 }
 
-.modEdit .nsm-content, .modCreateListA .nsm-content, .modCreateListB .nsm-content {
+.modEdit .nsm-content, .modCreateList .nsm-content {
   background:url('./assets/ressources/background_white.jpg') !important;
 }
 /* /ngx-smart-modal custom style */
