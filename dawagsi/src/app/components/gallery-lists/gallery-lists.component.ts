@@ -21,8 +21,11 @@ export class GalleryListsComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    var partialURL = "/list/selectAll";
+    this.requestAPI(); //On charge les listes
+  }
 
+  /* Fonction permettant de réinitialiser les variables utilisées pour gérer les différentes listes */
+  public iniLists() {
     this.current_page = 1; //Page actuelle par défaut = 1
     this.nbPages = 1; //Nombre de page au total avant calcul = 1
 
@@ -44,12 +47,18 @@ export class GalleryListsComponent implements OnInit {
     //liste selectionnée
     this.selectedList[0] = -1;
     this.selectedList[1] = "aucune";
+  }
+
+  /* Fonction permettant de charger les différentes listes contenues dans la BDD via l'API */
+  public requestAPI() {
+    var partialURL = "/list/selectAll";
 
     //Appel API
     this.http.get<string>(this.constURL + partialURL)
       .subscribe(res => {
-        this.lists = res;
-        this.loadLists();
+        this.lists = res; //On stock les différentes listes
+        this.iniLists(); //On initialise les variables
+        this.loadLists(); //Chargement des informations à afficher
       });
   }
 
@@ -138,6 +147,21 @@ export class GalleryListsComponent implements OnInit {
       if (id == selectedID) {
         this.selectedList[1] = nom;
       }
+    }
+  }
+
+  /* Fonction permettant de supprimer la liste sélectionnée */
+  public delete(selectedID) {
+    if (selectedID >= 0) {
+      var partialURL: string = "/list/" + selectedID;
+
+      this.http.delete<string>(this.constURL + partialURL).subscribe(res => {
+        console.log(res);
+        window.alert("La liste sélectionnée vient d'être supprimée !");
+        this.requestAPI(); //On recharge les listes
+      });
+    } else {
+      window.alert("Aucune liste sélectionnée !");
     }
   }
 }

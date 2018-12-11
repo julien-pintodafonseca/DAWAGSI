@@ -40,9 +40,9 @@
     <br />
 
     <div class="btn-group mr-2">
-        <button type="button" routerLink="/liste" class="btn btn-dark">Valider sélection</button>
+        <button routerLink="/liste" class="btn btn-dark">Valider sélection</button>
     </div>
     <div class="btn-group mr-2">
-        <button type="button" class="btn btn-dark">Supprimer sélection</button>
+        <button (click)="delete(this.selectedList[0])" class="btn btn-dark">Supprimer sélection</button>
     </div>
 </div>
