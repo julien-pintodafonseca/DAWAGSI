@@ -1,4 +1,4 @@
-#accueil {
+#library-component {
     position:absolute; 
     margin:50px; 
     margin-top:50px;  
@@ -9,23 +9,35 @@
 }
 
 #gallery {
-    float:left; 
-    width:900px; 
-    height:550px; 
-    padding:25px; 
+    float:left;
+    width:900px;
+    height:550px;
+    padding:25px;
     background-color:white;
     border: solid 5px #BE8900;
 }
 
-gallery.button {
-    margin-top: 50px; 
+#lists {
+    display: flex;
+    justify-content: space-around;
+}
+
+a:hover {
+    outline: solid 2px #BE8900;
+    cursor: pointer;
 }
 
 #information {
-    float:right; 
-    width:500px; 
-    height:550px; 
-    padding:25px; 
-    background-color:white; 
+    float:right;
+    width:600px;
+    height:550px;
+    padding:25px;
+    background-color:white;
     border: solid 5px #BE8900;
 }
+
+#buttons {
+    display: flex;
+    justify-content: space-around;
+}
+

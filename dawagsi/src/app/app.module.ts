@@ -13,7 +13,6 @@ import { AppComponent } from "./app.component";
 import { LibraryComponent } from "./components/library/library.component";
 import { UploadImageComponent } from "./components/upload-image/upload-image.component";
 import { PageNotFoundComponent } from "./components/page-not-found/page-not-found.component";
-import { GalleryListsComponent } from "./components/gallery-lists/gallery-lists.component";
 import { NavigationComponent } from "./components/navigation/navigation.component";
 import { EditListComponent } from "./components/edit-list/edit-list.component";
 import { ShowListComponent } from "./components/show-list/show-list.component";
@@ -28,7 +27,6 @@ import { HomeComponent } from './components/home/home.component';
     LibraryComponent,
     PageNotFoundComponent,
     UploadImageComponent,
-    GalleryListsComponent,
     NavigationComponent,
     EditListComponent,
     ShowListComponent,
