@@ -1,17 +1,48 @@
 <!-- Gallery Lists -->
 <div id="gallery-lists-component">
+    <h6>Sélection : <span style="color:#890700">{{selectedList[1]}}</span></h6>
+
     <br />
     <br />
     <br />
+
+    <div id="gallery">
+        <div class="element">
+            <a (click)="select(this.list1[1])" [ngStyle]="{'visibility': this.list1[0]}">
+                <img src="./assets/ressources/image.png" alt="image" width="200px" height="200px" />
+                <div class="nom_liste">{{list1[2]}}</div>
+            </a>
+        </div>
+        <div class="element">
+            <a (click)="select(this.list2[1])" [ngStyle]="{'visibility': this.list2[0]}">
+                <img src="./assets/ressources/image.png" alt="image" width="200px" height="200px" />
+                <div class="nom_liste">{{list2[2]}}</div>
+            </a>
+        </div>
+        <div class="element">
+            <a (click)="select(this.list3[1])" [ngStyle]="{'visibility': this.list3[0]}">
+                <img src="./assets/ressources/image.png" alt="image" width="200px" height="200px" />
+                <div class="nom_liste">{{list3[2]}}</div>
+            </a>
+        </div>
+    </div>
+
     <br />
-    <div id="gallery" [innerHTML]="html_lists"></div>
     <br />
-    <br />
+
     <div class="text-center">
         <button (click)="changePage(-1)" class="btn btn-dark">
-            <</button> Page {{page_actuelle}} <button (click)="changePage(1)" class="btn btn-dark">>
+            <</button> Page {{current_page}} <button (click)="changePage(1)" class="btn btn-dark">>
         </button>
     </div>
+
     <br />
     <br />
+
+    <div class="btn-group mr-2">
+        <button type="button" routerLink="/liste" class="btn btn-dark">Valider sélection</button>
+    </div>
+    <div class="btn-group mr-2">
+        <button type="button" class="btn btn-dark">Supprimer sélection</button>
+    </div>
 </div>

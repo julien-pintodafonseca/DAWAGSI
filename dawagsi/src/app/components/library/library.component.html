@@ -11,19 +11,10 @@
     <div id="gallery">
       <!-- Gallery-lists component -->
       <app-gallery-lists></app-gallery-lists>
-      <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-        <div class="btn-group mr-2" role="group" aria-label="First group">
-          <button type="button" routerLink="/liste" class="btn btn-dark">Selectionner la liste</button>
-        </div>
-        <div class="btn-group mr-2" role="group" aria-label="Second group">
-          <button type="button" class="btn btn-dark">Supprimer liste</button>
-        </div>
-        <div class="btn-group" role="group" aria-label="Third group">
-          <button type="button" (click)="ngxSmartModalService.getModal('modCreateListA').open()" class="btn btn-dark">Créer
-            liste</button>
-        </div>
-      </div>
-      <!-- !!Bouton "Créer une liste" qui affiche la modal "modCreateListA" -->
+      <br />
+      <br />
+      <button type="button" (click)="ngxSmartModalService.getModal('modCreateListA').open()" class="btn btn-dark">Nouvelle
+        liste</button>
       <!-- /Gallery-lists component -->
     </div>
     <!-- /Gallery lists -->
