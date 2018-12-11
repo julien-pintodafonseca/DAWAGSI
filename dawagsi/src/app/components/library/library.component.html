@@ -11,10 +11,6 @@
     <div id="gallery">
       <!-- Gallery-lists component -->
       <app-gallery-lists></app-gallery-lists>
-      <br />
-      <br />
-      <button type="button" (click)="ngxSmartModalService.getModal('modCreateListA').open()" class="btn btn-dark">Nouvelle
-        liste</button>
       <!-- /Gallery-lists component -->
     </div>
     <!-- /Gallery lists -->
@@ -44,54 +40,22 @@
   <!-- /Main space -->
 
   <!-- Modals -->
-  <span>
 
-    <!-- Modal "modEdit" -->
-    <ngx-smart-modal #modEdit customClass="modEdit" identifier="modEdit" [closable]=true [escapable]=false
-      [dismissable]=false>
-      <div style="height:50vh; text-align:center;">
-        <div style="width:80%; margin-left:10%">
-          <!-- A faire dans le composant edit-list : -->
-          <!-- !!Nom de la liste (zone de texte éditable) cf drive "interfaces/maquettes finales/EditerListe.png"  -->
-          <!-- !!Description de la liste (zone de texte éditable) -->
-          <!-- !!Zone affichant les différentes images de la liste -->
-          <br />
-          <app-upload-image></app-upload-image>
-          <!-- !!Bouton valider -->
-        </div>
+  <!-- Modal "modEdit" -->
+  <ngx-smart-modal #modEdit customClass="modEdit" identifier="modEdit" [closable]=true [escapable]=false [dismissable]=false>
+    <div style="height:50vh; text-align:center;">
+      <div style="width:80%; margin-left:10%">
+        <!-- A faire dans le composant edit-list : -->
+        <!-- !!Nom de la liste (zone de texte éditable) cf drive "interfaces/maquettes finales/EditerListe.png"  -->
+        <!-- !!Description de la liste (zone de texte éditable) -->
+        <!-- !!Zone affichant les différentes images de la liste -->
+        <br />
+        <app-upload-image></app-upload-image>
+        <!-- !!Bouton valider -->
       </div>
-    </ngx-smart-modal>
+    </div>
+  </ngx-smart-modal>
 
-    <!-- Modal "modCreateListA" -->
-    <ngx-smart-modal #modCreateListA customClass="modCreateListA" identifier="modCreateListA" [closable]=true
-      [escapable]=false [dismissable]=false>
-      <div style="height:50vh; text-align:center">
-        <div style="width:80%; margin-left:10%">
-          <!-- A faire dans le composant create-list-a : -->
-          <!-- !!Nom de la nouvelle liste (zone de texte) cf drive "interfaces/maquettes finales/CréerListe.png" -->
-          <!-- !!Description de la nouvelle liste (zone de texte) -->
-          <!-- !!Bouton valider -->
-          <app-create-list-a></app-create-list-a>
-        </div>
-      </div>
-    </ngx-smart-modal>
-
-    <!-- Modal "modCreateListB" -->
-    <ngx-smart-modal #modCreateListA customClass="modCreateListB" identifier="modCreateListB" [closable]=true
-      [escapable]=false [dismissable]=false>
-      <div style="height:50vh; text-align:center">
-        <div style="width:80%; margin-left:10%">
-          <!-- A faire dans le composant create-list-b : -->
-          <!-- !!Nom de la nouvelle liste cf drive "interfaces/maquettes finales/CréerListe2.png" -->
-          <!-- !!Description de la nouvelle liste -->
-          <br />
-          <app-upload-image></app-upload-image>
-          <!-- !!Bouton valider -->
-        </div>
-      </div>
-    </ngx-smart-modal>
-
-  </span>
   <!-- /Modals -->
 
 </div>

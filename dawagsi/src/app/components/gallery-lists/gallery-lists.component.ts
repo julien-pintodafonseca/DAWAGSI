@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
-import { NullAstVisitor } from "@angular/compiler";
+import { NgxSmartModalService } from "ngx-smart-modal";
 
 @Component({
   selector: "app-gallery-lists",
@@ -18,15 +18,15 @@ export class GalleryListsComponent implements OnInit {
   list3: Array<any> = new Array<any>(); //3ème liste à afficher
   selectedList: Array<any> = new Array<any>(); //liste selectionnée
 
-  constructor(private http: HttpClient) { }
+  constructor(public ngxSmartModalService: NgxSmartModalService, private http: HttpClient) { }
 
   ngOnInit() {
+    this.current_page = 1; //Page actuelle par défaut = 1
     this.requestAPI(); //On charge les listes
   }
 
   /* Fonction permettant de réinitialiser les variables utilisées pour gérer les différentes listes */
   public iniLists() {
-    this.current_page = 1; //Page actuelle par défaut = 1
     this.nbPages = 1; //Nombre de page au total avant calcul = 1
 
     //1ère liste
@@ -67,15 +67,17 @@ export class GalleryListsComponent implements OnInit {
     var nbLists = this.lists.length; //Nombre de listes
     var orderList = 0; //Variable de travail permettant de connaitre l'ordre d'affichage (1ère, 2ème ou 3ème liste à afficher)
 
+    this.nbPages = Math.ceil(nbLists / 3); //Calcul du nombre total de pages 
+
+    //La page actuelle ne peux pas être supérieure au nombre total de pages
+    if (this.current_page > this.nbPages) {
+      this.current_page = this.nbPages;
+    }
+
     //On parcourt toutes les listes
     for (var i = 0; i < nbLists; i++) {
       var page = Math.ceil((i + 1) / 3); //Calcul de la page par rapport au numéro de liste
       var myList = this.lists[Object.keys(this.lists)[i]]; //Liste parcourue
-
-      //Calcul du nombre total de pages
-      if (this.nbPages < page) {
-        this.nbPages = page;
-      }
 
       //Si la page parcourue correspond à la page actuelle à afficher
       if (page == this.current_page) {
