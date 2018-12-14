@@ -28,6 +28,19 @@ export class LibraryComponent implements OnInit {
     this.requestAPI(); //On charge les listes
   }
 
+  /* Fonction permettant de charger les différentes listes contenues dans la BDD via l'API */
+  public requestAPI() {
+    var partialURL = "/list/selectAll";
+
+    //Appel API
+    this.http.get<string>(this.constURL + partialURL)
+      .subscribe(res => {
+        this.lists = res; //On stock les différentes listes
+        this.iniLists(); //On initialise les variables
+        this.loadLists(); //Chargement des informations à afficher
+      });
+  }
+
   /* Fonction permettant de réinitialiser les variables utilisées pour gérer les différentes listes */
   public iniLists() {
     this.nbPages = 1; //Nombre de page au total avant calcul = 1
@@ -53,20 +66,7 @@ export class LibraryComponent implements OnInit {
     //liste selectionnée
     this.selectedList[0] = -1;
     this.selectedList[1] = "aucune";
-    this.selectedList[3] = "";
-  }
-
-  /* Fonction permettant de charger les différentes listes contenues dans la BDD via l'API */
-  public requestAPI() {
-    var partialURL = "/list/selectAll";
-
-    //Appel API
-    this.http.get<string>(this.constURL + partialURL)
-      .subscribe(res => {
-        this.lists = res; //On stock les différentes listes
-        this.iniLists(); //On initialise les variables
-        this.loadLists(); //Chargement des informations à afficher
-      });
+    this.selectedList[2] = "aucune";
   }
 
   /* Fonction permettant de charger les informations des différentes listes à afficher */
