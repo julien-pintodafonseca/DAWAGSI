@@ -11,6 +11,10 @@
     margin-top: 50px;
 }
 
+#intro p {
+    font-size: 20px;
+}
+
 footer 
 {
     background-color: #890700;

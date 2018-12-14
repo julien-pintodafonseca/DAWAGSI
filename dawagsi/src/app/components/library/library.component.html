@@ -76,7 +76,7 @@
         <button routerLink="/liste" class="btn btn-dark">Accéder à la liste</button>
       </div>
       <div class="btn-group mr-2">
-        <button (click)="ngxSmartModalService.getModal('modEdit').open()" class="btn btn-dark">Editer informations</button>
+        <button (click)="ngxSmartModalService.getModal('modEditList').open()" class="btn btn-dark">Editer informations</button>
       </div>
       <div class="btn-group mr-2">
         <button (click)="delete(this.selectedList[0])" class="btn btn-dark">Supprimer la liste</button>
@@ -107,21 +107,27 @@
   </ngx-smart-modal>
   <!-- /Modal "modCreateList" -->
 
-  <!-- Modal "modEdit" -->
-  <ngx-smart-modal #modEdit customClass="modEdit" identifier="modEdit" [closable]=true [escapable]=false [dismissable]=false>
+  <!-- Modal "modEditList" -->
+  <ngx-smart-modal #modEditList customClass="modEditList" identifier="modEditList" [closable]=true [escapable]=false
+    [dismissable]=false>
     <div style="height:50vh; text-align:center;">
       <div style="width:80%; margin-left:10%">
-        <!-- A faire dans le composant edit-list : -->
-        <!-- !!Nom de la liste (zone de texte éditable) cf drive "interfaces/maquettes finales/EditerListe.png"  -->
-        <!-- !!Description de la liste (zone de texte éditable) -->
-        <!-- !!Zone affichant les différentes images de la liste -->
+        <h1>Edition de liste</h1>
+
         <br />
-        <app-upload-image></app-upload-image>
-        <!-- !!Bouton valider -->
+
+        <input type="text" name="name" placeholder="Nom" autofocus [(ngModel)]="selectedList[1]" />
+        <br /><br /><br />
+        <textarea name="description" rows="5" cols="50" placeholder="Description" [(ngModel)]="selectedList[2]"></textarea>
+
+        <br />
+        <br />
+
+        <button (click)="editList()" class="btn btn-dark">Valider</button>
       </div>
     </div>
   </ngx-smart-modal>
-  <!-- /Modal "modEdit" -->
+  <!-- /Modal "modEditList" -->
 
 </div>
 <!-- /Library -->

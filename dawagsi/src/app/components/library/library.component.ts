@@ -189,15 +189,32 @@ export class LibraryComponent implements OnInit {
     if (this.CreateListName != "") {
       this.http.post(this.constURL + partialURL + '?name=' + this.CreateListName + '&description=' + this.CreateListDescription, "").subscribe(res => {
         console.log(res);
-        window.alert("Liste créée");
+        window.alert("Liste créée !");
         this.requestAPI(); //On recharge les listes
         this.ngxSmartModalService.getModal('modCreateList').close() //On ferme la fenêtre modale
       });
       this.CreateListName = "";
       this.CreateListDescription = "";
-    }
-    else {
+    } else {
       window.alert("La liste doit posséder un nom !");
+    }
+  }
+
+  /* Fonction permettant d'éditer les informations d'une liste */
+  public editList() {
+    if (this.selectedList[0] >= 0) {
+      var partialURL: string = "/list/" + this.selectedList[0];
+
+      if (this.selectedList[1] != "") {
+        this.http.put(this.constURL + partialURL + '?name=' + this.selectedList[1] + '&description=' + this.selectedList[2], "").subscribe(res => {
+          console.log(res);
+          window.alert("Informations modifiées !");
+          this.requestAPI(); //On recharge les listes
+          this.ngxSmartModalService.getModal('modEditList').close() //On ferme la fenêtre modale
+        });
+      } else {
+        window.alert("La liste doit posséder un nom !");
+      }
     }
   }
 }

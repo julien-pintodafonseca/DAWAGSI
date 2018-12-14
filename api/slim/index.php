@@ -144,7 +144,6 @@ $app->GET('/list/selectAll', function($request, $response, $args) {
 				$data[$count]["id"] = $row["id"];
 				$data[$count]["name"] = $row["name"];
 				$data[$count]["description"] = $row["description"];
-				$data[$count]["images"] = $row["images"];
 				$count++;
 			}
 		} else {
@@ -185,7 +184,6 @@ $app->GET('/list/{id}', function($request, $response, $args) {
 				$data["id"] = $row["id"];
 				$data["name"] = $row["name"];
 				$data["description"] = $row["description"];
-				$data["images"] = $row["images"];
 			}
 		} else {
 			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
@@ -212,7 +210,6 @@ $app->PUT('/list/{id}', function($request, $response, $args) {
 	$queryParams = $request->getQueryParams();
 	$name = $queryParams['name'];
 	$description = $queryParams['description'];
-	$images = $queryParams['images'];
 	
 	$json = json_encode($args);
 	$json = json_decode($json, true);
@@ -227,9 +224,9 @@ $app->PUT('/list/{id}', function($request, $response, $args) {
 		
 		if ($result) {
 			if ($name != "") {
-				$req = $req = "UPDATE `List` SET name = :newName, description = :newDescription, images = :newImages WHERE id = ".$id;
+				$req = $req = "UPDATE `List` SET name = :newName, description = :newDescription WHERE id = ".$id;
 				$result = $DB->prepare($req);
-				$result = $result->execute(array( 'newName' => $name, 'newDescription' => $description, 'newImages' => $images));
+				$result = $result->execute(array( 'newName' => $name, 'newDescription' => $description));
 				$data['message'] = "successful operation";
 			} else {
 				$data['message'] = 'an error has occurred : name is empty';
