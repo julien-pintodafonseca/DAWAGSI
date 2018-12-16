@@ -11,9 +11,11 @@ import { Globals } from './../../globals'
 })
 export class LibraryComponent implements OnInit {
   constURL: string; //Base URL API
+
   lists: any; //Les différentes listes contenues dans la BDD (résultat d'un appel API)
   current_page: number; //Page actuelle (1 page = 3 listes à afficher)
   nbPages: number; //Nombre de pages au total (calculé en fonction du nombre de listes)
+  defaultValue = "/"; //Valeur par défaut à afficher pour le nom et la description
 
   list1: Array<any> = new Array<any>(); //1ère liste à afficher
   list2: Array<any> = new Array<any>(); //2ème liste à afficher
@@ -52,25 +54,25 @@ export class LibraryComponent implements OnInit {
     //1ère liste
     this.list1[0] = "hidden";
     this.list1[1] = -1;
-    this.list1[2] = "";
-    this.list1[3] = "";
+    this.list1[2] = this.defaultValue;
+    this.list1[3] = this.defaultValue;
 
     //2ème liste
     this.list2[0] = "hidden";
     this.list2[1] = -1;
-    this.list2[2] = "";
-    this.list2[3] = "";
+    this.list2[2] = this.defaultValue;
+    this.list2[3] = this.defaultValue;
 
     //3ème liste
     this.list3[0] = "hidden";
     this.list3[1] = -1;
-    this.list3[2] = "";
-    this.list3[3] = "";
+    this.list3[2] = this.defaultValue;
+    this.list3[3] = this.defaultValue;
 
     //liste selectionnée
     this.selectedList[0] = -1;
-    this.selectedList[1] = "-";
-    this.selectedList[2] = "-";
+    this.selectedList[1] = this.defaultValue;
+    this.selectedList[2] = this.defaultValue;
   }
 
   /* Fonction permettant de charger les informations des différentes listes à afficher */
@@ -97,7 +99,7 @@ export class LibraryComponent implements OnInit {
         var description = myList[Object.keys(myList)[2]]; //description de la liste à afficher
 
         if (description == null || description == "") {
-          description = "-";
+          description = this.defaultValue;
         }
 
         //On attribue les info à la liste à afficher (1ère, 2ème ou 3ème liste selon l'ordre d'affichage)
@@ -114,13 +116,13 @@ export class LibraryComponent implements OnInit {
 
               this.list2[0] = "hidden";
               this.list2[1] = -1;
-              this.list2[2] = "-";
-              this.list2[3] = "-";
+              this.list2[2] = this.defaultValue;
+              this.list2[3] = this.defaultValue;
 
               this.list3[0] = "hidden";
               this.list3[1] = -1;
-              this.list3[2] = "-";
-              this.list3[3] = "-";
+              this.list3[2] = this.defaultValue;
+              this.list3[3] = this.defaultValue;
               break;
             case 1:
               this.list2[0] = "visible";
@@ -170,7 +172,7 @@ export class LibraryComponent implements OnInit {
         var description = myList[Object.keys(myList)[2]]; //nom de la liste parcourue
 
         if (description == null || description == "") {
-          description = "-";
+          description = this.defaultValue;
         }
 
         //Si la liste parcourue est la liste sélectionnée

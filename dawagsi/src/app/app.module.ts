@@ -16,9 +16,7 @@ import { LibraryComponent } from "./components/library/library.component";
 import { UploadImageComponent } from "./components/upload-image/upload-image.component";
 import { PageNotFoundComponent } from "./components/page-not-found/page-not-found.component";
 import { NavigationComponent } from "./components/navigation/navigation.component";
-import { EditListComponent } from "./components/edit-list/edit-list.component";
-import { ShowListComponent } from "./components/show-list/show-list.component";
-import { GalleryImagesComponent } from "./components/gallery-images/gallery-images.component";
+import { ListComponent } from "./components/list/list.component";
 import { AnnotationComponent } from "./components/annotation/annotation.component";
 import { HomeComponent } from './components/home/home.component';
 
@@ -30,9 +28,7 @@ import { HomeComponent } from './components/home/home.component';
     PageNotFoundComponent,
     UploadImageComponent,
     NavigationComponent,
-    EditListComponent,
-    ShowListComponent,
-    GalleryImagesComponent,
+    ListComponent,
     AnnotationComponent,
     FileSelectDirective,
     HomeComponent

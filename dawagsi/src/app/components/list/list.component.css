@@ -1,0 +1,40 @@
+#show-list-component {
+    position:absolute;
+    margin:50px;
+    margin-top:50px;
+    width:1700px;
+    height:650px;
+    padding:25px;
+    background-color: #890700;
+}
+
+#list h1, #list h5, p {
+    margin-left: 30px;
+}
+
+#list {
+    float:left;
+    width:900px;
+    height:550px;
+    padding:25px;
+    background-color:white;
+    border: solid 5px #BE8900;
+}
+
+#gallery {
+    display: flex;
+    justify-content: space-around;
+}
+
+.nom_image {
+    text-align: center;
+}
+
+#information {
+    float:right;
+    width:500px;
+    height:550px;
+    padding:25px;
+    background-color:white;
+    border: solid 5px #BE8900;
+}
