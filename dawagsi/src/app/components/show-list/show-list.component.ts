@@ -1,4 +1,7 @@
 import { Component, OnInit } from "@angular/core";
+import { HttpClient } from '@angular/common/http';
+
+import { Globals } from './../../globals'
 
 @Component({
   selector: "app-show-list",
@@ -6,7 +9,12 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./show-list.component.css"]
 })
 export class ShowListComponent implements OnInit {
-  constructor() {}
+  selectedList: Array<any> = new Array<any>(); //liste selectionnée
 
-  ngOnInit() {}
+  constructor(private globals: Globals, private http: HttpClient) { }
+
+  ngOnInit() {
+    this.selectedList = this.globals.SelectedList();
+    alert(this.selectedList[1]);
+  }
 }

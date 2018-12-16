@@ -2,13 +2,15 @@ import { Component, OnInit } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { NgxSmartModalService } from "ngx-smart-modal";
 
+import { Globals } from './../../globals'
+
 @Component({
   selector: "app-library",
   templateUrl: "./library.component.html",
   styleUrls: ["./library.component.css"]
 })
 export class LibraryComponent implements OnInit {
-  constURL: string = "http://skydefr.com/ptut/api/slim"; //Base URL API
+  constURL: string; //Base URL API
   lists: any; //Les différentes listes contenues dans la BDD (résultat d'un appel API)
   current_page: number; //Page actuelle (1 page = 3 listes à afficher)
   nbPages: number; //Nombre de pages au total (calculé en fonction du nombre de listes)
@@ -21,9 +23,11 @@ export class LibraryComponent implements OnInit {
   CreateListName: string = ""; //Nom de la liste à créer
   CreateListDescription: string = ""; //Description de la liste à créer
 
-  constructor(public ngxSmartModalService: NgxSmartModalService, private http: HttpClient) { }
+  constructor(private globals: Globals, private ngxSmartModalService: NgxSmartModalService, private http: HttpClient) { }
 
   ngOnInit() {
+    this.constURL = this.globals.ApiURL();
+    this.globals.iniList(); //On réinitialise la liste sélectionnée
     this.current_page = 1; //Page actuelle par défaut = 1
     this.requestAPI(); //On charge les listes
   }
@@ -65,8 +69,8 @@ export class LibraryComponent implements OnInit {
 
     //liste selectionnée
     this.selectedList[0] = -1;
-    this.selectedList[1] = "aucune";
-    this.selectedList[2] = "aucune";
+    this.selectedList[1] = "-";
+    this.selectedList[2] = "-";
   }
 
   /* Fonction permettant de charger les informations des différentes listes à afficher */
@@ -92,6 +96,10 @@ export class LibraryComponent implements OnInit {
         var nom = myList[Object.keys(myList)[1]]; //nom de la liste à afficher
         var description = myList[Object.keys(myList)[2]]; //description de la liste à afficher
 
+        if (description == null || description == "") {
+          description = "-";
+        }
+
         //On attribue les info à la liste à afficher (1ère, 2ème ou 3ème liste selon l'ordre d'affichage)
         if (orderList < 3) {
           switch (orderList) {
@@ -100,16 +108,19 @@ export class LibraryComponent implements OnInit {
               this.list1[1] = id;
               this.list1[2] = nom;
               this.list1[3] = description;
+              console.log(this.list1[1]);
+              console.log(this.list1[2]);
+              console.log(this.list1[3]);
 
               this.list2[0] = "hidden";
               this.list2[1] = -1;
-              this.list2[2] = "";
-              this.list2[3] = "";
+              this.list2[2] = "-";
+              this.list2[3] = "-";
 
               this.list3[0] = "hidden";
               this.list3[1] = -1;
-              this.list3[2] = "";
-              this.list3[3] = "";
+              this.list3[2] = "-";
+              this.list3[3] = "-";
               break;
             case 1:
               this.list2[0] = "visible";
@@ -147,22 +158,28 @@ export class LibraryComponent implements OnInit {
 
   /* Fonction permettant de changer la liste sélectionnée */
   public select(selectedID) {
-    var nbLists = this.lists.length; //Nombre de listes
+    if (selectedID >= 0) {
+      var nbLists = this.lists.length; //Nombre de listes
 
-    this.selectedList[0] = selectedID;
+      //On parcourt toutes les listes
+      for (var i = 0; i < nbLists; i++) {
+        var myList = this.lists[Object.keys(this.lists)[i]]; //Liste parcourue
 
-    //On parcourt toutes les listes
-    for (var i = 0; i < nbLists; i++) {
-      var myList = this.lists[Object.keys(this.lists)[i]]; //Liste parcourue
+        var id = myList[Object.keys(myList)[0]]; //id de la liste parcourue
+        var nom = myList[Object.keys(myList)[1]]; //nom de la liste parcourue
+        var description = myList[Object.keys(myList)[2]]; //nom de la liste parcourue
 
-      var id = myList[Object.keys(myList)[0]]; //id de la liste parcourue
-      var nom = myList[Object.keys(myList)[1]]; //nom de la liste parcourue
-      var description = myList[Object.keys(myList)[2]]; //nom de la liste parcourue
+        if (description == null || description == "") {
+          description = "-";
+        }
 
-      //Si la liste parcourue est la liste sélectionnée
-      if (id == selectedID) {
-        this.selectedList[1] = nom;
-        this.selectedList[2] = description;
+        //Si la liste parcourue est la liste sélectionnée
+        if (id == selectedID) {
+          this.selectedList[0] = id;
+          this.selectedList[1] = nom;
+          this.selectedList[2] = description;
+          this.globals.selectList(id, nom, description);
+        }
       }
     }
   }
@@ -186,6 +203,9 @@ export class LibraryComponent implements OnInit {
   public createList() {
     var partialURL: string = "/list/create";
 
+    this.CreateListName = this.CreateListName.trim();
+    this.CreateListDescription = this.CreateListDescription.trim();
+
     if (this.CreateListName != "") {
       this.http.post(this.constURL + partialURL + '?name=' + this.CreateListName + '&description=' + this.CreateListDescription, "").subscribe(res => {
         console.log(res);
@@ -204,6 +224,9 @@ export class LibraryComponent implements OnInit {
   public editList() {
     if (this.selectedList[0] >= 0) {
       var partialURL: string = "/list/" + this.selectedList[0];
+
+      this.selectedList[1] = this.selectedList[1].trim();
+      this.selectedList[2] = this.selectedList[2].trim();
 
       if (this.selectedList[1] != "") {
         this.http.put(this.constURL + partialURL + '?name=' + this.selectedList[1] + '&description=' + this.selectedList[2], "").subscribe(res => {

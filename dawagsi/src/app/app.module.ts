@@ -9,6 +9,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { FileSelectDirective } from 'ng2-file-upload';
 
+import { Globals } from './globals';
+
 import { AppComponent } from "./app.component";
 import { LibraryComponent } from "./components/library/library.component";
 import { UploadImageComponent } from "./components/upload-image/upload-image.component";
@@ -47,7 +49,7 @@ import { HomeComponent } from './components/home/home.component';
     HttpClientModule
   ],
   /* services */
-  providers: [],
+  providers: [Globals],
   /* autre */
   bootstrap: [AppComponent]
 })
