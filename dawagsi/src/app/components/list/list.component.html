@@ -50,9 +50,10 @@
 
     <!-- Informations -->
     <div id="information">
-        <h4>Image sélectionnée</h4><br />
+        <h4>Image sélectionnée</h4>
+        <span style="color:#890700">{{selectedImage[2]}}</span><br /><br />
         <h5>Aperçu</h5>
-        <img src="{{selectedImagePreviewURL}}" alt="image" width="200" height="auto"><br /><br />
+        <img src="{{selectedImagePreviewURL}}" alt="image" width="200px" height="auto" max-height="200px"><br /><br />
         <h5>Tags</h5>
         <form method="post" action="traitement.php">
             <p>
