@@ -16,7 +16,7 @@ export class LibraryComponent implements OnInit {
   private lists: any; //Les différentes listes contenues dans la BDD (résultat d'un appel API)
   private current_page: number; //Page actuelle (1 page = 3 listes à afficher)
   private nbPages: number; //Nombre de pages au total (calculé en fonction du nombre de listes)
-  private defaultValue = "/"; //Valeur par défaut à afficher pour le nom et la description
+  private defaultValue; //Valeur par défaut à afficher pour le nom et la description
 
   private list1: Array<any> = new Array<any>(); //1ère liste à afficher
   private list2: Array<any> = new Array<any>(); //2ème liste à afficher
@@ -24,7 +24,7 @@ export class LibraryComponent implements OnInit {
   private selectedList: Array<any> = new Array<any>(); //liste selectionnée
 
   private CreateListName: string = ""; //Nom de la liste à créer
-  private CreateListDescription: string = ""; //Description de la liste à crée
+  private CreateListDescription: string = ""; //Description de la liste à créer
 
   /* Constructeur de la bibliothèque */
   constructor(
@@ -36,6 +36,8 @@ export class LibraryComponent implements OnInit {
   /* ngOnInit */
   ngOnInit() {
     this.current_page = 1; //Page actuelle par défaut = 1
+    this.defaultValue = "/"; //Valeur par défaut à afficher pour l'auteur
+
     this.requestAPI(); //On charge les listes
   }
 

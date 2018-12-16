@@ -19,12 +19,13 @@ export class ListComponent implements OnInit {
   private images: any; //Les différentes images contenues dans la BDD (résultat d'un appel API)
   private current_page: number; //Page actuelle (1 page = 3 listes à afficher)
   private nbPages: number; //Nombre de pages au total (calculé en fonction du nombre de listes)
-  private defaultValue = "/"; //Valeur par défaut à afficher pour l'auteur
+  private defaultValue; //Valeur par défaut à afficher pour l'auteur
 
   private image1: Array<any> = new Array<any>(); //1ère image à afficher
   private image2: Array<any> = new Array<any>(); //2ème image à afficher
   private image3: Array<any> = new Array<any>(); //3ème image à afficher
   private selectedImage: Array<any> = new Array<any>(); //image selectionnée
+  private selectedImagePreviewURL; //préview par défaut
   private uploadsDirectoryURL = uploadsDirectoryURL; //lien vers le dossier d'uploads (variable utilisée dans le html du composant)
 
   /* Constructeur de la bibliothèque */
@@ -42,6 +43,9 @@ export class ListComponent implements OnInit {
     this.selectedList[2] = localStorage.getItem('selectedList[2]'); //description
 
     this.current_page = 1; //Page actuelle par défaut = 1
+    this.defaultValue = "/"; //Valeur par défaut à afficher pour l'auteur
+    this.uploadsDirectoryURL = uploadsDirectoryURL; //lien vers le dossier d'uploads (variable utilisée dans le html du composant)
+
     this.requestAPI(); //On charge les images
   }
 
@@ -61,6 +65,7 @@ export class ListComponent implements OnInit {
   /* Permet de réinitialiser les variables utilisées pour gérer les différentes listes */
   public init() {
     this.nbPages = 1; //Nombre de page au total avant calcul = 1
+    this.selectedImagePreviewURL = "./assets/ressources/image.png"; //préview par défaut
 
     //On supprime les données locales concernant les images
     localStorage.removeItem('selectedImage[0]');
@@ -207,6 +212,7 @@ export class ListComponent implements OnInit {
           this.selectedImage[2] = nomOriginal;
           this.selectedImage[3] = nomMd5;
           this.selectedImage[4] = idEditeur;
+          this.selectedImagePreviewURL = uploadsDirectoryURL + "/" + this.selectedImage[3];
         }
       }
     }
