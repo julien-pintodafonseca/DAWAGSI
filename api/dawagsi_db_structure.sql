@@ -33,7 +33,7 @@ CREATE TABLE `Annotation` (
   `image` int(11) NOT NULL COMMENT 'ID de l''image de l''annotation',
   `tag` varchar(100) NOT NULL COMMENT 'Tag de l''annotation',
   `position` text NOT NULL COMMENT 'Données de position de l''annotation'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -44,7 +44,7 @@ CREATE TABLE `Annotation` (
 CREATE TABLE `Editor` (
   `id` int(11) NOT NULL COMMENT 'ID de l''éditeur',
   `name` varchar(100) NOT NULL COMMENT 'Nom de l''éditeur'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -58,7 +58,7 @@ CREATE TABLE `Image` (
   `originalName` varchar(100) NOT NULL COMMENT 'Nom original de l''image',
   `generatedName` varchar(100) NOT NULL COMMENT 'Nom md5 de l''image',
   `editor` int(11) DEFAULT NULL COMMENT 'ID de l''éditeur lié à l''image'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -70,7 +70,7 @@ CREATE TABLE `List` (
   `id` int(11) NOT NULL COMMENT 'ID de la liste',
   `name` varchar(100) NOT NULL COMMENT 'Nom de la liste',
   `description` varchar(255) DEFAULT NULL COMMENT 'Description de la liste'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -84,7 +84,7 @@ CREATE TABLE `Relation` (
   `predicate` varchar(100) NOT NULL COMMENT 'Prédicat de relation',
   `annotation1` int(11) NOT NULL COMMENT 'ID de la première annotation de la relation',
   `annotation2` int(11) NOT NULL COMMENT 'ID de la seconde annotation de la relation'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Index pour les tables déchargées

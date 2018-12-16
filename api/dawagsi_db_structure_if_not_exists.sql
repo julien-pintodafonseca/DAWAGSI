@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `Annotation` (
   `position` text NOT NULL COMMENT 'Données de position de l''annotation',
   PRIMARY KEY (`id`),
   KEY `Annotation_ibfk_1` (`image`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `Editor` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID de l''éditeur',
   `name` varchar(100) NOT NULL COMMENT 'Nom de l''éditeur',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `Image` (
   PRIMARY KEY (`id`),
   KEY `Image_ibfk_1` (`list`),
   KEY `Image_ibfk_2` (`editor`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `List` (
   `name` varchar(100) NOT NULL COMMENT 'Nom de la liste',
   `description` varchar(255) DEFAULT NULL COMMENT 'Description de la liste',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `Relation` (
   KEY `Relation_ibfk_1` (`image`),
   KEY `Relation_ibfk_2` (`annotation1`),
   KEY `Relation_ibfk_3` (`annotation2`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Contraintes pour les tables déchargées
