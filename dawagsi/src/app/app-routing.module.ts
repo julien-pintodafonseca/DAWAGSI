@@ -1,11 +1,12 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { HomeComponent } from "./components/home/home.component";
 import { LibraryComponent } from "./components/library/library.component";
-import { PageNotFoundComponent } from "./components/page-not-found/page-not-found.component";
 import { ListComponent } from "./components/list/list.component";
 import { AnnotationComponent } from "./components/annotation/annotation.component";
-import { HomeComponent } from "./components/home/home.component";
+import { PageNotFoundComponent } from "./components/page-not-found/page-not-found.component";
 
+/* routes */
 const routes: Routes = [
   {
     path: "",

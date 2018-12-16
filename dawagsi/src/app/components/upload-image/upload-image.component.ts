@@ -1,9 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { FileUploader, FileSelectDirective } from 'ng2-file-upload/ng2-file-upload';
+import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { HttpClient } from '@angular/common/http';
 
-// Chemin vers pload-image.php
-const URL = './../api/upload-image.php';
+import { ConfigService } from '../../services/config.service'
+
+const apiURL: string = new ConfigService().ApiURL(); //Base URL API BDD
+const apiUploadImageURL: string = new ConfigService().ApiUploadImageURL(); //Base URL API Upload Image
 
 @Component({
   selector: "app-upload-image",
@@ -11,20 +13,28 @@ const URL = './../api/upload-image.php';
   styleUrls: ["./upload-image.component.css"]
 })
 export class UploadImageComponent implements OnInit {
-  info: string = '';
-  succes: number = 0;
-  echec: number = 0;
+  private uploader: FileUploader = new FileUploader({ url: apiUploadImageURL, itemAlias: 'image' });
 
-  constURL: string = "http://skydefr.com/ptut/api/slim";
+  private info: string;
+  private succes: number;
+  private echec: number;
 
-  constructor(private http: HttpClient) { }
+  /* Constructeur */
+  constructor(
+    private http: HttpClient
+  ) { }
 
-  public uploader: FileUploader = new FileUploader({ url: URL, itemAlias: 'image' });
+  /* ngOnInit */
+  public ngOnInit() {
+    this.info = "";
+    this.succes = 0;
+    this.echec = 0;
 
-  ngOnInit() {
     this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
+
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       console.log('ImageUpload:', item, status, response);
+
       if (JSON.parse(response).status) {
         this.succes++;
         this.info = JSON.parse(response).originalName + " - Image mise en ligne avec succès !";
@@ -32,11 +42,13 @@ export class UploadImageComponent implements OnInit {
         this.echec++;
         this.info = "Type de fichier non autorisé !";
       }
-      this.http.post(this.constURL + "/image/create" + '?list=1&originalName=' + JSON.parse(response).originalName + '&generatedName=' + JSON.parse(response).generatedName, "").subscribe(res => console.log(res));
+
+      //Appel API
+      this.http.post(apiURL + "/image/create" + '?list=1&originalName=' + JSON.parse(response).originalName + '&generatedName=' + JSON.parse(response).generatedName, "").subscribe(res => console.log(res));
     };
   }
 
-  resetInfo() {
+  public resetInfo() {
     this.succes = 0;
     this.echec = 0;
     this.info = "";

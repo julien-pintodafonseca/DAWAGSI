@@ -1,11 +1,16 @@
-<!-- Show-List -->
-<div id="show-list-component">
-    <div id="list">
+<!-- List-Component -->
+<div id="list-component">
+
+    <!-- Gallery -->
+    <div id="gallery">
         <h1>{{selectedList[1]}}</h1>
         <h5>{{selectedList[2]}}</h5>
 
-        <br /><br /><br />
-        <div id="gallery">
+        <br />
+        <br />
+        <br />
+
+        <div id="images">
             <div class="element">
                 <a href="javascript:void(null);">
                     <img src="./assets/ressources/image.png" alt="image" width="200" height="auto">
@@ -27,21 +32,19 @@
                 <div class="nom_image">Nom Image</div>
             </div>
         </div>
-        <br /><br /><br />
 
-        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-            <div class="btn-group mr-2" role="group" aria-label="First group">
-                <button type="button" class="btn btn-dark">Ajouter image</button>
-            </div>
-            <div class="btn-group mr-2" role="group" aria-label="Second group">
-                <button type="button" class="btn btn-dark">Supprimer</button>
-            </div>
-            <div class="btn-group" role="group" aria-label="Third group">
-                <a href="./annotation"><button type="button" class="btn btn-dark">Annoter</button></a>
-            </div>
+        <br />
+        <br />
+        <br />
+
+        <div class="btn-group mr-2">
+            <button (click)="ngxSmartModalService.getModal('modUploadImages').open()" class="btn btn-dark">Ajouter
+                des images</button>
         </div>
     </div>
+    <!-- /Gallery -->
 
+    <!-- Informations -->
     <div id="information">
         <h4>Image sélectionnée</h4><br />
         <h5>Aperçu</h5>
@@ -58,5 +61,28 @@
             </p>
         </form><br />
         <h5>Relations</h5>
+
+        <div id="buttons">
+            <div class="btn-group mr-2">
+                <button routerLink="/annotation" class="btn btn-dark">Annoter l'image</button>
+            </div>
+            <div class="btn-group mr-2">
+                <button (click)="delete(this.selectedList[0])" class="btn btn-dark">Supprimer l'image</button>
+            </div>
+        </div>
     </div>
+    <!-- /Informations -->
+
+    <!-- Modal "modUploadImages" -->
+    <ngx-smart-modal #modUploadImages customClass="modUploadImages" identifier="modUploadImages" [closable]=true
+        [escapable]=false [dismissable]=false>
+        <div style="height:50vh; text-align:center">
+            <div style="width:80%; margin-left:10%">
+                <app-upload-image></app-upload-image>
+            </div>
+        </div>
+    </ngx-smart-modal>
+    <!-- /Modal "modUploadImages" -->
+
 </div>
+<!-- /List-Component -->

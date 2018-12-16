@@ -1,7 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 
-import { Globals } from '../../globals'
+import { ConfigService } from '../../services/config.service'
+import { NgxSmartModalService } from "ngx-smart-modal";
+
+const apiURL: string = new ConfigService().ApiURL(); //Base URL API BDD
 
 @Component({
   selector: "app-list",
@@ -9,11 +12,19 @@ import { Globals } from '../../globals'
   styleUrls: ["./list.component.css"]
 })
 export class ListComponent implements OnInit {
-  selectedList: Array<any> = new Array<any>(); //liste selectionnée
+  private selectedList: Array<any> = new Array<any>(); //liste selectionnée
 
-  constructor(private globals: Globals, private http: HttpClient) { }
+  /* Constructeur */
+  constructor(
+    private ngxSmartModalService: NgxSmartModalService,
+    private http: HttpClient,
+  ) { }
 
+  /* ngOnInit */
   ngOnInit() {
-    this.selectedList = this.globals.SelectedList(); //On récupère les informations de la liste sélectionnée précédemment
+    this.selectedList[0] = localStorage.getItem('selectedList[0]');
+    this.selectedList[1] = localStorage.getItem('selectedList[1]');
+    this.selectedList[2] = localStorage.getItem('selectedList[2]');
   }
+
 }

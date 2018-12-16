@@ -1,4 +1,4 @@
-#show-list-component {
+#list-component {
     position:absolute;
     margin:50px;
     margin-top:50px;
@@ -8,11 +8,11 @@
     background-color: #890700;
 }
 
-#list h1, #list h5, p {
+#gallery h1, #gallery h5, p {
     margin-left: 30px;
 }
 
-#list {
+#gallery {
     float:left;
     width:900px;
     height:550px;
@@ -21,7 +21,7 @@
     border: solid 5px #BE8900;
 }
 
-#gallery {
+#images {
     display: flex;
     justify-content: space-around;
 }

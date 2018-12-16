@@ -1,8 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
+import { Router } from "@angular/router";
+
+import { ConfigService } from '../../services/config.service'
 import { NgxSmartModalService } from "ngx-smart-modal";
 
-import { Globals } from './../../globals'
+const apiURL: string = new ConfigService().ApiURL(); //Base URL API BDD
 
 @Component({
   selector: "app-library",
@@ -10,46 +13,53 @@ import { Globals } from './../../globals'
   styleUrls: ["./library.component.css"]
 })
 export class LibraryComponent implements OnInit {
-  constURL: string; //Base URL API
+  private lists: any; //Les différentes listes contenues dans la BDD (résultat d'un appel API)
+  private current_page: number; //Page actuelle (1 page = 3 listes à afficher)
+  private nbPages: number; //Nombre de pages au total (calculé en fonction du nombre de listes)
+  private defaultValue = "/"; //Valeur par défaut à afficher pour le nom et la description
 
-  lists: any; //Les différentes listes contenues dans la BDD (résultat d'un appel API)
-  current_page: number; //Page actuelle (1 page = 3 listes à afficher)
-  nbPages: number; //Nombre de pages au total (calculé en fonction du nombre de listes)
-  defaultValue = "/"; //Valeur par défaut à afficher pour le nom et la description
+  private list1: Array<any> = new Array<any>(); //1ère liste à afficher
+  private list2: Array<any> = new Array<any>(); //2ème liste à afficher
+  private list3: Array<any> = new Array<any>(); //3ème liste à afficher
+  private selectedList: Array<any> = new Array<any>(); //liste selectionnée
 
-  list1: Array<any> = new Array<any>(); //1ère liste à afficher
-  list2: Array<any> = new Array<any>(); //2ème liste à afficher
-  list3: Array<any> = new Array<any>(); //3ème liste à afficher
-  selectedList: Array<any> = new Array<any>(); //liste selectionnée
+  private CreateListName: string = ""; //Nom de la liste à créer
+  private CreateListDescription: string = ""; //Description de la liste à crée
 
-  CreateListName: string = ""; //Nom de la liste à créer
-  CreateListDescription: string = ""; //Description de la liste à créer
+  /* Constructeur de la bibliothèque */
+  constructor(
+    private ngxSmartModalService: NgxSmartModalService,
+    private http: HttpClient,
+    private router: Router
+  ) { }
 
-  constructor(private globals: Globals, private ngxSmartModalService: NgxSmartModalService, private http: HttpClient) { }
-
+  /* ngOnInit */
   ngOnInit() {
-    this.constURL = this.globals.ApiURL();
-    this.globals.iniList(); //On réinitialise la liste sélectionnée
     this.current_page = 1; //Page actuelle par défaut = 1
     this.requestAPI(); //On charge les listes
   }
 
-  /* Fonction permettant de charger les différentes listes contenues dans la BDD via l'API */
+  /* Permet d'obtenir les différentes listes contenues dans la BDD */
   public requestAPI() {
-    var partialURL = "/list/selectAll";
+    var partialURL = "/list/selectAll"; //On complète l'url
 
     //Appel API
-    this.http.get<string>(this.constURL + partialURL)
+    this.http.get<string>(apiURL + partialURL)
       .subscribe(res => {
         this.lists = res; //On stock les différentes listes
-        this.iniLists(); //On initialise les variables
-        this.loadLists(); //Chargement des informations à afficher
+        this.init(); //On réinitialise les variables
+        this.load(); //Chargement des informations à afficher
       });
   }
 
-  /* Fonction permettant de réinitialiser les variables utilisées pour gérer les différentes listes */
-  public iniLists() {
+  /* Permet de réinitialiser les variables utilisées pour gérer les différentes listes */
+  public init() {
     this.nbPages = 1; //Nombre de page au total avant calcul = 1
+
+    //On supprime les données locales si elles existent
+    localStorage.removeItem('selectedList[0]');
+    localStorage.removeItem('selectedList[1]');
+    localStorage.removeItem('selectedList[2]');
 
     //1ère liste
     this.list1[0] = "hidden";
@@ -75,8 +85,8 @@ export class LibraryComponent implements OnInit {
     this.selectedList[2] = this.defaultValue;
   }
 
-  /* Fonction permettant de charger les informations des différentes listes à afficher */
-  public loadLists() {
+  /* Permet de charger les informations des différentes listes à afficher */
+  public load() {
     var nbLists = this.lists.length; //Nombre de listes
     var orderList = 0; //Variable de travail permettant de connaitre l'ordre d'affichage (1ère, 2ème ou 3ème liste à afficher)
 
@@ -110,9 +120,6 @@ export class LibraryComponent implements OnInit {
               this.list1[1] = id;
               this.list1[2] = nom;
               this.list1[3] = description;
-              console.log(this.list1[1]);
-              console.log(this.list1[2]);
-              console.log(this.list1[3]);
 
               this.list2[0] = "hidden";
               this.list2[1] = -1;
@@ -145,20 +152,7 @@ export class LibraryComponent implements OnInit {
     }
   }
 
-  /* Fonction permettant de changer la page actuelle */
-  public changePage(val) {
-    this.current_page += val;
-
-    if (this.current_page < 1) {
-      this.current_page = 1; //La page acteulle ne peux pas être inférieure à 1
-    } else if (this.current_page > this.nbPages) {
-      this.current_page = this.nbPages; //La page actuelle ne peux pas être supérieur au nombre total de pages
-    } else {
-      this.loadLists(); //On recharge les listes à afficher
-    }
-  }
-
-  /* Fonction permettant de changer la liste sélectionnée */
+  /* Permet de changer la liste sélectionnée */
   public select(selectedID) {
     if (selectedID >= 0) {
       var nbLists = this.lists.length; //Nombre de listes
@@ -180,18 +174,108 @@ export class LibraryComponent implements OnInit {
           this.selectedList[0] = id;
           this.selectedList[1] = nom;
           this.selectedList[2] = description;
-          this.globals.selectList(id, nom, description);
+          //this.globals.selectList(id, nom, description);
         }
       }
     }
   }
 
-  /* Fonction permettant de supprimer la liste sélectionnée */
-  public delete(selectedID) {
-    if (selectedID >= 0) {
-      var partialURL: string = "/list/" + selectedID;
+  /* Permet de changer la page actuelle */
+  public changePage(val) {
+    this.current_page += val;
 
-      this.http.delete<string>(this.constURL + partialURL).subscribe(res => {
+    if (this.current_page < 1) {
+      this.current_page = 1; //La page acteulle ne peux pas être inférieure à 1
+    } else if (this.current_page > this.nbPages) {
+      this.current_page = this.nbPages; //La page actuelle ne peux pas être supérieur au nombre total de pages
+    } else {
+      this.load(); //On recharge les listes à afficher
+    }
+  }
+
+  /* Permet d'ouvrir la fenêtre de création d'une liste */
+  public btnCreate_Open() {
+    this.ngxSmartModalService.getModal('modCreateList').open();
+  }
+
+  /* Permet de valider la création d'une liste */
+  public btnCreate_Validate() {
+    if (this.CreateListName != "") {
+      var partialURL: string = "/list/create"; //On complète l'url
+
+      //On supprime les espaces avant et après les strings récupérés
+      this.CreateListName = this.CreateListName.trim();
+      this.CreateListDescription = this.CreateListDescription.trim();
+
+      //Appel API
+      this.http.post(apiURL + partialURL + '?name=' + this.CreateListName + '&description=' + this.CreateListDescription, "").subscribe(res => {
+        console.log(res);
+        window.alert("Liste créée !");
+        this.requestAPI(); //On recharge les listes
+        this.ngxSmartModalService.getModal('modCreateList').close() //On ferme la fenêtre modale
+      });
+
+      //On réinitialise les valeurs du formulaire
+      this.CreateListName = "";
+      this.CreateListDescription = "";
+    } else {
+      window.alert("La liste doit posséder un nom !");
+    }
+  }
+
+  /* Permet d'accéder à la liste sélectionnée  */
+  public btnNext() {
+    if (this.selectedList[0] >= 0) {
+      localStorage.setItem('selectedList[0]', this.selectedList[0]);
+      localStorage.setItem('selectedList[1]', this.selectedList[1]);
+      localStorage.setItem('selectedList[2]', this.selectedList[2]);
+      this.router.navigate(['/liste']);
+    } else {
+      window.alert("Aucune liste sélectionnée !");
+    }
+  }
+
+  /* Permet d'ouvrir la fenêtre d'édition des informations d'une liste */
+  public btnEdit_Open() {
+    if (this.selectedList[0] >= 0) {
+      this.ngxSmartModalService.getModal('modEditList').open();
+    } else {
+      window.alert("Aucune liste sélectionnée !");
+    }
+  }
+
+  /* Permet de valider l'édition des informations d'une liste */
+  public btnEdit_Validate() {
+    if (this.selectedList[0] >= 0) {
+      var partialURL: string = "/list/" + this.selectedList[0]; //On complète l'url
+
+      //On supprime les espaces avant et après les strings récupérés
+      this.selectedList[1] = this.selectedList[1].trim();
+      this.selectedList[2] = this.selectedList[2].trim();
+
+      if (this.selectedList[1] != "") {
+        //Appel API
+        this.http.put(apiURL + partialURL + '?name=' + this.selectedList[1] + '&description=' + this.selectedList[2], "").subscribe(res => {
+          console.log(res);
+          window.alert("Informations modifiées !");
+          this.requestAPI(); //On recharge les listes
+          this.ngxSmartModalService.getModal('modEditList').close() //On ferme la fenêtre modale
+        });
+      } else {
+        window.alert("La liste doit posséder un nom !");
+      }
+    } else {
+      window.alert("Aucune liste sélectionnée !");
+    }
+  }
+
+  /* Permet de supprimer la liste sélectionnée */
+  public btnDelete() {
+    if (this.selectedList[0] >= 0) {
+      var partialURL: string = "/list/" + this.selectedList[0]; //On complète l'url
+
+      //Appel API
+      this.http.delete<string>(apiURL + partialURL).subscribe(res => {
         console.log(res);
         window.alert("La liste sélectionnée vient d'être supprimée !");
         this.requestAPI(); //On recharge les listes
@@ -201,45 +285,4 @@ export class LibraryComponent implements OnInit {
     }
   }
 
-  /* Fonction permettant de créer une liste */
-  public createList() {
-    var partialURL: string = "/list/create";
-
-    this.CreateListName = this.CreateListName.trim();
-    this.CreateListDescription = this.CreateListDescription.trim();
-
-    if (this.CreateListName != "") {
-      this.http.post(this.constURL + partialURL + '?name=' + this.CreateListName + '&description=' + this.CreateListDescription, "").subscribe(res => {
-        console.log(res);
-        window.alert("Liste créée !");
-        this.requestAPI(); //On recharge les listes
-        this.ngxSmartModalService.getModal('modCreateList').close() //On ferme la fenêtre modale
-      });
-      this.CreateListName = "";
-      this.CreateListDescription = "";
-    } else {
-      window.alert("La liste doit posséder un nom !");
-    }
-  }
-
-  /* Fonction permettant d'éditer les informations d'une liste */
-  public editList() {
-    if (this.selectedList[0] >= 0) {
-      var partialURL: string = "/list/" + this.selectedList[0];
-
-      this.selectedList[1] = this.selectedList[1].trim();
-      this.selectedList[2] = this.selectedList[2].trim();
-
-      if (this.selectedList[1] != "") {
-        this.http.put(this.constURL + partialURL + '?name=' + this.selectedList[1] + '&description=' + this.selectedList[2], "").subscribe(res => {
-          console.log(res);
-          window.alert("Informations modifiées !");
-          this.requestAPI(); //On recharge les listes
-          this.ngxSmartModalService.getModal('modEditList').close() //On ferme la fenêtre modale
-        });
-      } else {
-        window.alert("La liste doit posséder un nom !");
-      }
-    }
-  }
 }

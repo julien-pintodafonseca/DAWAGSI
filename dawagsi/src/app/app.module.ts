@@ -1,52 +1,49 @@
 import { NgModule } from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
-import { FormsModule } from "@angular/forms";
 import { AppRoutingModule } from "./app-routing.module";
-import { NgxSmartModalModule } from "ngx-smart-modal";
+import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCheckboxModule } from '@angular/material';
+import { FormsModule } from "@angular/forms";
+import { NgxSmartModalModule } from "ngx-smart-modal";
 import { HttpClientModule } from '@angular/common/http';
 
-import { FileSelectDirective } from 'ng2-file-upload';
-
-import { Globals } from './globals';
+import { ConfigService } from './services/config.service';
 
 import { AppComponent } from "./app.component";
-import { LibraryComponent } from "./components/library/library.component";
-import { UploadImageComponent } from "./components/upload-image/upload-image.component";
-import { PageNotFoundComponent } from "./components/page-not-found/page-not-found.component";
-import { NavigationComponent } from "./components/navigation/navigation.component";
-import { ListComponent } from "./components/list/list.component";
-import { AnnotationComponent } from "./components/annotation/annotation.component";
 import { HomeComponent } from './components/home/home.component';
+import { LibraryComponent } from "./components/library/library.component";
+import { ListComponent } from "./components/list/list.component";
+import { UploadImageComponent } from "./components/upload-image/upload-image.component";
+import { AnnotationComponent } from "./components/annotation/annotation.component";
+import { NavigationComponent } from "./components/navigation/navigation.component";
+import { PageNotFoundComponent } from "./components/page-not-found/page-not-found.component";
+
+import { FileSelectDirective } from 'ng2-file-upload';
 
 @NgModule({
   /* composants */
   declarations: [
     AppComponent,
+    HomeComponent,
     LibraryComponent,
-    PageNotFoundComponent,
-    UploadImageComponent,
-    NavigationComponent,
     ListComponent,
+    UploadImageComponent,
     AnnotationComponent,
-    FileSelectDirective,
-    HomeComponent
+    NavigationComponent,
+    PageNotFoundComponent,
+    FileSelectDirective
   ],
   /* modules */
   imports: [
     AppRoutingModule,
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     NgxSmartModalModule.forRoot(),
-    BrowserAnimationsModule,
-    MatButtonModule,
-    MatCheckboxModule,
     HttpClientModule
   ],
   /* services */
-  providers: [Globals],
-  /* autre */
+  providers: [ConfigService],
+  /* autres */
   bootstrap: [AppComponent]
 })
 export class AppModule { }

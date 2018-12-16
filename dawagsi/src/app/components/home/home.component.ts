@@ -8,11 +8,13 @@ import { HttpClient } from '@angular/common/http';
 })
 export class HomeComponent implements OnInit {
 
-  constURL: string = "http://skydefr.com/ptut/api/slim";
+  constURL: string = "http://skydefr.com/ptut/api/slim"; //temporaire, à supprimer plus tard
 
+  /* Constructeur */
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
+    /* temporaire, à supprimer plus tard */
     var partialURL = "";
     var body = "";
 
@@ -42,6 +44,7 @@ export class HomeComponent implements OnInit {
 
     partialURL = "/list/2";
     //this.http.delete<string>(this.constURL + partialURL).subscribe(res => console.log(res));
+    /* /temporaire, à supprimer plus tard */
   }
 
 }

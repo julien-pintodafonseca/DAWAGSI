@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-declare var anno: any;
 
+declare var anno: any;
 
 @Component({
   selector: "app-annotation",
@@ -16,8 +16,10 @@ export class AnnotationComponent implements OnInit {
   width: number;
   height: number;
 
+  /* Constructeur */
   constructor() { }
 
+  /* ngOnInit */
   ngOnInit() {
     // cf https://github.com/annotorious/annotorious/wiki/JavaScript-API
 
