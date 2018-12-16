@@ -5,7 +5,7 @@ import { Router } from "@angular/router";
 import { ConfigService } from '../../services/config.service'
 import { NgxSmartModalService } from "ngx-smart-modal";
 
-const apiURL: string = new ConfigService().ApiURL(); //Base URL API BDD
+const apiURL: string = new ConfigService().ApiURL(); //API BDD base url (sans l'extension de requête)
 
 @Component({
   selector: "app-library",
@@ -56,7 +56,7 @@ export class LibraryComponent implements OnInit {
   public init() {
     this.nbPages = 1; //Nombre de page au total avant calcul = 1
 
-    //On supprime les données locales si elles existent
+    //On supprime les données locales concernant la liste
     localStorage.removeItem('selectedList[0]');
     localStorage.removeItem('selectedList[1]');
     localStorage.removeItem('selectedList[2]');
@@ -174,7 +174,6 @@ export class LibraryComponent implements OnInit {
           this.selectedList[0] = id;
           this.selectedList[1] = nom;
           this.selectedList[2] = description;
-          //this.globals.selectList(id, nom, description);
         }
       }
     }

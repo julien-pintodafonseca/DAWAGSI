@@ -309,6 +309,48 @@ $app->GET('/image', function($request, $response, $args) {
 
 
 /**
+ * GET selectImages
+ * Summary: Sélectionne toutes les images d'une liste
+ * Notes: 
+ * Output-Formats: [application/json]
+ */
+$app->GET('/images/selectAll', function($request, $response, $args) {
+
+	$queryParams = $request->getQueryParams();
+	$list = $queryParams['list'];
+	
+	try {
+		$DB = connect();
+		
+		$req = 'SELECT * FROM `Image` WHERE list ='.$list;
+		$result = $DB->query($req);
+		$result = $result->fetchAll(PDO::FETCH_ASSOC);
+		
+		if ($result) {
+			$count = 0;
+			foreach ($result as $row) {
+				$data[$count]["id"] = $row["id"];
+				$data[$count]["list"] = $row["list"];
+				$data[$count]["originalName"] = $row["originalName"];
+				$data[$count]["generatedName"] = $row["generatedName"];
+				$data[$count]["editor"] = $row["editor"];
+				$count++;
+			}
+		} else {
+			$data['message'] = 'an error has occurred : no images available for this list';
+		}
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
+	}
+	
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
+	
+});
+
+
+/**
  * POST createImage
  * Summary: Crée une nouvelle image
  * Notes: 

@@ -8,37 +8,41 @@
 
         <br />
         <br />
-        <br />
 
         <div id="images">
-            <div class="element">
-                <a href="javascript:void(null);">
-                    <img src="./assets/ressources/image.png" alt="image" width="200" height="auto">
+            <div class="element text-center">
+                <a (click)="select(this.image1[1])" [ngStyle]="{'visibility': this.image1[0]}">
+                    <img src="{{uploadsDirectoryURL}}/{{image1[4]}}" alt="image" width="200px" height="200px" />
+                    <div class="nom_image">{{image1[3]}}</div>
                 </a>
-                <div class="nom_image">Nom Image</div>
             </div>
-
-            <div class="element">
-                <a href="javascript:void(null);">
-                    <img src="./assets/ressources/image.png" alt="image" width="200" height="auto">
+            <div class="element text-center">
+                <a (click)="select(this.image2[1])" [ngStyle]="{'visibility': this.image2[0]}">
+                    <img src="{{uploadsDirectoryURL}}/{{image2[4]}}" alt="image" width="200px" height="200px" />
+                    <div class="nom_image">{{image2[3]}}</div>
                 </a>
-                <div class="nom_image">Nom Image</div>
             </div>
-
-            <div class="element">
-                <a href="javascript:void(null);">
-                    <img src="./assets/ressources/image.png" alt="image" width="200" height="auto">
+            <div class="element text-center">
+                <a (click)="select(this.image3[1])" [ngStyle]="{'visibility': this.image3[0]}">
+                    <img src="{{uploadsDirectoryURL}}/{{image3[4]}}" alt="image" width="200px" height="200px" />
+                    <div class="nom_image">{{image3[3]}}</div>
                 </a>
-                <div class="nom_image">Nom Image</div>
             </div>
         </div>
 
         <br />
         <br />
+
+        <div class="text-center">
+            <button (click)="changePage(-1)" class="btn btn-dark">
+                <</button> Page {{current_page}} <button (click)="changePage(1)" class="btn btn-dark">>
+            </button>
+        </div>
+
         <br />
 
         <div class="btn-group mr-2">
-            <button (click)="ngxSmartModalService.getModal('modUploadImages').open()" class="btn btn-dark">Ajouter
+            <button (click)="btnAddImages_Open()" class="btn btn-dark">Ajouter
                 des images</button>
         </div>
     </div>
@@ -63,19 +67,19 @@
         <h5>Relations</h5>
 
         <div id="buttons">
-            <div class="btn-group mr-2">
+            <!--<div class="btn-group mr-2">
                 <button routerLink="/annotation" class="btn btn-dark">Annoter l'image</button>
             </div>
             <div class="btn-group mr-2">
                 <button (click)="delete(this.selectedList[0])" class="btn btn-dark">Supprimer l'image</button>
-            </div>
+            </div>-->
         </div>
     </div>
     <!-- /Informations -->
 
     <!-- Modal "modUploadImages" -->
     <ngx-smart-modal #modUploadImages customClass="modUploadImages" identifier="modUploadImages" [closable]=true
-        [escapable]=false [dismissable]=false>
+        [escapable]=false [dismissable]=false (onCloseFinished)="requestAPI()">
         <div style="height:50vh; text-align:center">
             <div style="width:80%; margin-left:10%">
                 <app-upload-image></app-upload-image>
