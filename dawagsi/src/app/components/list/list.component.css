@@ -26,8 +26,9 @@
     justify-content: space-around;
 }
 
-.nom_image {
-    text-align: center;
+a:hover {
+    outline: solid 2px #BE8900;
+    cursor: pointer;
 }
 
 #information {
