@@ -181,6 +181,37 @@ export class ListComponent implements OnInit {
     }
   }
 
+  /* Permet de changer l'image sélectionnée */
+  public select(selectedID) {
+    if (selectedID >= 0) {
+      var nbImages = this.images.length; //Nombre d'images
+
+      //On parcourt toutes les images
+      for (var i = 0; i < nbImages; i++) {
+        var myImage = this.images[Object.keys(this.images)[i]]; //Image parcourue
+
+        var id = myImage[Object.keys(myImage)[0]]; //id de l'image parcourue
+        var idListe = myImage[Object.keys(myImage)[1]]; //id de la liste de l'image parcourue
+        var nomOriginal = myImage[Object.keys(myImage)[2]]; //nom original l'image parcourue
+        var nomMd5 = myImage[Object.keys(myImage)[3]]; //nom md5 l'image parcourue
+        var idEditeur = myImage[Object.keys(myImage)[4]]; //id de l'éditeur lié à l'image parcourue
+
+        if (idEditeur == null || idEditeur == "") {
+          idEditeur = this.defaultValue;
+        }
+
+        //Si l'image parcourue est l'image sélectionnée
+        if (id == selectedID) {
+          this.selectedImage[0] = id;
+          this.selectedImage[1] = idListe;
+          this.selectedImage[2] = nomOriginal;
+          this.selectedImage[3] = nomMd5;
+          this.selectedImage[4] = idEditeur;
+        }
+      }
+    }
+  }
+
   /* Permet de changer la page actuelle */
   public changePage(val) {
     this.current_page += val;
