@@ -1,6 +1,11 @@
 import { Component, OnInit } from "@angular/core";
+import { HttpClient } from '@angular/common/http';
 
-declare var anno: any;
+import { ConfigService } from '../../services/config.service'
+
+const apiURL: string = new ConfigService().ApiURL(); //API BDD base url (sans l'extension de requête)
+const uploadsDirectoryURL: string = new ConfigService().UploadsDirectoryURL(); //Uploads directory url
+declare var anno: any; //anno est déjà défini dans le script annotorious
 
 @Component({
   selector: "app-annotation",
@@ -8,6 +13,10 @@ declare var anno: any;
   styleUrls: ["./annotation.component.css"]
 })
 export class AnnotationComponent implements OnInit {
+  private selectedImage: Array<any> = new Array<any>(); //image
+
+  private uploadsDirectoryURL = uploadsDirectoryURL; //lien vers le dossier d'uploads (variable utilisée dans le html du composant)
+
   myAnnotation: any;
   src: string;
   text: string;
@@ -17,10 +26,20 @@ export class AnnotationComponent implements OnInit {
   height: number;
 
   /* Constructeur */
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   /* ngOnInit */
   ngOnInit() {
+    //On récupère les données locales concernant la liste
+    this.selectedImage[0] = localStorage.getItem('selectedImage[0]'); //id
+    this.selectedImage[1] = localStorage.getItem('selectedImage[1]'); //idListe
+    this.selectedImage[2] = localStorage.getItem('selectedImage[2]'); //nomOriginal
+    this.selectedImage[3] = localStorage.getItem('selectedImage[3]'); //nomMd5
+    this.selectedImage[4] = localStorage.getItem('selectedImage[4]'); //idEditeur
+
+
     // cf https://github.com/annotorious/annotorious/wiki/JavaScript-API
 
     anno.addHandler('onAnnotationCreated', function (annotation) {
