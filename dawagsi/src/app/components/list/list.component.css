@@ -39,3 +39,8 @@ a:hover {
     background-color:white;
     border: solid 5px #BE8900;
 }
+
+#buttons {
+    display: flex;
+    justify-content: space-around;
+}

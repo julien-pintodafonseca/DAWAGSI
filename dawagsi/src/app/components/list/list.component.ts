@@ -73,7 +73,6 @@ export class ListComponent implements OnInit {
     localStorage.removeItem('selectedImage[2]');
     localStorage.removeItem('selectedImage[3]');
     localStorage.removeItem('selectedImage[4]');
-    localStorage.removeItem('selectedImage[5]');
 
     //1ère image
     this.image1[0] = "hidden";
@@ -234,6 +233,37 @@ export class ListComponent implements OnInit {
   /* Permet d'ouvrir la fenêtre d'ajouts d'images à une liste */
   public btnAddImages_Open() {
     this.ngxSmartModalService.getModal('modUploadImages').open();
+  }
+
+  /* Permet d'accéder à la page d'annotation de l'image sélectionnée  */
+  public btnNext() {
+    if (this.selectedImage[0] >= 0) {
+      localStorage.setItem('selectedImage[0]', this.selectedImage[0]);
+      localStorage.setItem('selectedImage[1]', this.selectedImage[1]);
+      localStorage.setItem('selectedImage[2]', this.selectedImage[2]);
+      localStorage.setItem('selectedImage[3]', this.selectedImage[3]);
+      localStorage.setItem('selectedImage[4]', this.selectedImage[4]);
+      this.router.navigate(['/annotation']);
+      window.location.reload();
+    } else {
+      window.alert("Aucune image sélectionnée !");
+    }
+  }
+
+  /* Permet de supprimer l'image sélectionnée */
+  public btnDelete() {
+    if (this.selectedImage[0] >= 0) {
+      var partialURL: string = "/image/" + this.selectedImage[0]; //On complète l'url
+
+      //Appel API
+      this.http.delete<string>(apiURL + partialURL).subscribe(res => {
+        console.log(res);
+        window.alert("L'image sélectionnée vient d'être supprimée !");
+        this.requestAPI(); //On recharge les images
+      });
+    } else {
+      window.alert("Aucune image sélectionnée !");
+    }
   }
 
 }
