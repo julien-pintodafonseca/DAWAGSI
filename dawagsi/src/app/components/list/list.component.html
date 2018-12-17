@@ -12,19 +12,19 @@
         <div id="images">
             <div class="element text-center">
                 <a (click)="select(this.image1[1])" [ngStyle]="{'visibility': this.image1[0]}">
-                    <img src="{{uploadsDirectoryURL}}/{{image1[4]}}" alt="image" width="200px" height="200px" />
+                    <img src="{{uploadsDirectoryURL}}/{{image1[4]}}" alt="image" width="200px" style="max-height:200px" />
                     <div class="nom_image">{{image1[3]}}</div>
                 </a>
             </div>
             <div class="element text-center">
                 <a (click)="select(this.image2[1])" [ngStyle]="{'visibility': this.image2[0]}">
-                    <img src="{{uploadsDirectoryURL}}/{{image2[4]}}" alt="image" width="200px" height="200px" />
+                    <img src="{{uploadsDirectoryURL}}/{{image2[4]}}" alt="image" width="200px" style="max-height:200px" />
                     <div class="nom_image">{{image2[3]}}</div>
                 </a>
             </div>
             <div class="element text-center">
                 <a (click)="select(this.image3[1])" [ngStyle]="{'visibility': this.image3[0]}">
-                    <img src="{{uploadsDirectoryURL}}/{{image3[4]}}" alt="image" width="200px" height="200px" />
+                    <img src="{{uploadsDirectoryURL}}/{{image3[4]}}" alt="image" width="200px" style="max-height:200px" />
                     <div class="nom_image">{{image3[3]}}</div>
                 </a>
             </div>
@@ -51,21 +51,42 @@
     <!-- Informations -->
     <div id="information">
         <h4>Image sélectionnée</h4>
-        <span style="color:#890700">{{selectedImage[2]}}</span><br /><br />
-        <h5>Aperçu</h5>
-        <img src="{{selectedImagePreviewURL}}" alt="image" width="200px" style="max-height:200px"><br /><br />
-        <h5>Tags</h5>
-        <form method="post" action="traitement.php">
-            <p>
-                <select name="tag" id="tag">
-                    <option value="tag1">Tag 1</option>
-                    <option value="tag2">Tag 2</option>
-                    <option value="tag3">Tag 3</option>
-                    <option value="tag4">...</option>
+        <span style="color:#890700">{{selectedImage[2]}}</span>
+
+        <br />
+        <br />
+
+        <div class="text-center">
+            <h5>Aperçu</h5>
+            <img src="{{selectedImagePreviewURL}}" alt="image" width="200px" style="max-height:200px">
+        </div>
+
+        <br />
+        <br />
+
+        <div id="tags-relations">
+            <div class="text-center">
+                <h5>Tags</h5>
+                <select name="tags" id="tags">
+                    <option value="t1">Tag 1</option>
+                    <option value="t2">Tag 2</option>
+                    <option value="t3">Tag 3</option>
+                    <option value="t4">Tag 4</option>
+                    <option value="t5">Tag 5</option>
+                    <option value="t6">...</option>
                 </select>
-            </p>
-        </form><br />
-        <h5>Relations</h5>
+            </div>
+            <div class="text-center">
+                <h5>Relations</h5>
+                <select name="relations" id="relations">
+                    <option value="r1">Relation 1</option>
+                    <option value="r2">Relation 2</option>
+                    <option value="r3">...</option>
+                </select>
+            </div>
+        </div>
+
+        <br />
 
         <div id="buttons">
             <div class="btn-group mr-2">
