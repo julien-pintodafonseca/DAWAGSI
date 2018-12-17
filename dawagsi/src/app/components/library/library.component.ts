@@ -63,6 +63,13 @@ export class LibraryComponent implements OnInit {
     localStorage.removeItem('selectedList[1]');
     localStorage.removeItem('selectedList[2]');
 
+    //On supprime les données locales concernant l'image
+    localStorage.removeItem('selectedImage[0]');
+    localStorage.removeItem('selectedImage[1]');
+    localStorage.removeItem('selectedImage[2]');
+    localStorage.removeItem('selectedImage[3]');
+    localStorage.removeItem('selectedImage[4]');
+
     //1ère liste
     this.list1[0] = "hidden";
     this.list1[1] = -1;
