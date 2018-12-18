@@ -283,7 +283,7 @@ export class LibraryComponent implements OnInit {
       var partialURL: string = "/list/" + this.selectedList[0]; //On complète l'url
 
       //Appel API
-      this.http.delete<string>(apiURL + partialURL).subscribe(res => {
+      this.http.delete(apiURL + partialURL).subscribe(res => {
         console.log(res);
         window.alert("La liste sélectionnée vient d'être supprimée !");
         this.requestAPI(); //On recharge les listes

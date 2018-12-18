@@ -797,6 +797,46 @@ $app->POST('/annotation/create', function($request, $response, $args) {
 
 
 /**
+ * GET findAnnotation
+ * Summary: Chercher une annotation par position
+ * Notes: 
+ * Output-Formats: [application/json]
+ */
+$app->GET('/annotation/find', function($request, $response, $args) {
+
+	$queryParams = $request->getQueryParams();
+	$image = $queryParams['image'];
+	$position = $queryParams['position'];
+
+	try {
+		$DB = connect();
+
+		$req = 'SELECT * FROM `Annotation` WHERE image ='.$image.' AND position ='.$position;
+		$result = $DB->query($req);
+		$result = $result->fetchAll(PDO::FETCH_ASSOC);
+
+		if ($result) {
+			foreach ($result as $row) {
+				$data["id"] = $row["id"];
+				$data["image"] = $row["image"];
+				$data["tag"] = $row["tag"];
+				$data["position"] = $row["position"];
+			}
+		} else {
+			$data['message'] = 'an error has occurred : annotation not found.';
+		}
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
+	}
+	
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
+
+});
+
+
+/**
  * GET selectAnnotation
  * Summary: Sélectionne une annotation
  * Notes: 

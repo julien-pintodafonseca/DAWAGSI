@@ -5,7 +5,9 @@ import { ConfigService } from '../../services/config.service'
 
 const apiURL: string = new ConfigService().ApiURL(); //API BDD base url (sans l'extension de requête)
 const uploadsDirectoryURL: string = new ConfigService().UploadsDirectoryURL(); //Uploads directory url
+
 declare var anno: any; //anno est déjà défini dans le script annotorious
+const Http = new XMLHttpRequest(); //requêtes API via JS
 
 @Component({
   selector: "app-annotation",
@@ -39,29 +41,55 @@ export class AnnotationComponent implements OnInit {
     this.selectedImage[3] = localStorage.getItem('selectedImage[3]'); //nomMd5
     this.selectedImage[4] = localStorage.getItem('selectedImage[4]'); //idEditeur
 
-
     // cf https://github.com/annotorious/annotorious/wiki/JavaScript-API
 
+    /* Event déclenché lors de la création d'une annotation */
     anno.addHandler('onAnnotationCreated', function (annotation) {
-      console.log("-----");
-      console.log("Annotation créée :");
-      console.log("Image : " + annotation.src);
-      console.log("Tag : " + annotation.text);
-      console.log("Position : " + JSON.stringify(annotation.shapes));
-      console.log("-----");
+      var selectedImageID = localStorage.getItem('selectedImage[0]');
+      var selectedImageNomOriginal = localStorage.getItem('selectedImage[2]');
+      var tag = annotation.text; //Valeur du tag (texte)
+      var position = JSON.stringify(annotation.shapes); //Position du tag (données de position)
+      var end = false;
 
-      // ++Sauvegarder l'annotation dans la bdd
+      Http.open("POST", apiURL + "/annotation/create" + "?image=" + selectedImageID + "&tag=" + tag + "&position=" + position);
+      Http.send();
+      Http.onreadystatechange = (e) => {
+        if (!end) {
+          console.log("-----");
+          console.log("Annotation créée !");
+          console.log("Image : " + selectedImageNomOriginal);
+          console.log("Tag : " + tag);
+          console.log("Position : " + position);
+          //console.log(Http.responseText)
+          console.log("-----");
+          end = true;
+        }
+      }
     });
 
+    /* Event déclenché lors de la suppression d'une annotation */
     anno.addHandler('onAnnotationRemoved', function (annotation) {
-      console.log("-----");
-      console.log("Annotation supprimée :");
-      console.log("Image : " + annotation.src);
-      console.log("Tag : " + annotation.text);
-      console.log("Position : " + JSON.stringify(annotation.shapes));
-      console.log("-----");
+      var partialURL: string = "/annotation/find"; //On complète l'url
+      var position = JSON.stringify(annotation.shapes); //Position du tag (données de position)
 
-      // ++Supprimer l'annotation de la bdd
+      //Appel API
+      this.http.find(apiURL + partialURL + '?image=' + this.selectedImage[0] + '&position=' + position).subscribe(res => {
+        var annotationID = res.id; //ID de l'annotation
+        var partialURL: string = "/annotation/delete/" + annotationID; //On complète l'url
+        var tag = annotation.text; //Valeur du tag (texte)
+        var position = JSON.stringify(annotation.shapes); //Position du tag (données de position)
+
+        //Appel API
+        this.http.delete(apiURL + partialURL).subscribe(res => {
+          console.log("-----");
+          console.log("Annotation supprimée !");
+          console.log("Image : " + this.selectedImage[2]);
+          console.log("Tag : " + tag);
+          console.log("Position : " + position);
+          console.log(res);
+          console.log("-----");
+        });
+      });
     });
 
     anno.addHandler('onAnnotationUpdated', function (annotation) {

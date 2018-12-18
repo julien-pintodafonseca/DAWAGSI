@@ -256,7 +256,7 @@ export class ListComponent implements OnInit {
       var partialURL: string = "/image/" + this.selectedImage[0]; //On complète l'url
 
       //Appel API
-      this.http.delete<string>(apiURL + partialURL).subscribe(res => {
+      this.http.delete(apiURL + partialURL).subscribe(res => {
         console.log(res);
         window.alert("L'image sélectionnée vient d'être supprimée !");
         this.requestAPI(); //On recharge les images
