@@ -797,6 +797,47 @@ $app->POST('/annotation/create', function($request, $response, $args) {
 
 
 /**
+ * GET selectAllAnnotation
+ * Summary: Sélectionne toutes les annotations d'une image
+ * Notes: 
+ * Output-Formats: [application/json]
+ */
+$app->GET('/annotations/selectAll', function($request, $response, $args) {
+
+	$queryParams = $request->getQueryParams();
+	$image = $queryParams['image'];
+
+	try {
+		$DB = connect();
+
+		$req = 'SELECT * FROM `Annotation` WHERE image ='.$image;
+		$result = $DB->query($req);
+		$result = $result->fetchAll(PDO::FETCH_ASSOC);
+
+		if ($result) {
+			$count = 0;
+			foreach ($result as $row) {
+				$data[$count]["id"] = $row["id"];
+				$data[$count]["image"] = $row["image"];
+				$data[$count]["tag"] = $row["tag"];
+				$data[$count]["position"] = $row["position"];
+				$count++;
+			}
+		} else {
+			$data['message'] = 'an error has occurred : no annotations available for this list';
+		}
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
+	}
+	
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
+
+});
+
+
+/**
  * GET findAnnotation
  * Summary: Chercher une annotation par position
  * Notes: 
@@ -823,7 +864,7 @@ $app->GET('/annotation/find', function($request, $response, $args) {
 				$data["position"] = $row["position"];
 			}
 		} else {
-			$data['message'] = 'an error has occurred : annotation not found.';
+			$data['message'] = 'an error has occurred : annotation not found';
 		}
 	} catch (Exception $e) {
 		$data['exception'] = $e->getMessage();
