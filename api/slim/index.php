@@ -772,15 +772,18 @@ $app->POST('/annotation/create', function($request, $response, $args) {
 	$queryParams = $request->getQueryParams();
 	$image = $queryParams['image'];
 	$tag = $queryParams['tag'];
-	$position = $queryParams['position'];
+	$x = $queryParams['x'];
+	$y = $queryParams['y'];
+	$width = $queryParams['width'];
+	$height = $queryParams['height'];
 
 	try {
 		$DB = connect();
 
-		if ($image != "" && $tag != "" && $position != "") {
-			$req = 'INSERT INTO `Annotation` (image, tag, position) VALUES(:image, :tag, :position)';
+		if ($image != "" && $tag != "" && $x != "" && $y != "" && $width != "" && $height != "") {
+			$req = 'INSERT INTO `Annotation` (image, tag, x, y, width, height) VALUES(:image, :tag, :x, :y, :width, :height)';
 			$result = $DB->prepare($req);		
-			$result = $result->execute(array('image' => $image, 'tag' => $tag, 'position' => $position));	
+			$result = $result->execute(array('image' => $image, 'tag' => $tag, 'x' => $x, 'y' => $y, 'width' => $width, 'height' => $height));	
 			$data['message'] = 'successful operation';
 		} else {
 			$data['message'] = 'an error has occurred : image, tag or position is empty';
@@ -820,7 +823,10 @@ $app->GET('/annotations/selectAll', function($request, $response, $args) {
 				$data[$count]["id"] = $row["id"];
 				$data[$count]["image"] = $row["image"];
 				$data[$count]["tag"] = $row["tag"];
-				$data[$count]["position"] = $row["position"];
+				$data[$count]["x"] = $row["x"];
+				$data[$count]["y"] = $row["y"];
+				$data[$count]["width"] = $row["width"];
+				$data[$count]["height"] = $row["height"];
 				$count++;
 			}
 		} else {
@@ -847,12 +853,15 @@ $app->GET('/annotation/find', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
 	$image = $queryParams['image'];
-	$position = $queryParams['position'];
+	$x = $queryParams['x'];
+	$y = $queryParams['y'];
+	$width = $queryParams['width'];
+	$height = $queryParams['height'];
 
 	try {
 		$DB = connect();
 
-		$req = 'SELECT * FROM `Annotation` WHERE image ='.$image.' AND position ='.$position;
+		$req = 'SELECT * FROM `Annotation` WHERE image = '.$image.' AND x = '.$x.' AND y = '.$y.' AND width = '.$width.' AND height = '.$height;
 		$result = $DB->query($req);
 		$result = $result->fetchAll(PDO::FETCH_ASSOC);
 
@@ -861,7 +870,10 @@ $app->GET('/annotation/find', function($request, $response, $args) {
 				$data["id"] = $row["id"];
 				$data["image"] = $row["image"];
 				$data["tag"] = $row["tag"];
-				$data["position"] = $row["position"];
+				$data["x"] = $row["x"];
+				$data["y"] = $row["y"];
+				$data["width"] = $row["width"];
+				$data["height"] = $row["height"];
 			}
 		} else {
 			$data['message'] = 'an error has occurred : annotation not found';
@@ -900,7 +912,10 @@ $app->GET('/annotation/{id}', function($request, $response, $args) {
 			foreach ($result as $row) {
 				$data["image"] = $row["image"];
 				$data["tag"] = $row["tag"];
-				$data["position"] = $row["position"];
+				$data["x"] = $row["x"];
+				$data["y"] = $row["y"];
+				$data["width"] = $row["width"];
+				$data["height"] = $row["height"];
 			}
 		} else {
 			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
@@ -927,7 +942,10 @@ $app->PUT('/annotation/{id}', function($request, $response, $args) {
 	$queryParams = $request->getQueryParams();
 	$image = $queryParams['image'];
 	$tag = $queryParams['tag'];
-	$position = $queryParams['position'];
+	$x = $queryParams['x'];
+	$y = $queryParams['y'];
+	$width = $queryParams['width'];
+	$height = $queryParams['height'];
 
 	$json = json_encode($args);
 	$json = json_decode($json, true);
@@ -942,9 +960,9 @@ $app->PUT('/annotation/{id}', function($request, $response, $args) {
 
 		if ($result) {
 			if ($image != "" && $tag != "" && $position != "") {
-				$req = $req = "UPDATE `Annotation` SET image = :newImage, tag = :newTag, position = :newPosition WHERE id = ".$id;
+				$req = $req = "UPDATE `Annotation` SET image = :newImage, tag = :newTag, x = :newX, y = :newY, width = :newWidth, height = :newHeight WHERE id = ".$id;
 				$result = $DB->prepare($req);		
-				$result = $result->execute(array('newImage' => $image, 'newTag' => $tag, 'newPosition' => $position));
+				$result = $result->execute(array('newImage' => $image, 'newTag' => $tag, 'newX' => $x, 'newY' => $y, 'newWidth' => $width, 'newHeight' => $height));
 				$data['message'] = 'successful operation';
 			} else {
 				$data['message'] = 'an error has occurred : image, tag or position is empty';

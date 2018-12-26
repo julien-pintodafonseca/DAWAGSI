@@ -32,7 +32,10 @@ CREATE TABLE IF NOT EXISTS `Annotation` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID de l''annotation',
   `image` int(11) NOT NULL COMMENT 'ID de l''image de l''annotation',
   `tag` varchar(100) NOT NULL COMMENT 'Tag de l''annotation',
-  `position` text NOT NULL COMMENT 'Données de position de l''annotation',
+  `x` varchar(100) NOT NULL COMMENT 'Position X de l''annotation',
+  `y` varchar(100) NOT NULL COMMENT 'Position Y de l''annotation',
+  `width` varchar(100) NOT NULL COMMENT 'Longueur de l''annotation',
+  `height` varchar(100) NOT NULL COMMENT 'Hauteur de l''annotation',
   PRIMARY KEY (`id`),
   KEY `Annotation_ibfk_1` (`image`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
