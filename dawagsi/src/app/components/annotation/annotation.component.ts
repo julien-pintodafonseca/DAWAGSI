@@ -34,6 +34,8 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
     this.selectedImage[3] = localStorage.getItem('selectedImage[3]'); //nomMd5
     this.selectedImage[4] = localStorage.getItem('selectedImage[4]'); //idEditeur
 
+    //----------
+
     /* Event déclenché lors de la création d'une annotation */
     anno.addHandler('onAnnotationCreated', function (annotation) {
       var partialURL: string = "/annotation/create"; //On complète l'url
@@ -68,6 +70,8 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
         }
       };
     });
+
+    //----------
 
     /* Event déclenché lors de la suppression d'une annotation */
     anno.addHandler('onAnnotationRemoved', function (annotation) {
@@ -123,16 +127,63 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
       };
     });
 
-    anno.addHandler('onAnnotationUpdated', function (annotation) {
-      console.log("-----");
-      console.log("Annotation modifiée :");
-      console.log("Image : " + annotation.src);
-      console.log("Tag : " + annotation.text);
-      console.log("Position : " + JSON.stringify(annotation.shapes));
-      console.log("-----");
+    //----------
 
-      // ++Modifier le tag de l'annotation dans la bdd
+    anno.addHandler('onAnnotationUpdated', function (annotation) {
+      var partialURL: string = "/annotation/find"; //On complète l'url
+      var selectedImageID = localStorage.getItem('selectedImage[0]');
+      var x = annotation.shapes[0].geometry.x; //Position X de l'annotation
+      var y = annotation.shapes[0].geometry.y; //Position Y de l'annotation
+      var width = annotation.shapes[0].geometry.width; //Longueur de l'annotation
+      var height = annotation.shapes[0].geometry.height; //Hauteur de l'annotation
+
+      var end1 = false;
+
+      //Appel API via JS
+      var Http = new XMLHttpRequest();
+      Http.open("GET", apiURL + partialURL + '?image=' + selectedImageID + "&x=" + x+ "&y=" + y+ "&width=" + width+ "&height=" + height);
+      Http.send();      
+      Http.onreadystatechange = (e) => {
+        if (Http.readyState == 4 && Http.status == 200) {
+          if (!end1) {
+            var res = JSON.parse(Http.response); //Convert response string to JSON object
+            var annotationID = res[Object.keys(res)[0]]; //On récupère l'ID de l'annotation à supprimer
+            var partialURL: string = "/annotation/" + annotationID; //On complète l'url
+            var tag = annotation.text; //Tag de l'annotation (texte)
+
+            var end2 = false;
+
+            //Appel API via JS
+            var Http2 = new XMLHttpRequest();
+            Http2.open("PUT", apiURL + partialURL + '?image=' + selectedImageID + '&tag=' + tag + "&x=" + x+ "&y=" + y+ "&width=" + width+ "&height=" + height);
+            Http2.send();
+            Http2.onreadystatechange = function() {
+              if (Http2.readyState == 4 && Http2.status == 200) {
+                if (!end2) {
+                  var selectedImageNomMd5 = localStorage.getItem('selectedImage[3]');
+                  var tag = annotation.text;
+                  var position = JSON.stringify(annotation.shapes);
+
+                  console.log("-----");
+                  console.log("Annotation modifiée !");
+                  console.log("Image : " + uploadsDirectoryURL + "/" + selectedImageNomMd5);
+                  console.log("Tag : " + tag);
+                  console.log("Position : " + position);
+                  //console.log(Http.responseText)
+                  console.log("-----");
+
+                  end2 = true;
+                }
+              }
+            };
+
+            end1 = true;
+          }
+        }
+      };
     });
+
+    //----------
 
     this.requestAPI(); //On charge les annotations déjà existantes (1: requête bdd)
   }

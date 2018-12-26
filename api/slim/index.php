@@ -959,7 +959,7 @@ $app->PUT('/annotation/{id}', function($request, $response, $args) {
 		$result = $result->fetchAll(PDO::FETCH_ASSOC);
 
 		if ($result) {
-			if ($image != "" && $tag != "" && $position != "") {
+			if ($image != "" && $tag != "" && $x != "" && $y != "" && $width != "" && $height != "") {
 				$req = $req = "UPDATE `Annotation` SET image = :newImage, tag = :newTag, x = :newX, y = :newY, width = :newWidth, height = :newHeight WHERE id = ".$id;
 				$result = $DB->prepare($req);		
 				$result = $result->execute(array('newImage' => $image, 'newTag' => $tag, 'newX' => $x, 'newY' => $y, 'newWidth' => $width, 'newHeight' => $height));
