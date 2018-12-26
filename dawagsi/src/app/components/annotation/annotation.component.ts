@@ -139,10 +139,12 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
 
   /* ngAfterViewInit() */
   ngAfterViewInit() {
+    var timeout = 1000; //Temps d'attente en millisecondes avant de charger les annotations (le script Annotorious doit avoir fini de s'executer sur la page !)
+
     ///On charge les annotations déjà existantes (2: angular)
     setTimeout(()=>{
       this.load();
-    }, 2000);
+    }, timeout);
   }
 
   /* Permet d'obtenir les différentes annotations contenues dans la BDD pour l'image selectionnée */
