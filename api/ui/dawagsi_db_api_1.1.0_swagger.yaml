@@ -40,6 +40,7 @@ paths:
           description: successful operation
           schema:
             type: object
+            
   /list/create:
     post:
       tags:
@@ -117,7 +118,7 @@ paths:
         type: string
         name: name
         description: nom de la liste
-        required: false
+        required: true
       - in: query
         type: string
         name: description
@@ -141,6 +142,145 @@ paths:
         format: int64
         name: id
         description: id de la liste
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+            
+  /image/create:
+    post:
+      tags:
+        - image
+      summary: Crée une nouvelle image
+      operationId: createImage
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        type: integer
+        format: int64
+        name: list
+        description: id de la liste comportant l'image
+        required: true
+      - in: query
+        type: string
+        name: originalName
+        description: nom original du fichier image
+        required: true
+      - in: query
+        type: string
+        name: generatedName
+        description: nom md5 du fichier image
+        required: true
+      - in: query
+        type: integer
+        format: int64
+        name: editor
+        description: id de l'éditeur lié à l'image
+        required: false
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+  /image/selectAll:
+    get:
+      tags:
+        - image
+      summary: Sélectionne toutes les images d'une liste
+      operationId: selectAllImage
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        type: integer
+        format: int64
+        name: list
+        description: id de la liste comportant l'image
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              type: object
+  /image/{id}:
+    get:
+      tags:
+        - image
+      summary: Sélectionne une image
+      operationId: selectImage
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de l'image
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+    put:
+      tags:
+        - image
+      summary: Met à jour une image
+      operationId: updateImage
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de l'image
+        required: true
+      - in: query
+        type: integer
+        format: int64
+        name: list
+        description: id de la liste comportant l'image
+        required: true
+      - in: query
+        type: string
+        name: originalName
+        description: nom original du fichier image
+        required: true
+      - in: query
+        type: string
+        name: generatedName
+        description: nom md5 du fichier image
+        required: true
+      - in: query
+        type: integer
+        format: int64
+        name: editor
+        description: id de l'éditeur lié à l'image
+        required: false
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+    delete:
+      tags:
+        - image
+      summary: Supprime une image
+      operationId: deleteImage
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de l'image
         required: true
       responses:
         200:

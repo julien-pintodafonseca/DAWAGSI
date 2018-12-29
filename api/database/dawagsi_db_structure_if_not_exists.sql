@@ -60,9 +60,9 @@ CREATE TABLE IF NOT EXISTS `Editor` (
 
 CREATE TABLE IF NOT EXISTS `Image` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID de l''image',
-  `list` int(11) NOT NULL COMMENT 'ID de la liste de l''image',
-  `originalName` varchar(100) NOT NULL COMMENT 'Nom original de l''image',
-  `generatedName` varchar(100) NOT NULL COMMENT 'Nom md5 de l''image',
+  `list` int(11) NOT NULL COMMENT 'ID de la liste comportant l''image',
+  `originalName` varchar(100) NOT NULL COMMENT 'Nom original du fichier image',
+  `generatedName` varchar(100) NOT NULL COMMENT 'Nom md5 du fichier image',
   `editor` int(11) DEFAULT NULL COMMENT 'ID de l''éditeur lié à l''image',
   PRIMARY KEY (`id`),
   KEY `Image_ibfk_1` (`list`),

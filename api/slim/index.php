@@ -206,14 +206,14 @@ $app->GET('/list/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->PUT('/list/{id}', function($request, $response, $args) {
-
-	$queryParams = $request->getQueryParams();
-	$name = $queryParams['name'];
-	$description = $queryParams['description'];
 	
 	$json = json_encode($args);
 	$json = json_decode($json, true);
 	$id = (int) $json['id'];
+	
+	$queryParams = $request->getQueryParams();
+	$name = $queryParams['name'];
+	$description = $queryParams['description'];
 		
 	try {
 		$DB = connect();
@@ -286,6 +286,7 @@ $app->DELETE('/list/{id}', function($request, $response, $args) {
  * Output-Formats: [application/json]
  */
 $app->GET('/image', function($request, $response, $args) {
+	
 	try {
 		$DB = connect();
 		
@@ -314,7 +315,7 @@ $app->GET('/image', function($request, $response, $args) {
  * Notes: 
  * Output-Formats: [application/json]
  */
-$app->GET('/images/selectAll', function($request, $response, $args) {
+$app->GET('/image/selectAll', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
 	$list = $queryParams['list'];
@@ -367,7 +368,7 @@ $app->POST('/image/create', function($request, $response, $args) {
 	try {
 		$DB = connect();
 
-		if ($originalName != "" && $generatedName != "" && $list != "") {
+		if ($list != "" && $originalName != "" && $generatedName != "") {
 			if ($editor == "") {
 				$req = 'INSERT INTO `Image` (list, originalName, generatedName) VALUES(:list, :originalName, :generatedName)';
 				$result = $DB->prepare($req);
@@ -459,8 +460,8 @@ $app->PUT('/image/{id}', function($request, $response, $args) {
 		$result = $result->fetchAll(PDO::FETCH_ASSOC);
 
 		if ($result) {
-			if ($originalName != "" && $generatedName != "") {
-				$req = $req = "UPDATE `Image` SET list = newList, originalName = :newOriginalName, generatedName = :newGeneratedName, editor = :newEditor WHERE id = ".$id;
+			if ($list != "" && $originalName != "" && $generatedName != "") {
+				$req = $req = "UPDATE `Image` SET list = :newList, originalName = :newOriginalName, generatedName = :newGeneratedName, editor = :newEditor WHERE id = ".$id;
 				$result = $DB->prepare($req);		
 				$result->execute(array('newList' => $list, 'newOriginalName' => $originalName, 'newGeneratedName' => $generatedName, 'newEditor' => $editor));		
 				$data['message'] = 'successful operation';

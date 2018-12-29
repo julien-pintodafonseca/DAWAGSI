@@ -51,7 +51,7 @@ export class ListComponent implements OnInit {
 
   /* Permet d'obtenir les différentes images contenues dans la BDD */
   public requestAPI() {
-    var partialURL = "/images/selectAll"; //On complète l'url
+    var partialURL = "/image/selectAll"; //On complète l'url
 
     //Appel API
     this.http.get<string>(apiURL + partialURL + '?list=' + this.selectedList[0])
