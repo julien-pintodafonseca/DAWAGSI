@@ -1,7 +1,7 @@
 ﻿<?php
 /**
  * DAWAGSI Database API
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -27,7 +27,7 @@ function connect() {
 
 
 /**
- * GET connectDB
+ * GET checkDB
  * Summary: Vérifie la connexion à la base de données
  * Notes: 
  * Output-Formats: [application/json]
@@ -39,36 +39,6 @@ $app->GET('/database', function($request, $response, $args) {
 		
 		if ($DB) {
 			$data['status'] = "Ok";
-		} else {
-			$data['status'] = "Unreachable";
-		}
-	} catch (Exception $e) {
-		$data['exception'] = $e->getMessage();
-	}
-	
-	return $response->withStatus(200)
-	->withHeader('Content-Type', 'application/json')
-	->write(json_encode($data));
-	
-});
-
-
-/**
- * GET checkList
- * Summary: Vérifie si la table est opérationnelle
- * Notes: 
- * Output-Formats: [application/json]
- */
-$app->GET('/list', function($request, $response, $args) {
-	
-	try {
-		$DB = connect();
-		
-		$req = "SHOW TABLES LIKE 'List';";
-		$result = $DB->query($req)->rowCount();
-		
-		if ($result == 1) {
-			$data['status'] = "Ok";	
 		} else {
 			$data['status'] = "Unreachable";
 		}
@@ -124,7 +94,7 @@ $app->POST('/list/create', function($request, $response, $args) {
 
 
 /**
- * GET selectLists
+ * GET selectAllList
  * Summary: Sélectionne toutes les listes
  * Notes: 
  * Output-Formats: [application/json]
@@ -280,78 +250,6 @@ $app->DELETE('/list/{id}', function($request, $response, $args) {
 
 
 /**
- * GET checkImage
- * Summary: Vérifie si la table est opérationnelle
- * Notes: 
- * Output-Formats: [application/json]
- */
-$app->GET('/image', function($request, $response, $args) {
-	
-	try {
-		$DB = connect();
-		
-		$req = "SHOW TABLES LIKE 'Image';";
-		$result = $DB->query($req)->rowCount();
-		
-		if ($result == 1) {
-			$data['status'] = "Ok";	
-		} else {
-			$data['status'] = "Unreachable";
-		}
-	} catch (Exception $e) {
-		$data['exception'] = $e->getMessage();
-	}
-	
-	return $response->withStatus(200)
-	->withHeader('Content-Type', 'application/json')
-	->write(json_encode($data));
-
-});
-
-
-/**
- * GET selectImages
- * Summary: Sélectionne toutes les images d'une liste
- * Notes: 
- * Output-Formats: [application/json]
- */
-$app->GET('/image/selectAll', function($request, $response, $args) {
-
-	$queryParams = $request->getQueryParams();
-	$list = $queryParams['list'];
-	
-	try {
-		$DB = connect();
-		
-		$req = 'SELECT * FROM `Image` WHERE list ='.$list;
-		$result = $DB->query($req);
-		$result = $result->fetchAll(PDO::FETCH_ASSOC);
-		
-		if ($result) {
-			$count = 0;
-			foreach ($result as $row) {
-				$data[$count]["id"] = $row["id"];
-				$data[$count]["list"] = $row["list"];
-				$data[$count]["originalName"] = $row["originalName"];
-				$data[$count]["generatedName"] = $row["generatedName"];
-				$data[$count]["editor"] = $row["editor"];
-				$count++;
-			}
-		} else {
-			$data['message'] = 'an error has occurred : no images available for this list';
-		}
-	} catch (Exception $e) {
-		$data['exception'] = $e->getMessage();
-	}
-	
-	return $response->withStatus(200)
-	->withHeader('Content-Type', 'application/json')
-	->write(json_encode($data));
-	
-});
-
-
-/**
  * POST createImage
  * Summary: Crée une nouvelle image
  * Notes: 
@@ -390,6 +288,48 @@ $app->POST('/image/create', function($request, $response, $args) {
 	->withHeader('Content-Type', 'application/json')
 	->write(json_encode($data));
 
+});
+
+
+/**
+ * GET selectAllImage
+ * Summary: Sélectionne toutes les images d'une liste
+ * Notes: 
+ * Output-Formats: [application/json]
+ */
+$app->GET('/image/selectAll', function($request, $response, $args) {
+
+	$queryParams = $request->getQueryParams();
+	$list = $queryParams['list'];
+	
+	try {
+		$DB = connect();
+		
+		$req = 'SELECT * FROM `Image` WHERE list ='.$list;
+		$result = $DB->query($req);
+		$result = $result->fetchAll(PDO::FETCH_ASSOC);
+		
+		if ($result) {
+			$count = 0;
+			foreach ($result as $row) {
+				$data[$count]["id"] = $row["id"];
+				$data[$count]["list"] = $row["list"];
+				$data[$count]["originalName"] = $row["originalName"];
+				$data[$count]["generatedName"] = $row["generatedName"];
+				$data[$count]["editor"] = $row["editor"];
+				$count++;
+			}
+		} else {
+			$data['message'] = 'an error has occurred : no images available for this list';
+		}
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
+	}
+	
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
+	
 });
 
 
@@ -517,36 +457,6 @@ $app->DELETE('/image/{id}', function($request, $response, $args) {
 
 
 /**
- * GET checkEditor
- * Summary: Vérifie si la table est opérationnelle
- * Notes: 
- * Output-Formats: [application/json]
- */
-$app->GET('/editor', function($request, $response, $args) {
-
-	try {
-		$DB = connect();
-		
-		$req = "SHOW TABLES LIKE 'Editor';";
-		$result = $DB->query($req)->rowCount();
-		
-		if ($result == 1) {
-			$data['status'] = "Ok";	
-		} else {
-			$data['status'] = "Unreachable";
-		}
-	} catch (Exception $e) {
-		$data['exception'] = $e->getMessage();
-	}
-	
-	return $response->withStatus(200)
-	->withHeader('Content-Type', 'application/json')
-	->write(json_encode($data));
-
-});
-
-
-/**
  * POST createEditor
  * Summary: Crée un nouvel éditeur
  * Notes: 
@@ -580,7 +490,7 @@ $app->POST('/editor/create', function($request, $response, $args) {
 
 
 /**
- * GET selectEditors
+ * GET selectAllEditor
  * Summary: Sélectionne tous les éditeurs
  * Notes: 
  * Output-Formats: [application/json]
@@ -733,36 +643,6 @@ $app->DELETE('/editor/{id}', function($request, $response, $args) {
 
 
 /**
- * GET checkAnnotation
- * Summary: Vérifie si la table est opérationnelle
- * Notes: 
- * Output-Formats: [application/json]
- */
-$app->GET('/annotation', function($request, $response, $args) {
-
-	try {
-		$DB = connect();
-		
-		$req = "SHOW TABLES LIKE 'Annotation';";
-		$result = $DB->query($req)->rowCount();
-		
-		if ($result == 1) {
-			$data['status'] = "Ok";	
-		} else {
-			$data['status'] = "Unreachable";
-		}
-	} catch (Exception $e) {
-		$data['exception'] = $e->getMessage();
-	}
-	
-	return $response->withStatus(200)
-	->withHeader('Content-Type', 'application/json')
-	->write(json_encode($data));
-
-});
-
-
-/**
  * POST createAnnotation
  * Summary: Crée une nouvelle annotation
  * Notes: 
@@ -846,7 +726,7 @@ $app->GET('/annotation/selectAll', function($request, $response, $args) {
 
 /**
  * GET findAnnotation
- * Summary: Chercher une annotation par position
+ * Summary: Cherche une annotation en fonction de sa position sur une image
  * Notes: 
  * Output-Formats: [application/json]
  */
@@ -888,51 +768,6 @@ $app->GET('/annotation/find', function($request, $response, $args) {
 	->write(json_encode($data));
 
 });
-
-
-/**
- * GET selectAnnotation
- * Summary: Sélectionne une annotation
- * Notes: 
- * Output-Formats: [application/json]
- */
- /*
-$app->GET('/annotation/{id}', function($request, $response, $args) {
-
-	$json = json_encode($args);
-	$json = json_decode($json, true);
-	$id = (int) $json['id'];
-
-	try {
-		$DB = connect();
-
-		$req = 'SELECT * FROM `Annotation` WHERE id ='.$id;
-		$result = $DB->query($req);
-		$result = $result->fetchAll(PDO::FETCH_ASSOC);
-
-		if ($result) {
-			foreach ($result as $row) {
-				$data["id"] = $row["id"];
-				$data["image"] = $row["image"];
-				$data["tag"] = $row["tag"];
-				$data["x"] = $row["x"];
-				$data["y"] = $row["y"];
-				$data["width"] = $row["width"];
-				$data["height"] = $row["height"];
-			}
-		} else {
-			$data['message'] = 'an error has occurred : id '.$id.' doesn\'t exist';
-		}
-	} catch (Exception $e) {
-		$data['exception'] = $e->getMessage();
-	}
-	
-	return $response->withStatus(200)
-	->withHeader('Content-Type', 'application/json')
-	->write(json_encode($data));
-
-});
-*/
 
 
 /**
@@ -1012,36 +847,6 @@ $app->DELETE('/annotation/{id}', function($request, $response, $args) {
 		$data['exception'] = $e->getMessage();
 	}
 
-	return $response->withStatus(200)
-	->withHeader('Content-Type', 'application/json')
-	->write(json_encode($data));
-
-});
-
-
-/**
- * GET checkRelation
- * Summary: Vérifie si la table est opérationnelle
- * Notes: 
- * Output-Formats: [application/json]
- */
-$app->GET('/relation', function($request, $response, $args) {
-
-	try {
-		$DB = connect();
-		
-		$req = "SHOW TABLES LIKE 'Relation';";
-		$result = $DB->query($req)->rowCount();
-		
-		if ($result == 1) {
-			$data['status'] = "Ok";	
-		} else {
-			$data['status'] = "Unreachable";
-		}
-	} catch (Exception $e) {
-		$data['exception'] = $e->getMessage();
-	}
-	
 	return $response->withStatus(200)
 	->withHeader('Content-Type', 'application/json')
 	->write(json_encode($data));
