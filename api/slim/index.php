@@ -661,12 +661,12 @@ $app->GET('/editor/{id}', function($request, $response, $args) {
  */
 $app->PUT('/editor/{id}', function($request, $response, $args) {
 
-	$queryParams = $request->getQueryParams();
-	$name = $queryParams['name'];
-
 	$json = json_encode($args);
 	$json = json_decode($json, true);
 	$id = (int) $json['id'];
+
+	$queryParams = $request->getQueryParams();
+	$name = $queryParams['name'];
 
 	try {
 		$DB = connect();

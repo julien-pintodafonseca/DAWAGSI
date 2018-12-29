@@ -16,10 +16,10 @@ tags:
   description: Base de données
 - name: list
   description: Liste d'images
-- name: image
-  description: Image
 - name: editor
   description: Editeur
+- name: image
+  description: Image
 - name: annotation
   description: Annotation
 - name: relation
@@ -142,6 +142,102 @@ paths:
         format: int64
         name: id
         description: id de la liste
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+            
+  /editor/create:
+    post:
+      tags:
+        - editor
+      summary: Crée un nouvel éditeur
+      operationId: createEditor
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        type: string
+        name: name
+        description: nom de l'éditeur
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+  /editor/selectAll:
+    get:
+      tags:
+        - editor
+      summary: Sélectionne tous les éditeurs
+      operationId: selectAllEditor
+      produces:
+      - application/json
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+  /editor/{id}:
+    get:
+      tags:
+        - editor
+      summary: Sélectionne un éditeur
+      operationId: selectEditor
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de l'éditeur
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+    put:
+      tags:
+        - editor
+      summary: Met à jour un éditeur
+      operationId: updateEditor
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de l'éditeur
+        required: true
+      - in: query
+        type: string
+        name: name
+        description: nom de l'éditeur
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+    delete:
+      tags:
+        - editor
+      summary: Supprime un éditeur
+      operationId: deleteEditor
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de l'éditeur
         required: true
       responses:
         200:
@@ -287,7 +383,7 @@ paths:
           description: successful operation
           schema:
             type: object
-
+            
 # definitions of common objects
 definitions: {}
 
