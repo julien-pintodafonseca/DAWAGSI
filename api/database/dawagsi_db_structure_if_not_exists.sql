@@ -90,10 +90,10 @@ CREATE TABLE IF NOT EXISTS `List` (
 
 CREATE TABLE IF NOT EXISTS `Relation` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID de la relation',
-  `image` int(11) NOT NULL COMMENT 'ID de l''image de la relation',
+  `image` int(11) NOT NULL COMMENT 'ID de l''image comportant la relation',
   `predicate` varchar(100) NOT NULL COMMENT 'Prédicat de relation',
-  `annotation1` int(11) NOT NULL COMMENT 'ID de la première annotation de la relation',
-  `annotation2` int(11) NOT NULL COMMENT 'ID de la seconde annotation de la relation',
+  `annotation1` int(11) NOT NULL COMMENT 'ID de la première annotation composant la relation',
+  `annotation2` int(11) NOT NULL COMMENT 'ID de la seconde annotation composant la relation',
   PRIMARY KEY (`id`),
   KEY `Relation_ibfk_1` (`image`),
   KEY `Relation_ibfk_2` (`annotation1`),

@@ -831,7 +831,7 @@ $app->GET('/annotation/selectAll', function($request, $response, $args) {
 				$count++;
 			}
 		} else {
-			$data['message'] = 'an error has occurred : no annotations available for this list';
+			$data['message'] = 'an error has occurred : no annotations available for this image';
 		}
 	} catch (Exception $e) {
 		$data['exception'] = $e->getMessage();
@@ -1066,7 +1066,7 @@ $app->POST('/relation/create', function($request, $response, $args) {
 	try {
 		$DB = connect();
 
-		if ($image != "" &&$predicate != "" && $annotation1 != "" && $annotation2 != "") {
+		if ($image != "" && $predicate != "" && $annotation1 != "" && $annotation2 != "") {
 			$req = 'INSERT INTO `Relation` (image, predicate, annotation1, annotation2) VALUES(:image, :predicate, :annotation1, :annotation2)';
 			$result = $DB->prepare($req);		
 			$result = $result->execute(array('image' => $image, 'predicate' => $predicate, 'annotation1' => $annotation1, 'annotation2' => $annotation2));	
@@ -1078,6 +1078,48 @@ $app->POST('/relation/create', function($request, $response, $args) {
 		$data['exception'] = $e->getMessage();
 	}
 
+	return $response->withStatus(200)
+	->withHeader('Content-Type', 'application/json')
+	->write(json_encode($data));
+
+});
+
+
+/**
+ * GET selectAllRelation
+ * Summary: Sélectionne toutes les relations d'une image
+ * Notes: 
+ * Output-Formats: [application/json]
+ */
+$app->GET('/relation/selectAll', function($request, $response, $args) {
+
+	$queryParams = $request->getQueryParams();
+	$image = $queryParams['image'];
+
+	try {
+		$DB = connect();
+
+		$req = 'SELECT * FROM `Relation` WHERE image ='.$image;
+		$result = $DB->query($req);
+		$result = $result->fetchAll(PDO::FETCH_ASSOC);
+
+		if ($result) {
+			$count = 0;
+			foreach ($result as $row) {
+				$data[$count]["id"] = $row["id"];
+				$data[$count]["image"] = $row["image"];
+				$data[$count]["predicate"] = $row["predicate"];
+				$data[$count]["annotation1"] = $row["annotation1"];
+				$data[$count]["annotation2"] = $row["annotation2"];
+				$count++;
+			}
+		} else {
+			$data['message'] = 'an error has occurred : no relations available for this image';
+		}
+	} catch (Exception $e) {
+		$data['exception'] = $e->getMessage();
+	}
+	
 	return $response->withStatus(200)
 	->withHeader('Content-Type', 'application/json')
 	->write(json_encode($data));
@@ -1133,15 +1175,15 @@ $app->GET('/relation/{id}', function($request, $response, $args) {
  */
 $app->PUT('/relation/{id}', function($request, $response, $args) {
 
+	$json = json_encode($args);
+	$json = json_decode($json, true);
+	$id = (int) $json['id'];
+
 	$queryParams = $request->getQueryParams();
 	$image = $queryParams['image'];
 	$predicate = $queryParams['predicate'];
 	$annotation1 = $queryParams['annotation1'];
 	$annotation2 = $queryParams['annotation2'];
-
-	$json = json_encode($args);
-	$json = json_decode($json, true);
-	$id = (int) $json['id'];
 
 	try {
 		$DB = connect();
@@ -1151,7 +1193,7 @@ $app->PUT('/relation/{id}', function($request, $response, $args) {
 		$result = $result->fetchAll(PDO::FETCH_ASSOC);
 
 		if ($result) {
-			if ($image != "" &&$predicate != "" && $annotation1 != "" && $annotation2 != "") {
+			if ($image != "" && $predicate != "" && $annotation1 != "" && $annotation2 != "") {
 				$req = $req = "UPDATE `Relation` SET image = :newImage, predicate = :newPredicate, annotation1 = :newAnnotation1, annotation2 = :newAnnotation2 WHERE id = ".$id;
 				$result = $DB->prepare($req);		
 				$result = $result->execute(array('newImage' => $image, 'newPredicate' => $predicate, 'newAnnotation1' => $annotation1, 'newAnnotation2' => $annotation2));		

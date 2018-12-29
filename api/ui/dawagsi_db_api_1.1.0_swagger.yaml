@@ -455,7 +455,7 @@ paths:
     get:
       tags:
         - annotation
-      summary: Cherche une annotation en fonction de sa position
+      summary: Cherche une annotation en fonction de sa position sur une image
       operationId: findAnnotation
       produces:
       - application/json
@@ -564,6 +564,147 @@ paths:
           schema:
             type: object
             
+  /relation/create:
+    post:
+      tags:
+        - relation
+      summary: Crée une nouvelle relation
+      operationId: createRelation
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        type: integer
+        format: int64
+        name: image
+        description: id de l'image comportant la relation
+        required: true
+      - in: query
+        type: string
+        name: predicate
+        description: prédicat de relation
+        required: true
+      - in: query
+        type: integer
+        format: int64
+        name: annotation1
+        description: id de la première annotation composant la relation
+        required: true
+      - in: query
+        type: integer
+        format: int64
+        name: annotation2
+        description: id de la seconde annotation composant la relation
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+  /relation/selectAll:
+    get:
+      tags:
+        - relation
+      summary: Sélectionne toutes les relations d'une image
+      operationId: selectAllRelation
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        type: integer
+        format: int64
+        name: image
+        description: id de l'image
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              type: object
+  /relation/{id}:
+    get:
+      tags:
+        - relation
+      summary: Sélectionne une relation
+      operationId: selectRelation
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de la relation
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+    put:
+      tags:
+        - relation
+      summary: Met à jour une relation
+      operationId: updateRelation
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de la relation
+        required: true
+      - in: query
+        type: integer
+        format: int64
+        name: image
+        description: id de l'image comportant la relation
+        required: true
+      - in: query
+        type: string
+        name: predicate
+        description: prédicat de relation
+        required: true
+      - in: query
+        type: integer
+        format: int64
+        name: annotation1
+        description: id de la première annotation composant la relation
+        required: true
+      - in: query
+        type: integer
+        format: int64
+        name: annotation2
+        description: id de la seconde annotation composant la relation
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+    delete:
+      tags:
+        - relation
+      summary: Supprime une relation
+      operationId: deleteRelation
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de la relation
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+
 # definitions of common objects
 definitions: {}
 
