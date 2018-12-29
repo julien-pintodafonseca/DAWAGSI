@@ -14,6 +14,16 @@ info:
 tags:
 - name: database
   description: Base de données
+- name: list
+  description: Liste d'images
+- name: image
+  description: Image
+- name: editor
+  description: Editeur
+- name: annotation
+  description: Annotation
+- name: relation
+  description: Relation
 
 # endpoints
 paths:
@@ -22,18 +32,121 @@ paths:
       tags:
         - database
       summary: Vérifie la connexion à la base de données
-      operationId: connectDB
+      operationId: checkDB
       produces:
       - application/json
       responses:
         200:
           description: successful operation
           schema:
-            type: string
-        default:
-          description: an error has occurred
+            type: object
+  /list/create:
+    post:
+      tags:
+        - list
+      summary: Crée une nouvelle liste
+      operationId: createList
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        type: string
+        name: name
+        description: nom de la liste
+        required: true
+      - in: query
+        type: string
+        name: description
+        description: description de la liste
+        required: false
+      responses:
+        200:
+          description: successful operation
           schema:
-            type: string
+            type: object
+  /list/selectAll:
+    get:
+      tags:
+        - list
+      summary: Sélectionne toutes les listes
+      operationId: selectAllList
+      produces:
+      - application/json
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              type: object
+  /list/{id}:
+    get:
+      tags:
+        - list
+      summary: Sélectionne une liste
+      operationId: selectList
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de la liste
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+    put:
+      tags:
+        - list
+      summary: Met à jour une liste
+      operationId: updateList
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de la liste
+        required: true
+      - in: query
+        type: string
+        name: name
+        description: nom de la liste
+        required: false
+      - in: query
+        type: string
+        name: description
+        description: description de la liste
+        required: false
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+    delete:
+      tags:
+        - list
+      summary: Supprime une liste
+      operationId: deleteList
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de la liste
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
 
 # definitions of common objects
 definitions: {}
