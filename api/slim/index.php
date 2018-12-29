@@ -806,7 +806,7 @@ $app->POST('/annotation/create', function($request, $response, $args) {
  * Notes: 
  * Output-Formats: [application/json]
  */
-$app->GET('/annotations/selectAll', function($request, $response, $args) {
+$app->GET('/annotation/selectAll', function($request, $response, $args) {
 
 	$queryParams = $request->getQueryParams();
 	$image = $queryParams['image'];
@@ -896,6 +896,7 @@ $app->GET('/annotation/find', function($request, $response, $args) {
  * Notes: 
  * Output-Formats: [application/json]
  */
+ /*
 $app->GET('/annotation/{id}', function($request, $response, $args) {
 
 	$json = json_encode($args);
@@ -911,6 +912,7 @@ $app->GET('/annotation/{id}', function($request, $response, $args) {
 
 		if ($result) {
 			foreach ($result as $row) {
+				$data["id"] = $row["id"];
 				$data["image"] = $row["image"];
 				$data["tag"] = $row["tag"];
 				$data["x"] = $row["x"];
@@ -930,6 +932,7 @@ $app->GET('/annotation/{id}', function($request, $response, $args) {
 	->write(json_encode($data));
 
 });
+*/
 
 
 /**
@@ -940,6 +943,10 @@ $app->GET('/annotation/{id}', function($request, $response, $args) {
  */
 $app->PUT('/annotation/{id}', function($request, $response, $args) {
 
+	$json = json_encode($args);
+	$json = json_decode($json, true);
+	$id = (int) $json['id'];
+
 	$queryParams = $request->getQueryParams();
 	$image = $queryParams['image'];
 	$tag = $queryParams['tag'];
@@ -947,10 +954,6 @@ $app->PUT('/annotation/{id}', function($request, $response, $args) {
 	$y = $queryParams['y'];
 	$width = $queryParams['width'];
 	$height = $queryParams['height'];
-
-	$json = json_encode($args);
-	$json = json_decode($json, true);
-	$id = (int) $json['id'];
 	
 	try {
 		$DB = connect();

@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `Annotation` (
   `id` int(11) NOT NULL COMMENT 'ID de l''annotation',
-  `image` int(11) NOT NULL COMMENT 'ID de l''image de l''annotation',
+  `image` int(11) NOT NULL COMMENT 'ID de l''image comportant l''annotation',
   `tag` varchar(100) NOT NULL COMMENT 'Tag de l''annotation',
   `x` varchar(100) NOT NULL COMMENT 'Position X de l''annotation',
   `y` varchar(100) NOT NULL COMMENT 'Position Y de l''annotation',

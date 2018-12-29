@@ -294,7 +294,7 @@ paths:
         type: integer
         format: int64
         name: list
-        description: id de la liste comportant l'image
+        description: id de la liste
         required: true
       responses:
         200:
@@ -377,6 +377,186 @@ paths:
         format: int64
         name: id
         description: id de l'image
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+              
+  /annotation/create:
+    post:
+      tags:
+        - annotation
+      summary: Crée une nouvelle annotation
+      operationId: createAnnotation
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        type: integer
+        format: int64
+        name: image
+        description: id de l'image comportant l'annotation
+        required: true
+      - in: query
+        type: string
+        name: tag
+        description: tag de l'annotation
+        required: true
+      - in: query
+        type: string
+        name: x
+        description: position x de l'annotation
+        required: true
+      - in: query
+        type: string
+        name: y
+        description: position y de l'annotation
+        required: true
+      - in: query
+        type: string
+        name: width
+        description: longueur de l'annotation
+        required: true
+      - in: query
+        type: string
+        name: height
+        description: hauteur de l'annotation
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+  /annotation/selectAll:
+    get:
+      tags:
+        - annotation
+      summary: Sélectionne toutes les annotations d'une image
+      operationId: selectAllAnnotation
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        type: integer
+        format: int64
+        name: image
+        description: id de l'image
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              type: object
+  /annotation/find:
+    get:
+      tags:
+        - annotation
+      summary: Cherche une annotation en fonction de sa position
+      operationId: findAnnotation
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        type: integer
+        format: int64
+        name: image
+        description: id de l'image comportant l'annotation
+        required: true
+      - in: query
+        type: string
+        name: x
+        description: position x de l'annotation
+        required: true
+      - in: query
+        type: string
+        name: y
+        description: position y de l'annotation
+        required: true
+      - in: query
+        type: string
+        name: width
+        description: longueur de l'annotation
+        required: true
+      - in: query
+        type: string
+        name: height
+        description: hauteur de l'annotation
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              type: object
+  /annotation/{id}:
+    put:
+      tags:
+        - annotation
+      summary: Met à jour une annotation
+      operationId: updateAnnotation
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de l'annotation
+        required: true
+      - in: query
+        type: integer
+        format: int64
+        name: image
+        description: id de l'image comportant l'annotation
+        required: true
+      - in: query
+        type: string
+        name: tag
+        description: tag de l'annotation
+        required: true
+      - in: query
+        type: string
+        name: x
+        description: position x de l'annotation
+        required: true
+      - in: query
+        type: string
+        name: y
+        description: position y de l'annotation
+        required: true
+      - in: query
+        type: string
+        name: width
+        description: longueur de l'annotation
+        required: true
+      - in: query
+        type: string
+        name: height
+        description: hauteur de l'annotation
+        required: true
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+    delete:
+      tags:
+        - annotation
+      summary: Supprime une annotation
+      operationId: deleteAnnotation
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        format: int64
+        name: id
+        description: id de l'annotation
         required: true
       responses:
         200:

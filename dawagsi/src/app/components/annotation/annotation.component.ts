@@ -200,7 +200,7 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
 
   /* Permet d'obtenir les différentes annotations contenues dans la BDD pour l'image selectionnée */
   public requestAPI() {
-    var partialURL = "/annotations/selectAll"; //On complète l'url
+    var partialURL = "/annotation/selectAll"; //On complète l'url
 
     //Appel API
     this.http.get<string>(apiURL + partialURL + '?image=' + this.selectedImage[0])
