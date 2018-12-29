@@ -1,0 +1,45 @@
+swagger: '2.0'
+info:
+  description: API permettant de gérer la base de données
+  version: 1.1.0
+  title: DAWAGSI Database API
+  contact:
+    name: GitHub
+    url: https://github.com/SkydeFR/DAWAGSI
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+# tags are used for organizing operations
+tags:
+- name: database
+  description: Base de données
+
+# endpoints
+paths:
+  /database:
+    get:
+      tags:
+        - database
+      summary: Vérifie la connexion à la base de données
+      operationId: connectDB
+      produces:
+      - application/json
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: string
+        default:
+          description: an error has occurred
+          schema:
+            type: string
+
+# definitions of common objects
+definitions: {}
+
+# host
+host: skydefr.com
+basePath: /ptut/api/slim
+schemes:
+ - http
