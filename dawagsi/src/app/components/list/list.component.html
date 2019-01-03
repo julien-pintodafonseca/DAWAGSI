@@ -74,9 +74,7 @@
             <div class="text-center">
                 <h5>Relations</h5>
                 <select name="relations" id="relations">
-                    <option value="r1">Relation 1</option>
-                    <option value="r2">Relation 2</option>
-                    <option value="r3">...</option>
+                    <option *ngFor="let predicat of htmlPredicates">{{predicat}}</option>
                 </select>
             </div>
         </div>

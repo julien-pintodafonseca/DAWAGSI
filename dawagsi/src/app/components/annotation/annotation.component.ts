@@ -18,6 +18,8 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
 
   private annotations: any; //Les différentes annotations contenues dans la BDD pour l'image sélectionnée (résultat d'un appel API)
   private htmlTags: Array<string>; //Permet d'afficher les tags dans le code HTML
+  private relations: any; //Les différentes relations contenues dans la BDD pour l'image sélectionnée (résultat d'un appel API)
+  private htmlPredicates: Array<string>; //Permet d'afficher les prédicats de relations dans le code HTML
 
   private uploadsDirectoryURL = uploadsDirectoryURL; //lien vers le dossier d'uploads (variable utilisée dans le html du composant)
 
@@ -202,15 +204,21 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
   /* Permet d'obtenir les différentes annotations contenues dans la BDD pour l'image selectionnée */
   public requestAPI() {
     var partialURL = "/annotation/selectAll"; //On complète l'url
-
     //Appel API
     this.http.get<string>(apiURL + partialURL + '?image=' + this.selectedImage[0])
       .subscribe(res => {
         this.annotations = res; //On stock les différentes annotations
-      });
+    });
+
+    var partialURL = "/relation/selectAll"; //On complète l'url
+    //Appel API
+    this.http.get<string>(apiURL + partialURL + '?image=' + this.selectedImage[0])
+      .subscribe(res => {
+        this.relations = res; //On stock les différentes relations
+    });
   }
 
-  /* Permet de charger les différentes annotations à afficher */
+  /* Permet de charger les différentes annotations et relations à afficher */
   public load() {
     var nbAnnotations = this.annotations.length; //Nombre d'annotations
     var webPageAnnotations = anno.getAnnotations(uploadsDirectoryURL + "/" + this.selectedImage[3]); //Liste des annotations déjà chargées (= présentes sur la page web)
@@ -276,7 +284,22 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
       }
     }
 
-    console.log(this.htmlTags);
+    var nbRelations = this.relations.length; //Nombre de relations
+
+    this.htmlPredicates = [];
+
+    //On parcourt toutes les relations
+    for (var i = 0; i < nbRelations; i++) {
+      var myRelation = this.relations[Object.keys(this.relations)[i]]; //Relation parcourue
+
+      var id = myRelation[Object.keys(myRelation)[0]]; //id de la relation
+      var image = myRelation[Object.keys(myRelation)[1]]; //id de l'image liée à la relation
+      var predicate = myRelation[Object.keys(myRelation)[2]]; //prédicat de relation
+      var annotation1 = myRelation[Object.keys(myRelation)[3]]; //id de la première annotation composant la relation
+      var annotation2 = myRelation[Object.keys(myRelation)[4]]; //id de la seconde annotation composant la relation
+
+      this.htmlPredicates.push(predicate);
+    }
   }
 
   /* Permet d'actualiser la page */
