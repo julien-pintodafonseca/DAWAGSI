@@ -46,7 +46,7 @@ CREATE TABLE `Annotation` (
 
 CREATE TABLE `Editor` (
   `id` int(11) NOT NULL COMMENT 'ID de l''éditeur',
-  `name` varchar(100) NOT NULL COMMENT 'Nom de l''éditeur'
+  `name` varchar(100) NOT NULL UNIQUE COMMENT 'Nom de l''éditeur'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------

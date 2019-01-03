@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `Annotation` (
 
 CREATE TABLE IF NOT EXISTS `Editor` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID de l''éditeur',
-  `name` varchar(100) NOT NULL COMMENT 'Nom de l''éditeur',
+  `name` varchar(100) NOT NULL UNIQUE COMMENT 'Nom de l''éditeur',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
