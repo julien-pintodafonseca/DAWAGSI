@@ -15,13 +15,15 @@
     <h5>Créer une nouvelle relation</h5>
     <div id="annotations-relations" class="text-center">
       <select [(ngModel)]="selectedAnnotation1">
-        <option *ngFor="let annot of htmlAnnotations" [ngValue]="annot">[{{annot.id}}] {{annot.tag}}</option>
+          <!--<option *ngFor="let annot of htmlAnnotations" [ngValue]="annot">[{{annot.id}}] {{annot.tag}}</option>-->
+          <option *ngFor="let annot of htmlAnnotations" [ngValue]="annot">{{annot.tag}}</option>
       </select>
 
       <input type="text" name="predicate" [(ngModel)]="selectedPredicate">
 
       <select [(ngModel)]="selectedAnnotation2">
-        <option *ngFor="let annot of htmlAnnotations" [ngValue]="annot">[{{annot.id}}] {{annot.tag}}</option>
+        <!--<option *ngFor="let annot of htmlAnnotations" [ngValue]="annot">[{{annot.id}}] {{annot.tag}}</option>-->
+        <option *ngFor="let annot of htmlAnnotations" [ngValue]="annot">{{annot.tag}}</option>
       </select>
 
       <div class="btn-group mr-2">
@@ -34,7 +36,8 @@
     <h5>Supprimer une relation</h5>
     <div id="annotations-relations" class="text-center">
       <select [(ngModel)]="selectedRelation">
-        <option *ngFor="let rel of htmlRelations" [ngValue]="rel">[{{rel.annotation1.id}}] {{rel.annotation1.tag}} | {{rel.predicate}} | [{{rel.annotation2.id}}] {{rel.annotation2.tag}}</option>
+        <!--<option *ngFor="let rel of htmlRelations" [ngValue]="rel">[{{rel.annotation1.id}}] {{rel.annotation1.tag}} | {{rel.predicate}} | [{{rel.annotation2.id}}] {{rel.annotation2.tag}}</option>-->
+        <option *ngFor="let rel of htmlRelations" [ngValue]="rel">{{rel.annotation1.tag}} | {{rel.predicate}} | {{rel.annotation2.tag}}</option>
       </select>
 
       <div class="btn-group mr-2">
