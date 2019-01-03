@@ -17,9 +17,11 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
   private selectedImage: Array<any> = new Array<any>(); //image
 
   private annotations: any; //Les différentes annotations contenues dans la BDD pour l'image sélectionnée (résultat d'un appel API)
-  private htmlTags: Array<string>; //Permet d'afficher les tags dans le code HTML
+  private htmlAnnotations: Array<object>; //Permet d'afficher les tags dans le code HTML
+  private selectedAnnotation: object = {"id":"", "image":"", "tag":"", "x":"", "y":"", "width":"", "height":""}; //Annotation sélectionnée (listbox)
   private relations: any; //Les différentes relations contenues dans la BDD pour l'image sélectionnée (résultat d'un appel API)
-  private htmlPredicates: Array<string>; //Permet d'afficher les prédicats de relations dans le code HTML
+  private htmlRelations: Array<object>; //Permet d'afficher les relations dans le code HTML
+  private selectedRelation: object = {"id":"", "image":"", "predicate":"", "annotation1":"", "annotation2":""}; //Relation sélectionnée (listbox)
 
   private uploadsDirectoryURL = uploadsDirectoryURL; //lien vers le dossier d'uploads (variable utilisée dans le html du composant)
 
@@ -223,7 +225,7 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
     var nbAnnotations = this.annotations.length; //Nombre d'annotations
     var webPageAnnotations = anno.getAnnotations(uploadsDirectoryURL + "/" + this.selectedImage[3]); //Liste des annotations déjà chargées (= présentes sur la page web)
 
-    this.htmlTags = [];
+    this.htmlAnnotations = [];
 
     //On parcourt toutes les annotations
     for (var i = 0; i < nbAnnotations; i++) {
@@ -237,7 +239,7 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
       var width = myAnnotation[Object.keys(myAnnotation)[5]]; //Longueur de l'annotation
       var height = myAnnotation[Object.keys(myAnnotation)[6]]; //Hauteur de l'annotation
 
-      this.htmlTags.push(tag);
+      this.htmlAnnotations.push({"id":id, "image":image, "tag":tag, "x":x, "y":y, "width":width, "height":height});
 
       var alreadyLoaded = false;
 
@@ -286,7 +288,7 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
 
     var nbRelations = this.relations.length; //Nombre de relations
 
-    this.htmlPredicates = [];
+    this.htmlRelations = [];
 
     //On parcourt toutes les relations
     for (var i = 0; i < nbRelations; i++) {
@@ -297,13 +299,28 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
       var predicate = myRelation[Object.keys(myRelation)[2]]; //prédicat de relation
       var annotation1 = myRelation[Object.keys(myRelation)[3]]; //id de la première annotation composant la relation
       var annotation2 = myRelation[Object.keys(myRelation)[4]]; //id de la seconde annotation composant la relation
+      var annotation1obj;
+      var annotation2obj;
 
-      this.htmlPredicates.push(predicate);
+      //On parcourt toutes les annotations
+      for (var i = 0; i < nbAnnotations; i++) {
+        var myAnnotation = this.annotations[Object.keys(this.annotations)[i]]; //Annotation parcourue
+        var id = myAnnotation[Object.keys(myAnnotation)[0]]; //id de l'annotation
+
+        if (id == annotation1) {
+          annotation1obj = myAnnotation;
+        }
+        if (id == annotation2) {
+          annotation2obj = myAnnotation;
+        }
+      }
+
+      this.htmlRelations.push({"id":id, "image":image, "predicate":predicate, "annotation1":annotation1obj, "annotation2":annotation2obj});
     }
   }
 
   /* Permet d'actualiser la page */
-  public refresh() {
+  public btnRefresh() {
     window.location.reload();
   }
 

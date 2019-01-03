@@ -8,35 +8,44 @@
   </div>
   <!-- Informations -->
   <div id="information">
-    <h3>Image sélectionnée</h3>
-    <span style="color:#890700">{{selectedImage[2]}}</span>
+    <h3>Relations</h3>
 
     <br />
-    <br />
-    <br />
-    <br />
 
-    <div id="tags-relations">
-        <div class="text-center">
-            <h5>Tags</h5>
-            <select name="tags" id="tags">
-                <option *ngFor="let tag of htmlTags">{{tag}}</option>
-            </select>
-        </div>
-        <div class="text-center">
-            <h5>Relations</h5>
-            <select name="relations" id="relations">
-                <option *ngFor="let predicat of htmlPredicates">{{predicat}}</option>
-            </select>
-        </div>
+    <div id="annotations-relations">
+      <!--
+      <div class="text-center">
+          <h5>Tags</h5>
+          <select [(ngModel)]="selectedAnnotation">
+              <option *ngFor="let annot of htmlAnnotations" [ngValue]="annot">{{annot.tag}}</option>
+          </select>
+      </div>
+      -->
+      
+      <div class="text-center">
+          <select [(ngModel)]="selectedRelation">
+              <option *ngFor="let rel of htmlRelations" [ngValue]="rel">{{rel.predicate}}</option>
+          </select>
+      </div>
     </div>
 
+    <br />
+
+    <h5>Relation sélectionnée</h5>
+    <input type="text" name="annotation1" value={{selectedRelation.annotation1.tag}}>
+    <input type="text" name="predicate" value={{selectedRelation.predicate}}>
+    <input type="text" name="annotation2" value={{selectedRelation.annotation2.tag}}>
+
+    <br />
+    <br />
+    <br />
+    <br />
     <br />
     <br />
     
     <div id="buttons">
         <div class="btn-group mr-2">
-            <button (click)="refresh()" class="btn btn-dark">Actualiser</button>
+            <button (click)="btnRefresh()" class="btn btn-dark">Actualiser</button>
         </div>
     </div>
   </div>
