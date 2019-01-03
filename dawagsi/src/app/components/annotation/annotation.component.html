@@ -1,8 +1,47 @@
 <!-- Annotation-Component -->
 <div id="annotation-component" class="text-center">
-  <h2>Annotation d'image</h2>
-  <img src="{{uploadsDirectoryURL}}/{{selectedImage[3]}}" class="annotatable" style="border: 1px solid black; max-height:70vh;">
-  <br />
-  <br />
+  <div id="annotation">
+    <h2>Annotation d'image</h2>
+    <img src="{{uploadsDirectoryURL}}/{{selectedImage[3]}}" class="annotatable" style="border: 1px solid black; max-height:70vh;">
+    <br />
+    <br />
+  </div>
+  <!-- Informations -->
+  <div id="information">
+    <h3>Image sélectionnée</h3>
+    <span style="color:#890700">{{selectedImage[2]}}</span>
+
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <div id="tags-relations">
+        <div class="text-center">
+            <h5>Tags</h5>
+            <select name="tags" id="tags">
+                <option *ngFor="let tag of htmlTags">{{tag}}</option>
+            </select>
+        </div>
+        <div class="text-center">
+            <h5>Relations</h5>
+            <select name="relations" id="relations">
+                <option value="r1">Relation 1</option>
+                <option value="r2">Relation 2</option>
+                <option value="r3">...</option>
+            </select>
+        </div>
+    </div>
+
+    <br />
+    <br />
+    
+    <div id="buttons">
+        <div class="btn-group mr-2">
+            <button (click)="refresh()" class="btn btn-dark">Actualiser</button>
+        </div>
+    </div>
+  </div>
+  <!-- /Informations -->
 </div>
 <!-- /Annotation-Component -->

@@ -68,12 +68,7 @@
             <div class="text-center">
                 <h5>Tags</h5>
                 <select name="tags" id="tags">
-                    <option value="t1">Tag 1</option>
-                    <option value="t2">Tag 2</option>
-                    <option value="t3">Tag 3</option>
-                    <option value="t4">Tag 4</option>
-                    <option value="t5">Tag 5</option>
-                    <option value="t6">...</option>
+                    <option *ngFor="let tag of htmlTags">{{tag}}</option>
                 </select>
             </div>
             <div class="text-center">

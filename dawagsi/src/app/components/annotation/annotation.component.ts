@@ -17,6 +17,7 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
   private selectedImage: Array<any> = new Array<any>(); //image
 
   private annotations: any; //Les différentes annotations contenues dans la BDD pour l'image sélectionnée (résultat d'un appel API)
+  private htmlTags: Array<string>; //Permet d'afficher les tags dans le code HTML
 
   private uploadsDirectoryURL = uploadsDirectoryURL; //lien vers le dossier d'uploads (variable utilisée dans le html du composant)
 
@@ -190,7 +191,7 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
 
   /* ngAfterViewInit() */
   ngAfterViewInit() {
-    var timeout = 1000; //Temps d'attente en millisecondes avant de charger les annotations (le script Annotorious doit avoir fini de s'executer sur la page !)
+    var timeout = 500; //Temps d'attente en millisecondes avant de charger les annotations (le script Annotorious doit avoir fini de s'executer sur la page !)
 
     ///On charge les annotations déjà existantes (2: angular)
     setTimeout(()=>{
@@ -214,6 +215,8 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
     var nbAnnotations = this.annotations.length; //Nombre d'annotations
     var webPageAnnotations = anno.getAnnotations(uploadsDirectoryURL + "/" + this.selectedImage[3]); //Liste des annotations déjà chargées (= présentes sur la page web)
 
+    this.htmlTags = [];
+
     //On parcourt toutes les annotations
     for (var i = 0; i < nbAnnotations; i++) {
       var myAnnotation = this.annotations[Object.keys(this.annotations)[i]]; //Annotation parcourue
@@ -225,6 +228,8 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
       var y = myAnnotation[Object.keys(myAnnotation)[4]]; //Position Y de l'annotation
       var width = myAnnotation[Object.keys(myAnnotation)[5]]; //Longueur de l'annotation
       var height = myAnnotation[Object.keys(myAnnotation)[6]]; //Hauteur de l'annotation
+
+      this.htmlTags.push(tag);
 
       var alreadyLoaded = false;
 
@@ -270,6 +275,13 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
         console.log("-----");
       }
     }
+
+    console.log(this.htmlTags);
+  }
+
+  /* Permet d'actualiser la page */
+  public refresh() {
+    window.location.reload();
   }
 
 }

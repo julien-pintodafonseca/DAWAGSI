@@ -25,6 +25,8 @@ export class ListComponent implements OnInit {
   private image2: Array<any> = new Array<any>(); //2ème image à afficher
   private image3: Array<any> = new Array<any>(); //3ème image à afficher
   private selectedImage: Array<any> = new Array<any>(); //image selectionnée
+  private annotations: any; //Les différentes annotations contenues dans la BDD pour l'image sélectionnée (résultat d'un appel API)
+  private htmlTags: Array<string>; //Permet d'afficher les tags dans le code HTML
   private selectedImagePreviewURL; //préview par défaut
   private uploadsDirectoryURL = uploadsDirectoryURL; //lien vers le dossier d'uploads (variable utilisée dans le html du composant)
 
@@ -214,7 +216,30 @@ export class ListComponent implements OnInit {
           this.selectedImagePreviewURL = uploadsDirectoryURL + "/" + this.selectedImage[3];
         }
       }
-    }
+
+      var partialURL = "/annotation/selectAll"; //On complète l'url
+
+      //Appel API
+      this.http.get<string>(apiURL + partialURL + '?image=' + this.selectedImage[0])
+        .subscribe(res => {
+          this.annotations = res; //On stock les différentes annotations
+        });
+      }
+
+      var timeout = 200; //Temps d'attente en millisecondes avant d'utiliser les données d'annotations
+      this.htmlTags = [];
+
+      ///On charge les données d'annotations pour les afficher (HTML)
+      setTimeout(()=>{
+        var nbAnnotations = this.annotations.length; //Nombre d'annotations
+
+        //On parcourt toutes les annotations
+        for (var i = 0; i < nbAnnotations; i++) {
+          var myAnnotation = this.annotations[Object.keys(this.annotations)[i]]; //Annotation parcourue
+          var tag = myAnnotation[Object.keys(myAnnotation)[2]]; //tag de l'annotation
+          this.htmlTags.push(tag);
+        }
+      }, timeout);
   }
 
   /* Permet de changer la page actuelle */

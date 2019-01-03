@@ -1,0 +1,32 @@
+#annotation-component {
+    position:absolute; 
+    margin:50px; 
+    margin-top:50px;  
+    width:1700px; 
+    height:650px; 
+    padding:25px; 
+    background-color: #890700;
+}
+
+#annotation {
+    float:left;
+    width:900px;
+    height:550px;
+    padding:25px;
+    background-color:white;
+    border: solid 5px #BE8900;
+}
+
+#information {
+    float:right;
+    width:600px;
+    height:550px;
+    padding:25px;
+    background-color:white;
+    border: solid 5px #BE8900;
+}
+
+#boutons, #tags-relations {
+    display: flex;
+    justify-content: space-around;
+}
