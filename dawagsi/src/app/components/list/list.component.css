@@ -40,7 +40,7 @@ a:hover {
     border: solid 5px #BE8900;
 }
 
-#buttons, #tags-relations {
+#buttons, #annotations-relations {
     display: flex;
     justify-content: space-around;
 }

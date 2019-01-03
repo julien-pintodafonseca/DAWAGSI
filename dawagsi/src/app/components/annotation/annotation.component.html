@@ -12,41 +12,41 @@
 
     <br />
 
-    <div id="annotations-relations">
-      <!--
-      <div class="text-center">
-          <h5>Tags</h5>
-          <select [(ngModel)]="selectedAnnotation">
-              <option *ngFor="let annot of htmlAnnotations" [ngValue]="annot">{{annot.tag}}</option>
-          </select>
-      </div>
-      -->
-      
-      <div class="text-center">
-          <select [(ngModel)]="selectedRelation">
-              <option *ngFor="let rel of htmlRelations" [ngValue]="rel">{{rel.predicate}}</option>
-          </select>
+    <h5>Créer une nouvelle relation</h5>
+    <div id="annotations-relations" class="text-center">
+      <select [(ngModel)]="selectedAnnotation1">
+        <option *ngFor="let annot of htmlAnnotations" [ngValue]="annot">[{{annot.id}}] {{annot.tag}}</option>
+      </select>
+
+      <input type="text" name="predicate" [(ngModel)]="selectedPredicate">
+
+      <select [(ngModel)]="selectedAnnotation2">
+        <option *ngFor="let annot of htmlAnnotations" [ngValue]="annot">[{{annot.id}}] {{annot.tag}}</option>
+      </select>
+
+      <div class="btn-group mr-2">
+          <button (click)="btnCreate()" class="btn btn-dark">Créer</button>
       </div>
     </div>
 
     <br />
 
-    <h5>Relation sélectionnée</h5>
-    <input type="text" name="annotation1" value={{selectedRelation.annotation1.tag}}>
-    <input type="text" name="predicate" value={{selectedRelation.predicate}}>
-    <input type="text" name="annotation2" value={{selectedRelation.annotation2.tag}}>
+    <h5>Supprimer une relation</h5>
+    <div id="annotations-relations" class="text-center">
+      <select [(ngModel)]="selectedRelation">
+        <option *ngFor="let rel of htmlRelations" [ngValue]="rel">[{{rel.annotation1.id}}] {{rel.annotation1.tag}} | {{rel.predicate}} | [{{rel.annotation2.id}}] {{rel.annotation2.tag}}</option>
+      </select>
+
+      <div class="btn-group mr-2">
+          <button (click)="btnDelete()" class="btn btn-dark">Supprimer</button>
+      </div>
+    </div>
 
     <br />
     <br />
-    <br />
-    <br />
-    <br />
-    <br />
     
-    <div id="buttons">
-        <div class="btn-group mr-2">
-            <button (click)="btnRefresh()" class="btn btn-dark">Actualiser</button>
-        </div>
+    <div class="btn-group mr-2">
+        <button (click)="btnRefresh()" class="btn btn-dark">Actualiser la page</button>
     </div>
   </div>
   <!-- /Informations -->

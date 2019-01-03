@@ -18,9 +18,13 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
 
   private annotations: any; //Les différentes annotations contenues dans la BDD pour l'image sélectionnée (résultat d'un appel API)
   private htmlAnnotations: Array<object>; //Permet d'afficher les tags dans le code HTML
-  private selectedAnnotation: object = {"id":"", "image":"", "tag":"", "x":"", "y":"", "width":"", "height":""}; //Annotation sélectionnée (listbox)
   private relations: any; //Les différentes relations contenues dans la BDD pour l'image sélectionnée (résultat d'un appel API)
   private htmlRelations: Array<object>; //Permet d'afficher les relations dans le code HTML
+
+  private selectedAnnotation1: object = {"id":"", "image":"", "tag":"", "x":"", "y":"", "width":"", "height":""}; //Annotation1 (créer une relation)
+  private selectedPredicate: string = ""; //Prédicat (créer une relation)
+  private selectedAnnotation2: object = {"id":"", "image":"", "tag":"", "x":"", "y":"", "width":"", "height":""}; //Annotation2 (créer une relation)
+
   private selectedRelation: object = {"id":"", "image":"", "predicate":"", "annotation1":"", "annotation2":""}; //Relation sélectionnée (listbox)
 
   private uploadsDirectoryURL = uploadsDirectoryURL; //lien vers le dossier d'uploads (variable utilisée dans le html du composant)
@@ -195,7 +199,7 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
 
   /* ngAfterViewInit() */
   ngAfterViewInit() {
-    var timeout = 500; //Temps d'attente en millisecondes avant de charger les annotations (le script Annotorious doit avoir fini de s'executer sur la page !)
+    var timeout = 1000; //Temps d'attente en millisecondes avant de charger les annotations (le script Annotorious doit avoir fini de s'executer sur la page !)
 
     ///On charge les annotations déjà existantes (2: angular)
     setTimeout(()=>{
@@ -294,7 +298,7 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
     for (var i = 0; i < nbRelations; i++) {
       var myRelation = this.relations[Object.keys(this.relations)[i]]; //Relation parcourue
 
-      var id = myRelation[Object.keys(myRelation)[0]]; //id de la relation
+      var idr = myRelation[Object.keys(myRelation)[0]]; //id de la relation
       var image = myRelation[Object.keys(myRelation)[1]]; //id de l'image liée à la relation
       var predicate = myRelation[Object.keys(myRelation)[2]]; //prédicat de relation
       var annotation1 = myRelation[Object.keys(myRelation)[3]]; //id de la première annotation composant la relation
@@ -303,25 +307,63 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
       var annotation2obj;
 
       //On parcourt toutes les annotations
-      for (var i = 0; i < nbAnnotations; i++) {
-        var myAnnotation = this.annotations[Object.keys(this.annotations)[i]]; //Annotation parcourue
-        var id = myAnnotation[Object.keys(myAnnotation)[0]]; //id de l'annotation
+      for (var j = 0; j < nbAnnotations; j++) {
+        var myAnnotation = this.annotations[Object.keys(this.annotations)[j]]; //Annotation parcourue
+        var ida = myAnnotation[Object.keys(myAnnotation)[0]]; //id de l'annotation
 
-        if (id == annotation1) {
+        if (ida == annotation1) {
           annotation1obj = myAnnotation;
         }
-        if (id == annotation2) {
+        if (ida == annotation2) {
           annotation2obj = myAnnotation;
         }
       }
 
-      this.htmlRelations.push({"id":id, "image":image, "predicate":predicate, "annotation1":annotation1obj, "annotation2":annotation2obj});
+      this.htmlRelations.push({"id":idr, "image":image, "predicate":predicate, "annotation1":annotation1obj, "annotation2":annotation2obj});
     }
   }
 
   /* Permet d'actualiser la page */
   public btnRefresh() {
     window.location.reload();
+  }
+
+  /* Permet de créer une nouvelle relation */
+  public btnCreate() {
+    if (this.selectedAnnotation1[Object.keys(this.selectedAnnotation1)[3]] != "" && this.selectedPredicate != "" && this.selectedAnnotation2[Object.keys(this.selectedAnnotation2)[3]] != "") {
+      var partialURL: string = "/relation/create"; //On complète l'url
+
+      //On supprime les espaces avant et après les strings récupérés
+      this.selectedPredicate = this.selectedPredicate.trim();
+
+      //Appel API
+      this.http.post(apiURL + partialURL + '?image=' + this.selectedImage[0] + '&annotation1=' + this.selectedAnnotation1[Object.keys(this.selectedAnnotation1)[0]] + '&predicate=' + this.selectedPredicate + '&annotation2=' + this.selectedAnnotation2[Object.keys(this.selectedAnnotation2)[0]], "").subscribe(res => {
+        console.log(res);
+        window.alert("Relation créée !");
+      });
+
+      //On réinitialise les valeurs du formulaire
+      this.selectedAnnotation1 = {"id":"", "image":"", "tag":"", "x":"", "y":"", "width":"", "height":""};
+      this.selectedPredicate = "";
+      this.selectedAnnotation2 = {"id":"", "image":"", "tag":"", "x":"", "y":"", "width":"", "height":""};
+    } else {
+      window.alert("Impossible de créer cette relation !")
+    }
+  }
+
+  /* Permet de supprimer la relation sélectionnée */
+  public btnDelete() {
+    if (this.selectedRelation[Object.keys(this.selectedRelation)[0]] >= 0) {
+      var partialURL: string = "/relation/" + this.selectedRelation[Object.keys(this.selectedRelation)[0]]; //On complète l'url
+
+      //Appel API
+      this.http.delete(apiURL + partialURL).subscribe(res => {
+        console.log(res);
+        window.alert("La relation sélectionnée vient d'être supprimée !");
+      });
+    } else {
+      window.alert("Aucune relation sélectionnée !");
+    }
   }
 
 }

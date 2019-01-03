@@ -29,9 +29,9 @@ export class ListComponent implements OnInit {
   private uploadsDirectoryURL = uploadsDirectoryURL; //lien vers le dossier d'uploads (variable utilisée dans le html du composant)
 
   private annotations: any; //Les différentes annotations contenues dans la BDD pour l'image sélectionnée (résultat d'un appel API)
-  private htmlTags: Array<string>; //Permet d'afficher les tags dans le code HTML
+  private htmlAnnotations: Array<object>; //Permet d'afficher les tags dans le code HTML
   private relations: any; //Les différentes relations contenues dans la BDD pour l'image sélectionnée (résultat d'un appel API)
-  private htmlPredicates: Array<string>; //Permet d'afficher les prédicats de relations dans le code HTML
+  private htmlRelations: Array<object>; //Permet d'afficher les relations dans le code HTML
 
   /* Constructeur de la bibliothèque */
   constructor(
@@ -235,9 +235,10 @@ export class ListComponent implements OnInit {
       });
     }
 
-    var timeout = 200; //Temps d'attente en millisecondes avant d'utiliser les données d'annotations
-    this.htmlTags = [];
-    this.htmlPredicates = [];
+    var timeout = 500; //Temps d'attente en millisecondes avant d'utiliser les données d'annotations
+    
+    this.htmlAnnotations = [];
+    this.htmlRelations = [];
 
     ///On charge les données d'annotations et relations pour les afficher
     setTimeout(()=>{
@@ -245,16 +246,45 @@ export class ListComponent implements OnInit {
       //On parcourt toutes les annotations
       for (var i = 0; i < nbAnnotations; i++) {
         var myAnnotation = this.annotations[Object.keys(this.annotations)[i]]; //Annotation parcourue
+
+        var id = myAnnotation[Object.keys(myAnnotation)[0]]; //id de l'annotation
+        var image = myAnnotation[Object.keys(myAnnotation)[1]]; //id de l'image liée à l'annotation
         var tag = myAnnotation[Object.keys(myAnnotation)[2]]; //tag de l'annotation
-        this.htmlTags.push(tag);
+        var x = myAnnotation[Object.keys(myAnnotation)[3]]; //position X de l'annotation
+        var y = myAnnotation[Object.keys(myAnnotation)[4]]; //Position Y de l'annotation
+        var width = myAnnotation[Object.keys(myAnnotation)[5]]; //Longueur de l'annotation
+        var height = myAnnotation[Object.keys(myAnnotation)[6]]; //Hauteur de l'annotation
+
+        this.htmlAnnotations.push({"id":id, "image":image, "tag":tag, "x":x, "y":y, "width":width, "height":height});
       }
 
       var nbRelations = this.relations.length; //Nombre de relations
       //On parcourt toutes les relations
       for (var i = 0; i < nbRelations; i++) {
         var myRelation = this.relations[Object.keys(this.relations)[i]]; //Relation parcourue
+
+        var idr = myRelation[Object.keys(myRelation)[0]]; //id de la relation
+        var image = myRelation[Object.keys(myRelation)[1]]; //id de l'image liée à la relation
         var predicate = myRelation[Object.keys(myRelation)[2]]; //prédicat de relation
-        this.htmlPredicates.push(predicate);
+        var annotation1 = myRelation[Object.keys(myRelation)[3]]; //id de la première annotation composant la relation
+        var annotation2 = myRelation[Object.keys(myRelation)[4]]; //id de la seconde annotation composant la relation
+        var annotation1obj;
+        var annotation2obj;
+
+        //On parcourt toutes les annotations
+        for (var j = 0; j < nbAnnotations; j++) {
+          var myAnnotation = this.annotations[Object.keys(this.annotations)[j]]; //Annotation parcourue
+          var ida = myAnnotation[Object.keys(myAnnotation)[0]]; //id de l'annotation
+
+          if (ida == annotation1) {
+            annotation1obj = myAnnotation;
+          }
+          if (ida == annotation2) {
+            annotation2obj = myAnnotation;
+          }
+        }
+
+        this.htmlRelations.push({"id":idr, "image":image, "predicate":predicate, "annotation1":annotation1obj, "annotation2":annotation2obj});
       }
     }, timeout);
   }

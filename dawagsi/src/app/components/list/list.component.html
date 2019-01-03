@@ -64,17 +64,17 @@
         <br />
         <br />
 
-        <div id="tags-relations">
+        <div id="annotations-relations">
             <div class="text-center">
                 <h5>Tags</h5>
-                <select name="tags" id="tags">
-                    <option *ngFor="let tag of htmlTags">{{tag}}</option>
+                <select name="annotations" id="annotations">
+                    <option *ngFor="let annot of htmlAnnotations" [ngValue]="annot">[{{annot.id}}] {{annot.tag}}</option>
                 </select>
             </div>
             <div class="text-center">
                 <h5>Relations</h5>
                 <select name="relations" id="relations">
-                    <option *ngFor="let predicat of htmlPredicates">{{predicat}}</option>
+                    <option *ngFor="let rel of htmlRelations" [ngValue]="rel">[{{rel.annotation1.id}}] {{rel.annotation1.tag}} | {{rel.predicate}} | [{{rel.annotation2.id}}] {{rel.annotation2.tag}}</option>
                 </select>
             </div>
         </div>
