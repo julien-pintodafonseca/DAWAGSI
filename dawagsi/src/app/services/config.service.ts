@@ -4,9 +4,9 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ConfigService {
-  private apiURL: string = "http://skydefr.com/ptut/api/slim"; //API BDD base url (sans l'extension de requête)
-  private apiUploadImageURL: string = "http://skydefr.com/ptut/api/upload-image.php"; //API Upload Image file url
-  private uploadsDirectoryURL: string = "http://skydefr.com/ptut/uploads"; //Uploads directory url
+  private apiURL: string = "http://skydefr.com/projets/illumination/api/slim"; //API BDD base url (sans l'extension de requête)
+  private apiUploadImageURL: string = "http://skydefr.com/projets/illumination/api/upload-image.php"; //API Upload Image file url
+  private uploadsDirectoryURL: string = "http://skydefr.com/projets/illumination/uploads"; //Uploads directory url
 
   /* Constructeur */
   constructor() { }
