@@ -14,24 +14,24 @@ const uploadsDirectoryURL: string = new ConfigService().UploadsDirectoryURL(); /
   styleUrls: ["./list.component.css"]
 })
 export class ListComponent implements OnInit {
-  private selectedList: Array<any> = new Array<any>(); //liste
+  public selectedList: Array<any> = new Array<any>(); //liste
 
   private images: any; //Les différentes images contenues dans la BDD (résultat d'un appel API)
-  private current_page: number; //Page actuelle (1 page = 3 listes à afficher)
   private nbPages: number; //Nombre de pages au total (calculé en fonction du nombre de listes)
   private defaultValue; //Valeur par défaut à afficher pour l'auteur
+  public current_page: number; //Page actuelle (1 page = 3 listes à afficher)
 
-  private image1: Array<any> = new Array<any>(); //1ère image à afficher
-  private image2: Array<any> = new Array<any>(); //2ème image à afficher
-  private image3: Array<any> = new Array<any>(); //3ème image à afficher
-  private selectedImage: Array<any> = new Array<any>(); //image selectionnée
-  private selectedImagePreviewURL; //préview par défaut
-  private uploadsDirectoryURL = uploadsDirectoryURL; //lien vers le dossier d'uploads (variable utilisée dans le html du composant)
+  public image1: Array<any> = new Array<any>(); //1ère image à afficher
+  public image2: Array<any> = new Array<any>(); //2ème image à afficher
+  public image3: Array<any> = new Array<any>(); //3ème image à afficher
+  public selectedImage: Array<any> = new Array<any>(); //image selectionnée
+  public selectedImagePreviewURL; //préview par défaut
+  public uploadsDirectoryURL = uploadsDirectoryURL; //lien vers le dossier d'uploads (variable utilisée dans le html du composant)
 
   private annotations: any; //Les différentes annotations contenues dans la BDD pour l'image sélectionnée (résultat d'un appel API)
-  private htmlAnnotations: Array<object>; //Permet d'afficher les tags dans le code HTML
+  public htmlAnnotations: Array<object>; //Permet d'afficher les tags dans le code HTML
   private relations: any; //Les différentes relations contenues dans la BDD pour l'image sélectionnée (résultat d'un appel API)
-  private htmlRelations: Array<object>; //Permet d'afficher les relations dans le code HTML
+  public htmlRelations: Array<object>; //Permet d'afficher les relations dans le code HTML
 
   /* Constructeur de la bibliothèque */
   constructor(

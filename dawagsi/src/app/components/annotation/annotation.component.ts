@@ -14,23 +14,23 @@ declare var anno: any; //anno est déjà défini dans le script annotorious
   styleUrls: ["./annotation.component.css"]
 })
 export class AnnotationComponent implements OnInit, AfterViewInit {
-  private selectedImage: Array<any> = new Array<any>(); //image
+  public selectedImage: Array<any> = new Array<any>(); //image
 
   private annotations: any; //Les différentes annotations contenues dans la BDD pour l'image sélectionnée (résultat d'un appel API)
-  private htmlAnnotations: Array<object>; //Permet d'afficher les tags dans le code HTML
+  public htmlAnnotations: Array<object>; //Permet d'afficher les tags dans le code HTML
   private relations: any; //Les différentes relations contenues dans la BDD pour l'image sélectionnée (résultat d'un appel API)
-  private htmlRelations: Array<object>; //Permet d'afficher les relations dans le code HTML
+  public htmlRelations: Array<object>; //Permet d'afficher les relations dans le code HTML
   private editors: any; //Les différents éditeurs contenus dans la BDD (résultat d'un appel API)
 
-  private selectedAnnotation1: object; //Annotation1 (créer une relation)
-  private selectedPredicate: string; //Prédicat (créer une relation)
-  private selectedAnnotation2: object; //Annotation2 (créer une relation)
-  private selectedRelation: object; //Relation sélectionnée (listbox)
-  private selectedEditor: string; //Nom d'éditeur (modifier l'éditeur)
+  public selectedAnnotation1: object; //Annotation1 (créer une relation)
+  public selectedPredicate: string; //Prédicat (créer une relation)
+  public selectedAnnotation2: object; //Annotation2 (créer une relation)
+  public selectedRelation: object; //Relation sélectionnée (listbox)
+  public selectedEditor: string; //Nom d'éditeur (modifier l'éditeur)
 
   private firstLoad: boolean; //lors du premier affichage, on doit attendre que le script Annotorious se charge
 
-  private uploadsDirectoryURL = uploadsDirectoryURL; //lien vers le dossier d'uploads (variable utilisée dans le html du composant)
+  public uploadsDirectoryURL = uploadsDirectoryURL; //lien vers le dossier d'uploads (variable utilisée dans le html du composant)
 
   /* Constructeur */
   constructor(

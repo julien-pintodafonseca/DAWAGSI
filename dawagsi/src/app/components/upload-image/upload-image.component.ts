@@ -15,11 +15,11 @@ const apiUploadImageURL: string = new ConfigService().ApiUploadImageURL(); //API
 export class UploadImageComponent implements OnInit {
   private selectedList: Array<any> = new Array<any>(); //liste
 
-  private uploader: FileUploader = new FileUploader({ url: apiUploadImageURL, itemAlias: 'image' });
+  public uploader: FileUploader = new FileUploader({ url: apiUploadImageURL, itemAlias: 'image' });
 
-  private info: string;
-  private succes: number;
-  private echec: number;
+  public info: string;
+  public succes: number;
+  public echec: number;
 
   /* Constructeur */
   constructor(

@@ -3,6 +3,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from "@angular/forms";
+import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { NgxSmartModalModule } from "ngx-smart-modal";
 import { HttpClientModule } from '@angular/common/http';
 
@@ -17,8 +18,6 @@ import { AnnotationComponent } from "./components/annotation/annotation.componen
 import { NavigationComponent } from "./components/navigation/navigation.component";
 import { PageNotFoundComponent } from "./components/page-not-found/page-not-found.component";
 
-import { FileSelectDirective } from 'ng2-file-upload';
-
 @NgModule({
   /* composants */
   declarations: [
@@ -29,8 +28,7 @@ import { FileSelectDirective } from 'ng2-file-upload';
     UploadImageComponent,
     AnnotationComponent,
     NavigationComponent,
-    PageNotFoundComponent,
-    FileSelectDirective
+    PageNotFoundComponent
   ],
   /* modules */
   imports: [
@@ -38,6 +36,7 @@ import { FileSelectDirective } from 'ng2-file-upload';
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    FileUploadModule,
     NgxSmartModalModule.forRoot(),
     HttpClientModule
   ],

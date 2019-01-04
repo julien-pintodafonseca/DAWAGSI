@@ -14,17 +14,17 @@ const apiURL: string = new ConfigService().ApiURL(); //API BDD base url (sans l'
 })
 export class LibraryComponent implements OnInit {
   private lists: any; //Les différentes listes contenues dans la BDD (résultat d'un appel API)
-  private current_page: number; //Page actuelle (1 page = 3 listes à afficher)
   private nbPages: number; //Nombre de pages au total (calculé en fonction du nombre de listes)
   private defaultValue; //Valeur par défaut à afficher pour le nom et la description
+  public current_page: number; //Page actuelle (1 page = 3 listes à afficher)
 
-  private list1: Array<any> = new Array<any>(); //1ère liste à afficher
-  private list2: Array<any> = new Array<any>(); //2ème liste à afficher
-  private list3: Array<any> = new Array<any>(); //3ème liste à afficher
-  private selectedList: Array<any> = new Array<any>(); //liste selectionnée
+  public list1: Array<any> = new Array<any>(); //1ère liste à afficher
+  public list2: Array<any> = new Array<any>(); //2ème liste à afficher
+  public list3: Array<any> = new Array<any>(); //3ème liste à afficher
+  public selectedList: Array<any> = new Array<any>(); //liste selectionnée
 
-  private CreateListName: string = ""; //Nom de la liste à créer
-  private CreateListDescription: string = ""; //Description de la liste à créer
+  public CreateListName: string = ""; //Nom de la liste à créer
+  public CreateListDescription: string = ""; //Description de la liste à créer
 
   /* Constructeur de la bibliothèque */
   constructor(
