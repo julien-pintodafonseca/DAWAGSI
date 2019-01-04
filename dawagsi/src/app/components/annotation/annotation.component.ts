@@ -20,19 +20,23 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
   private htmlAnnotations: Array<object>; //Permet d'afficher les tags dans le code HTML
   private relations: any; //Les différentes relations contenues dans la BDD pour l'image sélectionnée (résultat d'un appel API)
   private htmlRelations: Array<object>; //Permet d'afficher les relations dans le code HTML
+  private editors: any; //Les différents éditeurs contenus dans la BDD (résultat d'un appel API)
 
   private selectedAnnotation1: object; //Annotation1 (créer une relation)
   private selectedPredicate: string; //Prédicat (créer une relation)
   private selectedAnnotation2: object; //Annotation2 (créer une relation)
-
   private selectedRelation: object; //Relation sélectionnée (listbox)
+  private selectedEditor: string; //Nom d'éditeur (modifier l'éditeur)
+
+  private firstLoad: boolean; //lors du premier affichage, on doit attendre que le script Annotorious se charge
 
   private uploadsDirectoryURL = uploadsDirectoryURL; //lien vers le dossier d'uploads (variable utilisée dans le html du composant)
 
   /* Constructeur */
   constructor(
     private http: HttpClient,
-    private http2: HttpClient
+    private http2: HttpClient,
+    private http3: HttpClient
   ) { }
 
   /* ngOnInit */
@@ -49,6 +53,7 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
     this.selectedPredicate = "";
     this.selectedAnnotation2 = {"id":"-1", "image":"-1", "tag":"annotation", "x":"", "y":"", "width":"", "height":""};
     this.selectedRelation = {"id":"-1", "image":"-1", "predicate":"prédicat", "annotation1":{"id":"-1", "image":"-1", "tag":"annotation", "x":"", "y":"", "width":"", "height":""}, "annotation2":{"id":"-1", "image":"-1", "tag":"annotation", "x":"", "y":"", "width":"", "height":""}};
+    this.selectedEditor = "aucun";
 
     //----------
 
@@ -71,6 +76,8 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
       Http.onreadystatechange = function() {
         if (Http.readyState == 4 && Http.status == 200) {
           if (!end) {
+            console.log(Http.responseText)
+            /*
             console.log("-----");
             console.log("Annotation créée !");
             console.log("Image : " + uploadsDirectoryURL + "/" + selectedImageNomMd5);
@@ -79,8 +86,8 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
             console.log("Y : " + y);
             console.log("Width : " + width);
             console.log("Height : " + height);
-            //console.log(Http.responseText)
             console.log("-----");
+            */
             end = true;
           }
         }
@@ -124,13 +131,15 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
                   var tag = annotation.text;
                   var position = JSON.stringify(annotation.shapes);
 
+                  console.log(Http.responseText)
+                  /*
                   console.log("-----");
                   console.log("Annotation supprimée !");
                   console.log("Image : " + uploadsDirectoryURL + "/" + selectedImageNomMd5);
                   console.log("Tag : " + tag);
                   console.log("Position : " + position);
-                  //console.log(Http.responseText)
                   console.log("-----");
+                  */
 
                   end2 = true;
                 }
@@ -180,13 +189,15 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
                   var tag = annotation.text;
                   var position = JSON.stringify(annotation.shapes);
 
+                  console.log(Http.responseText)
+                  /*
                   console.log("-----");
                   console.log("Annotation modifiée !");
                   console.log("Image : " + uploadsDirectoryURL + "/" + selectedImageNomMd5);
                   console.log("Tag : " + tag);
                   console.log("Position : " + position);
-                  //console.log(Http.responseText)
                   console.log("-----");
+                  */
 
                   end2 = true;
                 }
@@ -202,34 +213,48 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
 
   /* ngAfterViewInit() */
   ngAfterViewInit() {
+    this.firstLoad = true;
     this.requestAPI(); //On charge les annotations et relations déjà existantes (1: requête bdd)
-
-    var timeout = 1000; //Temps d'attente en millisecondes avant de charger les annotations (le script Annotorious doit avoir fini de s'executer sur la page !)
-    ///On charge les annotations et relations déjà existantes (2: angular)
-    setTimeout(()=>{
-      this.load();
-    }, timeout);
   }
 
   /* Permet d'obtenir les différentes annotations contenues dans la BDD pour l'image selectionnée */
   public requestAPI() {
-    var partialURL = "/annotation/selectAll"; //On complète l'url
+    var partialURL1 = "/annotation/selectAll"; //On complète l'url
     //Appel API
-    this.http.get<string>(apiURL + partialURL + '?image=' + this.selectedImage[0])
+    this.http.get<string>(apiURL + partialURL1 + '?image=' + this.selectedImage[0])
       .subscribe(res => {
         this.annotations = res; //On stock les différentes annotations
 
-        var partialURL = "/relation/selectAll"; //On complète l'url
+        var partialURL2 = "/relation/selectAll"; //On complète l'url
         //Appel API
-        this.http2.get<string>(apiURL + partialURL + '?image=' + this.selectedImage[0])
+        this.http2.get<string>(apiURL + partialURL2 + '?image=' + this.selectedImage[0])
           .subscribe(res => {
             this.relations = res; //On stock les différentes relations
-            this.load(); //On remet à jour les informations si nécessaire
+
+            var partialURL3 = "/editor/selectAll"; //On complète l'url
+            //Appel API
+            this.http3.get<string>(apiURL + partialURL3)
+              .subscribe(res => {
+                this.editors = res; //On stock les différents editeurs
+                if (this.firstLoad) {
+                  this.firstLoad = false;
+
+                  var timeout = 1500; //Temps d'attente en millisecondes avant de charger les annotations (le script Annotorious doit avoir fini de s'executer sur la page !)
+                  ///On charge les annotations et relations déjà existantes (2: angular)
+                  setTimeout(()=>{
+                    this.load();
+                  }, timeout);
+
+                  this.requestAPI(); //On remet à jour les informations si nécessaire
+                } else {
+                  this.load(); //On remet à jour les informations si nécessaire
+                }
+            });
         });
     });
   }
 
-  /* Permet de charger les différentes annotations et relations à afficher */
+  /* Permet de charger les différentes annotations et relations à afficher + l'éditeur */
   public load() {
     var nbAnnotations = this.annotations.length; //Nombre d'annotations
     var webPageAnnotations = anno.getAnnotations(uploadsDirectoryURL + "/" + this.selectedImage[3]); //Liste des annotations déjà chargées (= présentes sur la page web)
@@ -310,8 +335,8 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
       var predicate = myRelation[Object.keys(myRelation)[2]]; //prédicat de relation
       var annotation1 = myRelation[Object.keys(myRelation)[3]]; //id de la première annotation composant la relation
       var annotation2 = myRelation[Object.keys(myRelation)[4]]; //id de la seconde annotation composant la relation
-      var annotation1obj;
-      var annotation2obj;
+      var annotation1obj; //première annotation composant la relation
+      var annotation2obj; //seconde annotation composant la relation
 
       //On parcourt toutes les annotations
       for (var j = 0; j < nbAnnotations; j++) {
@@ -327,6 +352,21 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
       }
 
       this.htmlRelations.push({"id":idr, "image":image, "predicate":predicate, "annotation1":annotation1obj, "annotation2":annotation2obj});
+    }
+
+    var nbEditors = this.editors.length; //Nombre d'éditeurs
+
+    //On parcourt tous les éditeurs
+    for (var i = 0; i < nbEditors; i++) {
+      var myEditor = this.editors[Object.keys(this.editors)[i]]; //Editeur parcourue
+
+      var ide = myEditor[Object.keys(myEditor)[0]]; //id de l'éditeur
+      var name = myEditor[Object.keys(myEditor)[1]]; //nom de l'éditeur
+
+      //Si l'éditeur parcourue est l'éditeur de l'image sélectionnée
+      if (ide == this.selectedImage[4]) {
+        this.selectedEditor = name;
+      }
     }
   }
 
@@ -375,6 +415,62 @@ export class AnnotationComponent implements OnInit, AfterViewInit {
       this.selectedRelation = {"id":"-1", "image":"-1", "predicate":"prédicat", "annotation1":{"id":"-1", "image":"-1", "tag":"annotation", "x":"", "y":"", "width":"", "height":""}, "annotation2":{"id":"-1", "image":"-1", "tag":"annotation", "x":"", "y":"", "width":"", "height":""}};
     } else {
       window.alert("Aucune relation sélectionnée !");
+    }
+  }
+
+  /* Permet de modifier l'éditeur actuel */
+  public btnUpdate() {
+    //Mise en forme de la donnée récupérée
+    this.selectedEditor = this.selectedEditor.trim();
+    this.selectedEditor = this.selectedEditor.toLowerCase();
+
+    if (this.selectedEditor != "aucun" && this.selectedEditor != "") {
+      var alreadyExists = false;
+
+      var nbEditors = this.editors.length; //Nombre d'éditeurs
+      //On parcourt tous les éditeurs
+      for (var i = 0; i < nbEditors; i++) {
+        if (!alreadyExists) {
+          var myEditor = this.editors[Object.keys(this.editors)[i]]; //Editeur parcourue
+
+          var idEditor = myEditor[Object.keys(myEditor)[0]]; //id de l'éditeur
+          var nameEditor = myEditor[Object.keys(myEditor)[1]]; //nom de l'éditeur
+
+          //Si le nom d'éditeur saisie existe déjà
+          if (nameEditor == this.selectedEditor) {
+            alreadyExists = true;
+
+            var partialURL: string = "/image/" + this.selectedImage[0]; //On complète l'url
+            //Appel API
+            this.http.put(apiURL + partialURL + '?id=' + this.selectedImage[0] + '&list=' + this.selectedImage[1] + '&originalName=' + this.selectedImage[2] + '&generatedName=' + this.selectedImage[3] + '&editor=' + idEditor, "").subscribe(res => {
+              this.selectedImage[4] = idEditor;
+              localStorage.setItem('selectedImage[4]', idEditor);
+              window.alert("Editeur modifié !");
+              this.requestAPI(); //On recharge les données
+            });
+          }
+        }
+      }
+
+      if (!alreadyExists) {
+        var partialURL: string = "/editor/create"; //On complète l'url
+        //Appel API
+        this.http.post(apiURL + partialURL + '?name=' + this.selectedEditor, "").subscribe(res => {
+          console.log(res);
+          this.selectedImage[4] = '/';
+          localStorage.setItem('selectedImage[4]', '/');
+          window.alert("Un nouvel éditeur vient d'être créé !");
+          this.requestAPI(); //On recharge les données
+
+          var timeout = 1000; //Temps d'attente en millisecondes
+          //On rééxecute la fonction afin de tomber dans le cas où alreadyExists = true
+          setTimeout(()=>{
+            this.btnUpdate();
+          }, timeout);
+        });
+      }
+    } else {
+      window.alert("Impossible de modifier cet éditeur !")
     }
   }
 

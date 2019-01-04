@@ -46,11 +46,28 @@
     </div>
 
     <br />
-    <br />
     
     <div class="btn-group mr-2">
         <button (click)="btnRefresh()" class="btn btn-dark">Actualiser les annotations</button>
     </div>
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <h5>Editeur actuel</h5>
+    <div id="annotations-relations" class="text-center">
+      <input type="text" name="editor" [(ngModel)]="selectedEditor">
+
+      <div class="btn-group mr-2">
+          <button (click)="btnUpdate()" class="btn btn-dark">Modifier</button>
+      </div>
+    </div>
+
+    <br />
   </div>
   <!-- /Informations -->
 </div>
