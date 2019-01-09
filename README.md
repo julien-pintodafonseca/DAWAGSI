@@ -2,7 +2,7 @@
 
 ## Description
 
-Développement d'une Application Web d'Annotation Graphique et Sémantique d'Images (DAWAGSI) dans le cadre du Projet Tutoré de S3 pour le laboratoire LE2I (Laboratoire Electronique, Informatique et Image), Équipe de Recherche CIAD (Connaissances et Intelligences Artificielles Distribuées).
+Développement d'une Application Web d'Annotation Graphique et Sémantique d'Images (DAWAGSI) dans le cadre du Projet Tutoré de S3 pour le laboratoire LE2I (Laboratoire Electronique, Informatique et Image), Équipe de Recherche CIAD (Connaissances et Intelligences Artificielles Distribuées). Projet financé par le CNRS.
 
 Principales technologies : Angular 7, SlimPHP,  Swagger
 
