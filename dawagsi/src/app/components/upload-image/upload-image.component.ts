@@ -43,15 +43,17 @@ export class UploadImageComponent implements OnInit {
       //console.log('ImageUpload:', item, status, response);
 
       if (JSON.parse(response).status) {
-        this.succes++;
-        this.info = JSON.parse(response).originalName + " - Image mise en ligne avec succès !";
+
+        //Appel API
+        this.http.post(apiURL + "/image/create" + '?list=' + this.selectedList[0] + '&originalName=' + JSON.parse(response).originalName + '&generatedName=' + JSON.parse(response).generatedName, "").subscribe(res => {
+          console.log(res);
+          this.succes++;
+          this.info = JSON.parse(response).originalName + " - Image mise en ligne avec succès !";
+        });
       } else {
         this.echec++;
         this.info = "Type de fichier non autorisé !";
       }
-
-      //Appel API
-      this.http.post(apiURL + "/image/create" + '?list=' + this.selectedList[0] + '&originalName=' + JSON.parse(response).originalName + '&generatedName=' + JSON.parse(response).generatedName, "").subscribe(res => console.log(res));
     };
   }
 
