@@ -1,1 +1,7 @@
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.html$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /projets/illumination/dawagsi/index.html [L]
 ErrorDocument 404 /projets/illumination/dawagsi/
