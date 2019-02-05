@@ -5,6 +5,7 @@
 Développement d'une Application Web d'Annotation Graphique et Sémantique d'Images (DAWAGSI) dans le cadre du Projet Tutoré de S3 pour le laboratoire LE2I (Laboratoire Electronique, Informatique et Image), Équipe de Recherche CIAD (Connaissances et Intelligences Artificielles Distribuées).
 
 Principales technologies : Angular 7, SlimPHP,  Swagger
+
 Principaux IDEs : Visual Studio Code, Nodepad++
 
 Réalisé en 2018/2019 dans le cadre du module M3302 "Projet Tutoré" - S3 DUT Informatique à l'IUT de Dijon
