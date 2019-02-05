@@ -1,19 +1,15 @@
-# Dawagsi
+# DAWAGSI
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.0.6.
+## Description
 
-## Development server
+Développement d'une Application Web d'Annotation Graphique et Sémantique d'Images (DAWAGSI) dans le cadre du Projet Tutoré de S3 pour le laboratoire LE2I (Laboratoire Electronique, Informatique et Image), Équipe de Recherche CIAD (Connaissances et Intelligences Artificielles Distribuées).
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Principales technologies : Angular 7, SlimPHP,  Swagger
+Principaux IDEs : Visual Studio Code, Nodepad++
 
-## Code scaffolding
+Réalisé en 2018/2019 dans le cadre du module M3302 "Projet Tutoré" - S3 DUT Informatique à l'IUT de Dijon
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Installation
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+1. [Télécharger l'archive](http://skydefr.com/projets/illumination/DAWAGSI.zip)
+2. [Lire le guide d'installation](http://skydefr.com/projets/illumination/DAWAGSI.pdf)
