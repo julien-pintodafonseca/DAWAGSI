@@ -8,6 +8,13 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $app = new Slim\App();
 
+
+/* UPLOADS IMG FOLDER PATH */
+function get_path_img() {
+	$path_img = './../../uploads/';
+	return $path_img;
+}
+
 /* PDO INSTANCE */
 function connect() {
 	$password = '6,T3PKiaWsvB';
@@ -230,6 +237,43 @@ $app->DELETE('/list/{id}', function($request, $response, $args) {
 	try {
 		$DB = connect();
 		
+		/* Début suppression images serveur physique */
+		
+		$req_img = 'SELECT * FROM `Image` WHERE list ='.$id;
+		$result_img = $DB->query($req_img);
+		$result_img = $result_img->fetchAll(PDO::FETCH_ASSOC);
+		
+		$pass_step = false;
+		if ($result_img) {
+			$count_img = 0;
+			foreach ($result_img as $row_img) {
+				$data_img[$count_img]["id"] = $row_img["id"];
+				$data_img[$count_img]["list"] = $row_img["list"];
+				$data_img[$count_img]["originalName"] = $row_img["originalName"];
+				$data_img[$count_img]["generatedName"] = $row_img["generatedName"];
+				$data_img[$count_img]["editor"] = $row_img["editor"];
+				$count_img++;
+			}
+		} else {
+			// Aucune image à supprimer
+			$pass_step = true;
+		}
+		
+		if (!$pass_step) {
+			for ($nbImg=0; $nbImg<$count_img; $nbImg++) {
+				$file = get_path_img().$data_img[$nbImg]["generatedName"];
+				$data['message_img'.$nbImg] = $file." removed successfully from server";
+				
+				if (file_exists($file)) {
+					unlink($file);
+				} else {
+					$data['message_img'] = "Une erreur est survenue lors de la suppression d'une image :'+".$file;
+				}
+			}
+		}
+		
+		/* Fin suppression images serveur physique */
+		
 		$req = "DELETE FROM `List` WHERE id=".$id;
 		$result = $DB->exec($req);
 		
@@ -436,6 +480,33 @@ $app->DELETE('/image/{id}', function($request, $response, $args) {
 	
 	try {
 		$DB = connect();
+		
+		/* Début suppression image serveur physique */
+		
+		$req_img = 'SELECT * FROM `Image` WHERE id = '.$id;
+		$result_img = $DB->query($req_img);
+		$result_img = $result_img->fetchAll(PDO::FETCH_ASSOC);
+
+		if ($result_img) {
+			foreach ($result_img as $row_img) {
+				$data_img["id"] = $row_img["id"];
+				$data_img["list"] = $row_img["list"];
+				$data_img["originalName"] = $row_img["originalName"];
+				$data_img["generatedName"] = $row_img["generatedName"];
+				$data_img["editor"] = $row_img["editor"];
+			}
+		}
+		
+		$file = get_path_img().$data_img["generatedName"];
+		
+		if (file_exists($file)) {
+			unlink($file);
+			$data['message_img'] = $file." removed successfully from server";
+		} else {
+			$data['message_img'] = "Une erreur est survenue lors de la suppression d'une image :'+".$file;
+		}
+		
+		/* Fin suppression image serveur physique */
 
 		$req = "DELETE FROM `Image` WHERE id=".$id;
 		$result = $DB->exec($req);
